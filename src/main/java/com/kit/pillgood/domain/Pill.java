@@ -17,7 +17,12 @@ public class Pill {
     private String pillIndex;
 
     @Column(name = "PILL_NUM")
+    @NonNull
     private String pillNum;
+
+    @Column(name = "PILL_NAME")
+    @NonNull
+    private String pillName;
 
     @Column(name = "PILL_FRONT_WORD")
     private String pillFrontWord;

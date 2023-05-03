@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +19,11 @@ public class User {
     private Long userIndex;
 
     @Column(name = "USER_EMAIL")
+    @NonNull
     private String userEmail;
 
     @Column(name = "USER_FCM_TOKEN")
+    @NonNull
     private String userFcmToken;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -30,6 +30,7 @@ public class GroupMember {
     private List<Prescription> prescriptions = new ArrayList<>();
 
     @Column(name = "GROUP_MEMBER_NAME")
+    @NonNull
     private String groupMemberName;
 
     @Column(name = "GROUP_MEMBER_BIRTH")
@@ -39,6 +40,7 @@ public class GroupMember {
     private String groupMemberPhone;
 
     @Column(name = "MESSAGE_CHECK")
+    @NonNull
     private Boolean messageCheck;
 
 }

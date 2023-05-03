@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class TakePillCheck {
 
     @Id
@@ -23,11 +23,14 @@ public class TakePillCheck {
     private TakePill takePill;
 
     @Column(name = "TAKE_DATE")
+    @NonNull
     private LocalDate takeDate;
 
     @Column(name = "TAKE_PILL_TIME")
+    @NonNull
     private Integer takePillTime;
 
     @Column(name = "TAKE_CHECK")
+    @NonNull
     private Boolean takeCheck;
 }

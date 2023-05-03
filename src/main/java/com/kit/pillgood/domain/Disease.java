@@ -19,8 +19,10 @@ public class Disease {
     private String diseaseClassification;
 
     @Column(name = "DISEASE_CODE")
+    @NonNull
     private String diseaseCode;
 
     @Column(name = "DISEASE_NAME")
+    @NonNull
     private String diseaseName;
 }

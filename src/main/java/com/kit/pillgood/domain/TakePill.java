@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class TakePill {
 
     @Id
@@ -21,18 +21,22 @@ public class TakePill {
 
     @ManyToOne
     @JoinColumn(name="PRESCRIPTION_INDEX")
+    @NonNull
     private Prescription prescription;
 
     @ManyToOne
     @JoinColumn(name="PILL_INDEX")
+    @NonNull
     private Pill pill;
 
     @OneToMany(mappedBy = "takePill", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TakePillCheck> takePillCheck = new ArrayList<>();
 
     @Column(name = "TAKE_DAY")
+    @NonNull
     private Integer takeDay;
 
     @Column(name = "TAKE_COUNT")
+    @NonNull
     private Integer takeCount;
 }
