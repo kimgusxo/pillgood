@@ -24,6 +24,6 @@ public class NotificationController {
 
     @PutMapping("/{notification-index}")
     public NotificationDTO updateNotificationsByNotificationIndex(@PathVariable(name="notification-index") Long notificationIndex) {
-
+        return null;
     }
 }

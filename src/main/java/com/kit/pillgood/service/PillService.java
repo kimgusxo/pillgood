@@ -21,49 +21,49 @@ public class PillService {
     public PillService(PillRepository pillRepository) {
         this.pillRepository = pillRepository;
     }
-
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
-    public PillDTO searchPillByPillIndex(Long pillIndex) {
-        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findById(pillIndex));
-        return pillDTO;
-    }
-
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
-    public PillDTO searchPillByPillName(String pillName) {
-        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findPillByPillName(pillName));
-        return pillDTO;
-    }
-
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
-    public List<PillDTO> searchPillByAttributesOfPill(SearchingConditionDTO searchingConditionDTO) {
-        String pillName = searchingConditionDTO.getPillName();
-        String pillColor = searchingConditionDTO.getPillColor();
-        String pillShape = searchingConditionDTO.getPillShape();
-        String pillFrontWord = searchingConditionDTO.getPillFrontWord();
-        String pillBackWord = searchingConditionDTO.getPillBackWord();
-
-        List<Pill> pills = pillRepository.findByPillNameAndPillShapeAndPillColorAndPillFrontWordAndPillBackWord(
-                pillName, pillColor, pillShape, pillFrontWord, pillBackWord);
-
-        List<PillDTO> pillDTOs = new ArrayList<>();
-
-        for(Pill pill : pills) {
-            PillDTO pillDTO = EntityConverter.toPillDTO(pill);
-            pillDTOs.add(pillDTO);
-        }
-
-        return pillDTOs;
-    }
+//
+//    /**
+//     * 메소드의 간략한 설명
+//     * @param: 파라미터 설명
+//     * @return: 리턴 값 설명
+//    **/
+//    public PillDTO searchPillByPillIndex(Long pillIndex) {
+//        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findById(pillIndex));
+//        return pillDTO;
+//    }
+//
+//    /**
+//     * 메소드의 간략한 설명
+//     * @param: 파라미터 설명
+//     * @return: 리턴 값 설명
+//    **/
+//    public PillDTO searchPillByPillName(String pillName) {
+//        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findPillByPillName(pillName));
+//        return pillDTO;
+//    }
+//
+//    /**
+//     * 메소드의 간략한 설명
+//     * @param: 파라미터 설명
+//     * @return: 리턴 값 설명
+//    **/
+//    public List<PillDTO> searchPillByAttributesOfPill(SearchingConditionDTO searchingConditionDTO) {
+//        String pillName = searchingConditionDTO.getPillName();
+//        String pillColor = searchingConditionDTO.getPillColor();
+//        String pillShape = searchingConditionDTO.getPillShape();
+//        String pillFrontWord = searchingConditionDTO.getPillFrontWord();
+//        String pillBackWord = searchingConditionDTO.getPillBackWord();
+//
+//        List<Pill> pills = pillRepository.findByPillNameAndPillShapeAndPillColorAndPillFrontWordAndPillBackWord(
+//                pillName, pillColor, pillShape, pillFrontWord, pillBackWord);
+//
+//        List<PillDTO> pillDTOs = new ArrayList<>();
+//
+//        for(Pill pill : pills) {
+//            PillDTO pillDTO = EntityConverter.toPillDTO(pill);
+//            pillDTOs.add(pillDTO);
+//        }
+//
+//        return pillDTOs;
+//    }
 }

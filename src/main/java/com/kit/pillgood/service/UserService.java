@@ -21,11 +21,11 @@ public class UserService {
      * @param: 생성할 UserDTO
      * @return: DB에서 생성할 UserDTO
     **/
-    public UserDTO createUser(UserDTO userDTO) {
-        User user = EntityConverter.toUser(userDTO);
-        userDTO = EntityConverter.toUserDTO(userRepository.save(user));
-        return userDTO;
-    }
+//    public UserDTO createUser(UserDTO userDTO) {
+//        User user = EntityConverter.toUser(userDTO);
+//        userDTO = EntityConverter.toUserDTO(userRepository.save(user));
+//        return userDTO;
+//    }
 
     public void deleteUser(Long userIndex) {
         userRepository.deleteById(userIndex);

@@ -21,8 +21,8 @@ public class DiseaseService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
-    public DiseaseDTO searchDiseaseByDiseaseCode(String diseaseCode) {
-        DiseaseDTO diseaseDTO = EntityConverter.toDiseaseDTO(diseaseRepository.findDiseaseByDiseaseCode(diseaseCode));
-       return diseaseDTO;
-    }
+//    public DiseaseDTO searchDiseaseByDiseaseCode(String diseaseCode) {
+//        DiseaseDTO diseaseDTO = EntityConverter.toDiseaseDTO(diseaseRepository.findDiseaseByDiseaseCode(diseaseCode));
+//       return diseaseDTO;
+//    }
 }

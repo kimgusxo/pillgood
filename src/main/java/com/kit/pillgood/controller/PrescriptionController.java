@@ -31,11 +31,11 @@ public class PrescriptionController {
 
     @PostMapping("/create/image-upload")
     public PrescriptionDTO createPrescriptionByImage(@ModelAttribute MultipartFile prescriptionImage) {
-
+        return null;
     }
 
     @DeleteMapping("/delete/{prescription-index}")
     public PrescriptionDTO deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) {
-
+        return null;
     }
 }
