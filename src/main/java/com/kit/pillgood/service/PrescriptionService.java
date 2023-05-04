@@ -1,6 +1,7 @@
 package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.Prescription;
+import com.kit.pillgood.persistence.dto.PrescriptionAndDiseaseNameDTO;
 import com.kit.pillgood.persistence.dto.PrescriptionDTO;
 import com.kit.pillgood.persistence.projections.PrescriptionIndexAndDiseaseIndexSummary;
 import com.kit.pillgood.repository.GroupMemberRepository;
@@ -16,9 +17,9 @@ import java.util.List;
 
 @Service
 public class PrescriptionService {
-    private final UserRepository userRepsitory;
+    private final UserRepository userRepository;
     private final GroupMemberRepository groupMemberRepository;
-    private final PrescriptionRepository prescriptionRepsitory;
+    private final PrescriptionRepository prescriptionRepository;
     private final NotificationService notificationService;
     private final OCRService ocrService;
     private final DiseaseService diseaseService;
@@ -32,9 +33,9 @@ public class PrescriptionService {
                                OCRService ocrService,
                                DiseaseService diseaseService,
                                TakePillService takePillService) {
-        this.userRepsitory = userRepository;
+        this.userRepository = userRepository;
         this.groupMemberRepository = groupMemberRepository;
-        this.prescriptionRepsitory = prescriptionRepository;
+        this.prescriptionRepository = prescriptionRepository;
         this.notificationService = notificationService;
         this.ocrService = ocrService;
         this.diseaseService = diseaseService;
@@ -45,20 +46,12 @@ public class PrescriptionService {
         // 처방전을 생성
     }
 
-    public List<PrescriptionDTO> searchGroupMemberPrescriptionsByGroupMemberIndex(Long groupMemberIndex) {
-        List<PrescriptionIndexAndDiseaseIndexSummary> prescriptions = prescriptionRepsitory.findProjectionsByGroupMemberIndex(groupMemberIndex);
-        List<PrescriptionDTO> prescriptionDTOs = new ArrayList<>();
-
-        for(Prescription prescription : prescriptions) {
-            PrescriptionDTO prescriptionDTO = EntityConverter.toPrescriptionDTO(prescription);
-            prescriptionDTOs.add(prescriptionDTO);
-        }
-
-        return prescriptionDTOs;
+    public List<PrescriptionAndDiseaseNameDTO> searchGroupMemberPrescriptionsByGroupMemberIndex(Long groupMemberIndex) {
+        return prescriptionRepository.findPrescriptionAndDiseaseNameByGroupMemberIndex(groupMemberIndex);
     }
 
     public void deletePrescription(Long prescriptionIndex) {
-        // 처방전을 삭제
+        prescriptionRepository.deleteById(prescriptionIndex);
     }
 
 }

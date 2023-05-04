@@ -1,13 +1,10 @@
 package com.kit.pillgood.controller;
 
-import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.Prescription;
-import com.kit.pillgood.persistence.dto.GroupMemberDTO;
+import com.kit.pillgood.persistence.dto.PrescriptionAndDiseaseNameDTO;
 import com.kit.pillgood.persistence.dto.PrescriptionDTO;
 import com.kit.pillgood.service.PrescriptionService;
-import com.kit.pillgood.util.EntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,17 +22,19 @@ public class PrescriptionController {
     }
 
     @GetMapping("/search/{group-member-index}")
-    public List<PrescriptionDTO> getPrescriptionsByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) {
+    public List<PrescriptionAndDiseaseNameDTO> getPrescriptionsByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) {
         return prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex);
     }
 
     @PostMapping("/create/image-upload")
-    public PrescriptionDTO createPrescriptionByImage(@ModelAttribute MultipartFile prescriptionImage) {
-
+    public PrescriptionDTO createPrescriptionByImage(@RequestParam Long userIndex,
+                                                     @RequestParam Long groupMemberIndex,
+                                                     @ModelAttribute MultipartFile prescriptionImage) {
+        return prescriptionService.createPrescription(userIndex, groupMemberIndex, prescriptionImage);
     }
 
     @DeleteMapping("/delete/{prescription-index}")
-    public PrescriptionDTO deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) {
-
+    public void deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) {
+        prescriptionService.deletePrescription(prescriptionIndex);
     }
 }

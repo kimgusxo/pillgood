@@ -10,4 +10,5 @@ import lombok.Setter;
 public class PrescriptionIndexAndDiseaseIndexSummary {
     private Long prescriptionIndex;
     private Long diseaseIndex;
+
 }
