@@ -24,10 +24,10 @@ public class PrescriptionController {
         this.prescriptionService = prescriptionService;
     }
 
-    @GetMapping("/search/{group-member-index}")
-    public List<PrescriptionDTO> getPrescriptionsByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) {
-        return prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex);
-    }
+//    @GetMapping("/search/{group-member-index}")
+//    public List<PrescriptionDTO> getPrescriptionsByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) {
+//        return prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex);
+//    }
 
     @PostMapping("/create/image-upload")
     public PrescriptionDTO createPrescriptionByImage(@ModelAttribute MultipartFile prescriptionImage) {
