@@ -7,9 +7,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class Pill {
 
     @Id

@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class GroupMember {
 
     @Id
