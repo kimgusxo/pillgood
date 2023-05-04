@@ -43,7 +43,7 @@ public class PrescriptionService {
     }
 
     public PrescriptionDTO createPrescription(Long userIndex, Long groupMemberIndex, MultipartFile imageFile) {
-        // 처방전을 생성
+        // 처방전을 생성 OCR 사용부분
     }
 
     public List<PrescriptionAndDiseaseNameDTO> searchGroupMemberPrescriptionsByGroupMemberIndex(Long groupMemberIndex) {

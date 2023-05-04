@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface PillRepository  extends JpaRepository<Pill, Long> {
-
     List<Pill> findByPillNameAndPillShapeAndPillColorAndPillFrontWordAndPillBackWord(
             String pillName, String pillShape, String pillColor, String pillFrontWord, String pillBackWord);
     Pill findPillByPillName(String pillName);

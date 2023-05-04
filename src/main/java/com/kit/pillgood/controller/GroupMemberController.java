@@ -16,7 +16,7 @@ public class GroupMemberController {
     public GroupMemberController(GroupMemberService groupMemberService) {
         this.groupMemberService = groupMemberService;
     }
-
+    
     @PostMapping("/create")
     public GroupMemberDTO createGroupMember(@ModelAttribute GroupMemberDTO groupMemberDTO) {
         return groupMemberService.createGroupMember(groupMemberDTO);

@@ -22,6 +22,6 @@ public class DiseaseService {
     **/
     public DiseaseDTO searchDiseaseByDiseaseCode(String diseaseCode) {
         DiseaseDTO diseaseDTO = EntityConverter.toDiseaseDTO(diseaseRepository.findDiseaseByDiseaseCode(diseaseCode));
-       return diseaseDTO;
+        return diseaseDTO;
     }
 }
