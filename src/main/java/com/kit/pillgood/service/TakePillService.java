@@ -3,6 +3,7 @@ package com.kit.pillgood.service;
 import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
+import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
 import com.kit.pillgood.persistence.dto.TakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillCheckDTO;
 import com.kit.pillgood.repository.*;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,10 +48,16 @@ public class TakePillService {
     }
 
     public TakePillCheckAndGroupMemberIndexDTO searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) {
-        List<GroupMember> groupMembers = groupMemberRepository.findGroupMembersByUserIndex(userIndex);
+        List<GroupMember> groupMembers = groupMemberRepository.findGroupMembersByUser(userIndex);
+        List<Long> prescriptionIndexList = new ArrayList<>();
+        List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOList = new ArrayList<>();
+        List<List<TakePillAndTakePillCheckDTO>>
 
         for(GroupMember groupMember : groupMembers) {
-
+            prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMemberBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
+            for(Long prescriptionIndex : prescriptionIndexList) {
+                takePillAndTakePillCheckDTOList = takePillRepository.findTakePillAndCheckByPrescriptionIndex(prescriptionIndex);
+            }
         }
     }
 

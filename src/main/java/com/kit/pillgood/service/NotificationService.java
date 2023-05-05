@@ -46,7 +46,7 @@ public class NotificationService {
      * @return: 리턴 값 설명
     **/
     public List<NotificationDTO> searchNotificationByUserIndex(Long userIndex) {
-        List<Notification> notifications = notificationRepository.findNotificationsByUserIndexAndNotificationCheckTrue(userIndex);
+        List<Notification> notifications = notificationRepository.findNotificationsByUserAndNotificationCheckTrue(userIndex);
 
         List<NotificationDTO> notificationDTOs = new ArrayList<>();
 
