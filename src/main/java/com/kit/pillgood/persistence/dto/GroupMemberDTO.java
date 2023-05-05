@@ -14,6 +14,7 @@ import java.util.List;
 public class GroupMemberDTO {
     private Long groupMemberIndex;
     private User user;
+    @Builder.Default
     private List<Prescription> prescriptions = new ArrayList<>();
     private String groupMemberName;
     private LocalDate groupMemberBirth;

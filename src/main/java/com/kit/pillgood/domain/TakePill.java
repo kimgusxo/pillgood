@@ -30,6 +30,7 @@ public class TakePill {
     @NonNull
     private Pill pill;
 
+    @Builder.Default
     @OneToMany(mappedBy = "takePill", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TakePillCheck> takePillCheck = new ArrayList<>();
 

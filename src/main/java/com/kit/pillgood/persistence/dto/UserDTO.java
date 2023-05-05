@@ -13,6 +13,8 @@ public class UserDTO {
     private Long userIndex;
     private String userEmail;
     private String userFcmToken;
+    @Builder.Default
     private List<GroupMember> groupMembers = new ArrayList<>();
+    @Builder.Default
     private List<Notification> notifications = new ArrayList<>();
 }

@@ -16,6 +16,7 @@ public class PrescriptionAndDiseaseNameDTO {
     private Long prescriptionIndex;
     private GroupMember groupMember;
     private Disease disease;
+    @Builder.Default
     private List<TakePill> takePills = new ArrayList<>();
     private LocalDate prescriptionRegistrationDate;
     private LocalDate prescriptionDate;

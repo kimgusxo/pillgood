@@ -24,14 +24,12 @@ public class Notification {
     private User user;
 
     @Column(name = "NOTIFICATION_CONTENT")
-    @NonNull
     private String notificationContent;
 
     @Column(name = "NOTIFICATION_TIME")
     private LocalDateTime notificationTime;
 
     @Column(name = "NOTIFICATION_CHECK")
-    @NonNull
     private boolean notificationCheck;
 
 }
