@@ -37,13 +37,13 @@ public class TakePillService {
         this.pillRepository = pillRepository;
     }
 
-    public TakePill createTakePill(Long prescriptionIndex, Long pillIndex, Integer takeDay, Integer takeCount) {
-        // 복용해야 할 약 생성
-    }
-
-    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {
-        // 복용해야 할 약 리스트 생성
-    }
+//    public TakePill createTakePill(Long prescriptionIndex, Long pillIndex, Integer takeDay, Integer takeCount) {
+//        // 복용해야 할 약 생성
+//    }
+//
+//    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {
+//        // 복용해야 할 약 리스트 생성
+//    }
 
     public TakePillCheckAndGroupMemberIndexDTO searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) {
         List<GroupMember> groupMembers = groupMemberRepository.findGroupMembersByUserIndex(userIndex);
