@@ -26,6 +26,7 @@ public class GroupMember {
     @JoinColumn(name="USER_INDEX")
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "groupMember", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prescription> prescriptions = new ArrayList<>();
 

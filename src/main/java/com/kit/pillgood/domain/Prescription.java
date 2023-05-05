@@ -28,6 +28,7 @@ public class Prescription {
     @JoinColumn(name="DISEASE_INDEX")
     private Disease disease;
 
+    @Builder.Default
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TakePill> takePills = new ArrayList<>();
 

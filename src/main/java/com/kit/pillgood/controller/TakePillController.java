@@ -23,25 +23,25 @@ public class TakePillController {
     public TakePillController(TakePillService takePillService) {
         this.takePillService = takePillService;
     }
-
-    @GetMapping("/search/calendar-data")
-    public List<TakePillCheckAndGroupMemberIndexDTO> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
-                                                                                                           @RequestParam LocalDate dateStart,
-                                                                                                           @RequestParam LocalDate dateEnd) {
-        takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
-    }
-
-    @GetMapping("")
-    public List<MedicationInfoDTO> getTakePillsByUserIndexAndDate(@RequestParam Long userIndex,
-                                                                                  @RequestParam LocalDate date) {
-
-    }
-
-    @GetMapping("/initial-data")
-    public List<InitialCalendarAndTakePillsInfoDTO> getInitialCalenderAndTakePillsBuUserIndexBetweenDate(@RequestParam Long userIndex,
-                                                                                                                         @RequestParam LocalDate dateStart,
-                                                                                                                         @RequestParam LocalDate dateCur,
-                                                                                                                         @RequestParam LocalDate dateEnd) {
-
-    }
+//refdsfatysreg
+//    @GetMapping("/search/calendar-data")
+//    public List<TakePillCheckAndGroupMemberIndexDTO> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
+//                                                                                                           @RequestParam LocalDate dateStart,
+//                                                                                                           @RequestParam LocalDate dateEnd) {
+//        takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
+//    }
+//
+//    @GetMapping("")
+//    public List<MedicationInfoDTO> getTakePillsByUserIndexAndDate(@RequestParam Long userIndex,
+//                                                                                  @RequestParam LocalDate date) {
+//
+//    }
+//
+//    @GetMapping("/initial-data")
+//    public List<InitialCalendarAndTakePillsInfoDTO> getInitialCalenderAndTakePillsBuUserIndexBetweenDate(@RequestParam Long userIndex,
+//                                                                                                                         @RequestParam LocalDate dateStart,
+//                                                                                                                         @RequestParam LocalDate dateCur,
+//                                                                                                                         @RequestParam LocalDate dateEnd) {
+//
+//    }
 }
