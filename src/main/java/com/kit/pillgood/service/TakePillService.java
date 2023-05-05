@@ -1,10 +1,12 @@
 package com.kit.pillgood.service;
 
+import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillCheckDTO;
 import com.kit.pillgood.repository.*;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +45,12 @@ public class TakePillService {
         // 복용해야 할 약 리스트 생성
     }
 
-    public TakePillCheckAndGroupMemberIndexDTO searchTakePillCheckListByUserIndexBetweenTakeDate(Long prescriptionIndex) {
-        // 유저 인덱스, 시작 시간, 끝 시간으로 처방전을 검색
+    public TakePillCheckAndGroupMemberIndexDTO searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) {
+        List<GroupMember> groupMembers = groupMemberRepository.findGroupMembersByUserIndex(userIndex);
+
+        for(GroupMember groupMember : groupMembers) {
+
+        }
     }
 
     public MedicationInfoDTO searchMedicationInfoListByUserIndexAndTakeDate(Long userIndex, LocalDate takeDate) {

@@ -1,18 +1,14 @@
 package com.kit.pillgood.service;
 
-import com.kit.pillgood.domain.Prescription;
 import com.kit.pillgood.persistence.dto.PrescriptionAndDiseaseNameDTO;
 import com.kit.pillgood.persistence.dto.PrescriptionDTO;
-import com.kit.pillgood.persistence.projections.PrescriptionIndexAndDiseaseIndexSummary;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.PrescriptionRepository;
 import com.kit.pillgood.repository.UserRepository;
-import com.kit.pillgood.util.EntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

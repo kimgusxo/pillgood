@@ -38,7 +38,7 @@ public class PillService {
      * @return: 리턴 값 설명
     **/
     public PillDTO searchPillByPillName(String pillName) {
-        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findPillByPillName(pillName));
+        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findByPillName(pillName));
         return pillDTO;
     }
 
@@ -54,7 +54,7 @@ public class PillService {
         String pillFrontWord = searchingConditionDTO.getPillFrontWord();
         String pillBackWord = searchingConditionDTO.getPillBackWord();
 
-        List<Pill> pills = pillRepository.findByPillNameAndPillShapeAndPillColorAndPillFrontWordAndPillBackWord(
+        List<Pill> pills = pillRepository.findPillsByPillNameAndPillShapeAndPillColorAndPillFrontWordAndPillBackWord(
                 pillName, pillColor, pillShape, pillFrontWord, pillBackWord);
 
         List<PillDTO> pillDTOs = new ArrayList<>();

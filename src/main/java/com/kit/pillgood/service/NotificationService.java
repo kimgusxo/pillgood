@@ -64,15 +64,15 @@ public class NotificationService {
      * @return: 리턴 값 설명
     **/
     public NotificationDTO updateNotification(Long notificationIndex, NotificationDTO notificationDTO) {
-//        Notification notification = notificationRepository.findById(notificationIndex);
-//
-//        if(groupMember != null) {
-//            groupMember = EntityConverter.toGroupMember(groupMemberDTO);
-//            groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMemberRepository.save(groupMember));
-//            return groupMemberDTO;
-//        } else {
-//            return null;
-//        }
+        Notification notification = notificationRepository.findByNotificationIndex(notificationIndex);
+
+        if(notification != null) {
+            notification = EntityConverter.toNotification(notificationDTO);
+            notificationDTO = EntityConverter.toNotificationDTO(notificationRepository.save(notification));
+            return notificationDTO;
+        } else {
+            return null;
+        }
     }
 
     /**

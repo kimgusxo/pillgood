@@ -1,5 +1,6 @@
 package com.kit.pillgood.service;
 
+import com.kit.pillgood.persistence.dto.AutoMessageDTO;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.PrescriptionRepository;
 import com.kit.pillgood.repository.TakePillCheckRepository;

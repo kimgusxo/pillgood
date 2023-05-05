@@ -22,7 +22,7 @@ public class LoginController {
      * @return: 리턴 값 설명
     **/
     public void login() {
-        // 로그인
+
     }
 
     /**

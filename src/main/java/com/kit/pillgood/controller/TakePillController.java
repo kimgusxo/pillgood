@@ -28,7 +28,7 @@ public class TakePillController {
     public List<TakePillCheckAndGroupMemberIndexDTO> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
                                                                                                            @RequestParam LocalDate dateStart,
                                                                                                            @RequestParam LocalDate dateEnd) {
-
+        takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
     }
 
     @GetMapping("")

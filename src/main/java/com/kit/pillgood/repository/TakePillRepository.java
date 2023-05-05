@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TakePillRepository  extends JpaRepository<TakePill, Long> {
-    List<TakePill> findTakePillByPrescriptionIndex(Long prescriptionIndex, String takePillTime);
+    List<TakePill> findTakePillsByPrescriptionIndex(Long prescriptionIndex, String takePillTime);
 }
