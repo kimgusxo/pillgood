@@ -15,10 +15,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("")
-    public UserDTO createUser(@ModelAttribute UserDTO userDTO) {
-        return userService.createUser(userDTO);
-    }
+//    @PostMapping("")
+//    public UserDTO createUser(@ModelAttribute UserDTO userDTO) {
+//        return userService.createUser(userDTO);
+//    }
 
    @DeleteMapping("/delete/{user-index}")
    public void deleteUser(@PathVariable(name="user-index") Long userIndex) {

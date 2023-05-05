@@ -10,9 +10,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class Prescription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,14 +32,17 @@ public class Prescription {
     private List<TakePill> takePills = new ArrayList<>();
 
     @Column(name = "PRESCRIPTION_REGISTRATION_DATE")
+    @NonNull
     private LocalDate prescriptionRegistrationDate;
 
     @Column(name = "PRESCRIPTION_DATE")
+    @NonNull
     private LocalDate prescriptionDate;
 
     @Column(name = "HOSPITAL_PHONE")
     private String hospitalPhone;
 
     @Column(name = "HOSPITAL_NAME")
+    @NonNull
     private String hospitalName;
 }

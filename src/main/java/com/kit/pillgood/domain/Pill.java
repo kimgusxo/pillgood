@@ -7,9 +7,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class Pill {
 
     @Id
@@ -17,7 +18,12 @@ public class Pill {
     private String pillIndex;
 
     @Column(name = "PILL_NUM")
+    @NonNull
     private String pillNum;
+
+    @Column(name = "PILL_NAME")
+    @NonNull
+    private String pillName;
 
     @Column(name = "PILL_FRONT_WORD")
     private String pillFrontWord;

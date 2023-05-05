@@ -7,9 +7,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class Disease {
     @Id
     @Column(name = "DISEASE_INDEX")
@@ -19,8 +20,10 @@ public class Disease {
     private String diseaseClassification;
 
     @Column(name = "DISEASE_CODE")
+    @NonNull
     private String diseaseCode;
 
     @Column(name = "DISEASE_NAME")
+    @NonNull
     private String diseaseName;
 }

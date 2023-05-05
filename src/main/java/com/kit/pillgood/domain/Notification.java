@@ -8,9 +8,10 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class Notification {
 
     @Id
@@ -23,12 +24,14 @@ public class Notification {
     private User user;
 
     @Column(name = "NOTIFICATION_CONTENT")
+    @NonNull
     private String notificationContent;
 
     @Column(name = "NOTIFICATION_TIME")
     private LocalDateTime notificationTime;
 
     @Column(name = "NOTIFICATION_CHECK")
+    @NonNull
     private boolean notificationCheck;
 
 }

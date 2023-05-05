@@ -27,8 +27,8 @@ public class SendAutoMessageService {
         this.takePillCheckRepository = takePillCheckRepository;
     }
 
-    public List<AutoMessageDTO> searchMessageContent(Long userIndex) {
-        // 유저인덱스로 약을 검색함
-    }
+//    public List<AutoMessageDTO> searchMessageContent(Long userIndex) {
+//        // 유저인덱스로 약을 검색함
+//    }
 
 }

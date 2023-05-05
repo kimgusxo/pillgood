@@ -22,6 +22,6 @@ public class SendAutoMessageController {
 
     @GetMapping("/search/{user-index}")
     public List<AutoMessageDTO> getMessageContentByUserIndex(@PathVariable(name="user-index") Long userIndex) {
-
+        return null;
     }
 }

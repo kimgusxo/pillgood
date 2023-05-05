@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class OCRService {
 
-    public Prescription extractPrescriptionTextFromImage(MultipartFile imageFile) {
-        // 처방전 이미지에서 텍스트 추출
-    }
+//    public Prescription extractPrescriptionTextFromImage(MultipartFile imageFile) {
+//        // 처방전 이미지에서 텍스트 추출
+//    }
 
 }

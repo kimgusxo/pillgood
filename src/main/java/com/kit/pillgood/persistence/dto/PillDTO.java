@@ -7,6 +7,7 @@ import lombok.*;
 public class PillDTO {
     private String pillIndex;
     private String pillNum;
+    private String pillName;
     private String pillFrontWord;
     private String pillBackWord;
     private String pillShape;
