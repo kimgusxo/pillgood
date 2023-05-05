@@ -19,18 +19,18 @@ public class PillController {
         this.pillService = pillService;
     }
 
-//    @GetMapping("/search/{pill-index}")
-//    public PillDTO getPillByPillIndex(@PathVariable(name="pill-index") Long pillIndex) {
-//        return pillService.searchPillByPillIndex(pillIndex);
-//    }
-//
-//    @GetMapping("/search/{pill-name}")
-//    public PillDTO getPillByPillName(@PathVariable(name="pill-name") String pillName) {
-//        return pillService.searchPillByPillName(pillName);
-//    }
-//
-//    @GetMapping("/search/pills")
-//    public List<PillDTO> getSearchingPills(@ModelAttribute SearchingConditionDTO searchingConditionDTO) {
-//        return pillService.searchPillByAttributesOfPill(searchingConditionDTO);
-//    }
+    @GetMapping("/search/{pill-index}")
+    public PillDTO getPillByPillIndex(@PathVariable(name="pill-index") Long pillIndex) {
+        return pillService.searchPillByPillIndex(pillIndex);
+    }
+
+    @GetMapping("/search/{pill-name}")
+    public PillDTO getPillByPillName(@PathVariable(name="pill-name") String pillName) {
+        return pillService.searchPillByPillName(pillName);
+    }
+
+    @GetMapping("/search/pills")
+    public List<PillDTO> getSearchingPills(@ModelAttribute SearchingConditionDTO searchingConditionDTO) {
+        return pillService.searchPillByAttributesOfPill(searchingConditionDTO);
+    }
 }
