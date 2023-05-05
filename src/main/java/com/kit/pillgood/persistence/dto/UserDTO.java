@@ -17,4 +17,6 @@ public class UserDTO {
     private List<GroupMember> groupMembers = new ArrayList<>();
     @Builder.Default
     private List<Notification> notifications = new ArrayList<>();
+    
+
 }
