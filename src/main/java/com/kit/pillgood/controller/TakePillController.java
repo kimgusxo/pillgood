@@ -23,7 +23,7 @@ public class TakePillController {
     public TakePillController(TakePillService takePillService) {
         this.takePillService = takePillService;
     }
-
+//re
 //    @GetMapping("/search/calendar-data")
 //    public List<TakePillCheckAndGroupMemberIndexDTO> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
 //                                                                                                           @RequestParam LocalDate dateStart,
