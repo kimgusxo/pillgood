@@ -23,14 +23,14 @@ public class TakePillController {
     public TakePillController(TakePillService takePillService) {
         this.takePillService = takePillService;
     }
-//refdsfatysreg
+
 //    @GetMapping("/search/calendar-data")
 //    public List<TakePillCheckAndGroupMemberIndexDTO> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
 //                                                                                                           @RequestParam LocalDate dateStart,
 //                                                                                                           @RequestParam LocalDate dateEnd) {
 //        takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
 //    }
-//
+
 //    @GetMapping("")
 //    public List<MedicationInfoDTO> getTakePillsByUserIndexAndDate(@RequestParam Long userIndex,
 //                                                                                  @RequestParam LocalDate date) {

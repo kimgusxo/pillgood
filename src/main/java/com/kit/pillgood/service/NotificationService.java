@@ -18,17 +18,15 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
     private final GroupMemberRepository groupMemberRepository;
-    private final FirebaseMessaging firebaseMessaging;
+//    private final FirebaseMessaging firebaseMessaging;
 
     @Autowired
     public NotificationService(NotificationRepository notificationRepository,
                                UserRepository userRepository,
-                               GroupMemberRepository groupMemberRepository,
-                               FirebaseMessaging firebaseMessaging) {
+                               GroupMemberRepository groupMemberRepository) {
         this.notificationRepository = notificationRepository;
         this.userRepository = userRepository;
         this.groupMemberRepository = groupMemberRepository;
-        this.firebaseMessaging  = firebaseMessaging;
     }
 
     /**
