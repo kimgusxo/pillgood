@@ -3,6 +3,7 @@ package com.kit.pillgood.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -20,18 +21,19 @@ public class TakePillCheck {
     private Long takePillCheckIndex;
 
     @ManyToOne
-    @JoinColumn(name="TAKE_PILL_INDEX")
+    @JoinColumn(name="TAKE_PILL_INDEX", nullable = false)
+    @NotNull
     private TakePill takePill;
 
-    @Column(name = "TAKE_DATE")
-    @NonNull
+    @Column(name = "TAKE_DATE", nullable = false)
+    @NotNull
     private LocalDate takeDate;
 
-    @Column(name = "TAKE_PILL_TIME")
-    @NonNull
+    @Column(name = "TAKE_PILL_TIME", nullable = false)
+    @NotNull
     private Integer takePillTime;
 
-    @Column(name = "TAKE_CHECK")
-    @NonNull
+    @Column(name = "TAKE_CHECK", nullable = false)
+    @NotNull
     private Boolean takeCheck;
 }
