@@ -3,6 +3,7 @@ package com.kit.pillgood.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -19,11 +20,11 @@ public class Disease {
     @Column(name = "DISEASE_CLASSFICATION")
     private String diseaseClassification;
 
-    @Column(name = "DISEASE_CODE")
-    @NonNull
+    @Column(name = "DISEASE_CODE", nullable = false)
+    @NotNull
     private String diseaseCode;
 
-    @Column(name = "DISEASE_NAME")
-    @NonNull
+    @Column(name = "DISEASE_NAME", nullable = false)
+    @NotNull
     private String diseaseName;
 }

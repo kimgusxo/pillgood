@@ -2,6 +2,7 @@ package com.kit.pillgood.domain;
 
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,12 @@ public class User {
     @Column(name = "USER_INDEX")
     private Long userIndex;
 
-    @Column(name = "USER_EMAIL")
-    @NonNull
+    @Column(name = "USER_EMAIL", nullable = false)
+    @NotNull
     private String userEmail;
 
-    @Column(name = "USER_FCM_TOKEN")
-    @NonNull
+    @Column(name = "USER_FCM_TOKEN", nullable = false)
+    @NotNull
     private String userFcmToken;
 
     @Builder.Default

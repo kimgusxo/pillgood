@@ -3,6 +3,7 @@ package com.kit.pillgood.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,7 +21,8 @@ public class Notification {
     private Long notificationIndex;
 
     @ManyToOne
-    @JoinColumn(name="USER_INDEX")
+    @JoinColumn(name="USER_INDEX", nullable = false)
+    @NotNull
     private User user;
 
     @Column(name = "NOTIFICATION_CONTENT")

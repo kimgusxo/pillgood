@@ -4,6 +4,7 @@ import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +24,16 @@ public class GroupMember {
     private Long groupMemberIndex;
 
     @ManyToOne
-    @JoinColumn(name="USER_INDEX")
+    @JoinColumn(name="USER_INDEX", nullable = false)
+    @NotNull
     private User user;
 
     @Builder.Default
     @OneToMany(mappedBy = "groupMember", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prescription> prescriptions = new ArrayList<>();
 
-    @Column(name = "GROUP_MEMBER_NAME")
-    @NonNull
+    @Column(name = "GROUP_MEMBER_NAME", nullable = false)
+    @NotNull
     private String groupMemberName;
 
     @Column(name = "GROUP_MEMBER_BIRTH")
@@ -40,8 +42,8 @@ public class GroupMember {
     @Column(name = "GROUP_MEMBER_PHONE")
     private String groupMemberPhone;
 
-    @Column(name = "MESSAGE_CHECK")
-    @NonNull
+    @Column(name = "MESSAGE_CHECK", nullable = false)
+    @NotNull
     private Boolean messageCheck;
 
 }
