@@ -38,9 +38,9 @@ public class PrescriptionService {
         this.takePillService = takePillService;
     }
 
-    public PrescriptionDTO createPrescription(Long userIndex, Long groupMemberIndex, MultipartFile imageFile) {
-        // 처방전을 생성 OCR 사용부분
-    }
+//    public PrescriptionDTO createPrescription(Long userIndex, Long groupMemberIndex, MultipartFile imageFile) {
+//        // 처방전을 생성 OCR 사용부분
+//    }
 
     public List<PrescriptionAndDiseaseNameDTO> searchGroupMemberPrescriptionsByGroupMemberIndex(Long groupMemberIndex) {
         return prescriptionRepository.findPrescriptionAndDiseaseNameByGroupMemberIndex(groupMemberIndex);
