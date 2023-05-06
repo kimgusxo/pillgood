@@ -2,6 +2,7 @@ package com.kit.pillgood.controller;
 
 import com.kit.pillgood.persistence.dto.InitialCalendarAndTakePillsInfoDTO;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
+import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.service.TakePillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,12 @@ public class TakePillController {
         this.takePillService = takePillService;
     }
 
-//    @GetMapping("/search/calendar-data")
-//    public List<TakePillCheckAndGroupMemberIndexDTO> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
-//                                                                                                           @RequestParam LocalDate dateStart,
-//                                                                                                           @RequestParam LocalDate dateEnd) {
-//        takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
-//    }
+    @GetMapping("/search/calendar-data")
+    public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
+                                                                                                      @RequestParam LocalDate dateStart,
+                                                                                                      @RequestParam LocalDate dateEnd) {
+        return takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
+    }
 
 //    @GetMapping("")
 //    public List<MedicationInfoDTO> getTakePillsByUserIndexAndDate(@RequestParam Long userIndex,
