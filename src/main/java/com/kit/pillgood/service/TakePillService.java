@@ -52,6 +52,7 @@ public class TakePillService {
             prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMemberBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
             for(Long prescriptionIndex : prescriptionIndexList) {
                 takePillAndTakePillCheckDTOList = takePillRepository.findTakePillAndCheckByPrescriptionIndex(prescriptionIndex);
+
             }
         }
     }
