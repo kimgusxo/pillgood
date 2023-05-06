@@ -26,12 +26,12 @@ public class PrescriptionController {
         return prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex);
     }
 
-    @PostMapping("/create/image-upload")
-    public PrescriptionDTO createPrescriptionByImage(@RequestParam Long userIndex,
-                                                     @RequestParam Long groupMemberIndex,
-                                                     @ModelAttribute MultipartFile prescriptionImage) {
-        return prescriptionService.createPrescription(userIndex, groupMemberIndex, prescriptionImage);
-    }
+//    @PostMapping("/create/image-upload")
+//    public PrescriptionDTO createPrescriptionByImage(@RequestParam Long userIndex,
+//                                                     @RequestParam Long groupMemberIndex,
+//                                                     @ModelAttribute MultipartFile prescriptionImage) {
+//        return prescriptionService.createPrescription(userIndex, groupMemberIndex, prescriptionImage);
+//    }
 
     @DeleteMapping("/delete/{prescription-index}")
     public void deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) {
