@@ -17,6 +17,7 @@ public class TakePillAndTakePillCheckDTO {
     private Long takePillIndex;
     private Prescription prescription;
     private Pill pill;
+    @Builder.Default
     private List<TakePillCheck> takePillCheck = new ArrayList<>();
     private Integer takeDay;
     private Integer takeCount;
