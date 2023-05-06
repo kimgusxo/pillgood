@@ -68,7 +68,7 @@ public class GroupMemberService {
      * @return: DB에서 찾은 모든 그룹원 리턴
     **/
     public List<GroupMemberDTO> searchGroupMembersByUserIndex(Long userIndex) {
-        List<GroupMember> groupMembers = userRepository.findGroupMembersByUserIndex(userIndex);
+        List<GroupMember> groupMembers = groupMemberRepository.findGroupMembersByUser(userIndex);
 
         List<GroupMemberDTO> groupMemberDTOs = new ArrayList<>();
 

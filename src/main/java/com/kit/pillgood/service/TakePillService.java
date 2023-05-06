@@ -15,25 +15,16 @@ import java.util.*;
 @Service
 public class TakePillService {
     private final GroupMemberRepository groupMemberRepository;
-    private final TakePillCheckRepository takePillCheckRepository;
     private final TakePillRepository takePillRepository;
     private final PrescriptionRepository prescriptionRepository;
-    private final DiseaseRepository diseaseRepository;
-    private final PillRepository pillRepository;
 
     @Autowired
     public TakePillService(GroupMemberRepository groupMemberRepository,
-                           TakePillCheckRepository takePillCheckRepository,
                            TakePillRepository takePillRepository,
-                           PrescriptionRepository prescriptionRepository,
-                           DiseaseRepository diseaseRepository,
-                           PillRepository pillRepository) {
+                           PrescriptionRepository prescriptionRepository){
         this.groupMemberRepository = groupMemberRepository;
-        this.takePillCheckRepository = takePillCheckRepository;
         this.takePillRepository = takePillRepository;
         this.prescriptionRepository = prescriptionRepository;
-        this.diseaseRepository = diseaseRepository;
-        this.pillRepository = pillRepository;
     }
 
 //    public TakePill createTakePill(Long prescriptionIndex, Long pillIndex, Integer takeDay, Integer takeCount) {
@@ -49,7 +40,7 @@ public class TakePillService {
         List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> takePillAndTakePillCheckAndGroupMemberIndexDTOList = new ArrayList<>();
 
         for(GroupMember groupMember : groupMembers) {
-            List<Long> prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMemberBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
+            List<Long> prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMemberAndPrescriptionDateBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
             for(Long prescriptionIndex : prescriptionIndexList) {
                 List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOList = takePillRepository.findTakePillAndCheckByPrescriptionIndex(prescriptionIndex);
                 TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO =
@@ -62,7 +53,7 @@ public class TakePillService {
         }
         return takePillAndTakePillCheckAndGroupMemberIndexDTOList;
     }
-//
+
 //    public MedicationInfoDTO searchMedicationInfoListByUserIndexAndTakeDate(Long userIndex, LocalDate takeDate) {
 //        // 유저 인덱스와 해당 날짜로 그룹원의 복용 정보(약, 질병 등) 검색
 //    }

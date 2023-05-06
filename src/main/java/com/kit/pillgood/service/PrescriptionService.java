@@ -13,29 +13,11 @@ import java.util.List;
 
 @Service
 public class PrescriptionService {
-    private final UserRepository userRepository;
-    private final GroupMemberRepository groupMemberRepository;
     private final PrescriptionRepository prescriptionRepository;
-    private final NotificationService notificationService;
-    private final OCRService ocrService;
-    private final DiseaseService diseaseService;
-    private final TakePillService takePillService;
 
     @Autowired
-    public PrescriptionService(UserRepository userRepository,
-                               GroupMemberRepository groupMemberRepository,
-                               PrescriptionRepository prescriptionRepository,
-                               NotificationService notificationService,
-                               OCRService ocrService,
-                               DiseaseService diseaseService,
-                               TakePillService takePillService) {
-        this.userRepository = userRepository;
-        this.groupMemberRepository = groupMemberRepository;
+    public PrescriptionService(PrescriptionRepository prescriptionRepository) {
         this.prescriptionRepository = prescriptionRepository;
-        this.notificationService = notificationService;
-        this.ocrService = ocrService;
-        this.diseaseService = diseaseService;
-        this.takePillService = takePillService;
     }
 
 //    public PrescriptionDTO createPrescription(Long userIndex, Long groupMemberIndex, MultipartFile imageFile) {

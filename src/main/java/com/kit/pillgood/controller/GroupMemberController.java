@@ -28,6 +28,7 @@ public class GroupMemberController {
     }
 
     @GetMapping("/search/group-members")
+
     public List<GroupMemberDTO> getGroupMembersByUserIndex(@RequestParam Long userIndex) {
         return groupMemberService.searchGroupMembersByUserIndex(userIndex);
     }

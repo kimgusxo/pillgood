@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface TakePillRepository  extends JpaRepository<TakePill, Long> {
-    List<TakePill> findTakePillsByPrescriptionIndex(Long prescriptionIndex, String takePillTime);
+//    List<TakePill> findTakePillsByPrescriptionIndex(Long prescriptionIndex, String takePillTime);
 
     @Query("SELECT tp, tpc FROM TakePill tp JOIN tp.takePillCheck tpc WHERE tp.prescription.prescriptionIndex = :prescriptionIndex")
     List<TakePillAndTakePillCheckDTO> findTakePillAndCheckByPrescriptionIndex(@Param("prescriptionIndex") Long prescriptionIndex);

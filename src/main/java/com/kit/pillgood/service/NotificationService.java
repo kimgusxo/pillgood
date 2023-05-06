@@ -16,17 +16,10 @@ import java.util.List;
 @Service
 public class NotificationService {
     private final NotificationRepository notificationRepository;
-    private final UserRepository userRepository;
-    private final GroupMemberRepository groupMemberRepository;
-//    private final FirebaseMessaging firebaseMessaging;
 
     @Autowired
-    public NotificationService(NotificationRepository notificationRepository,
-                               UserRepository userRepository,
-                               GroupMemberRepository groupMemberRepository) {
+    public NotificationService(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
-        this.userRepository = userRepository;
-        this.groupMemberRepository = groupMemberRepository;
     }
 
     /**

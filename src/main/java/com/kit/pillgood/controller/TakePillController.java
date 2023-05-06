@@ -34,15 +34,16 @@ public class TakePillController {
 
 //    @GetMapping("")
 //    public List<MedicationInfoDTO> getTakePillsByUserIndexAndDate(@RequestParam Long userIndex,
-//                                                                                  @RequestParam LocalDate date) {
+//                                                                  @RequestParam LocalDate date) {
 //
 //    }
 //
 //    @GetMapping("/initial-data")
 //    public List<InitialCalendarAndTakePillsInfoDTO> getInitialCalenderAndTakePillsBuUserIndexBetweenDate(@RequestParam Long userIndex,
-//                                                                                                                         @RequestParam LocalDate dateStart,
-//                                                                                                                         @RequestParam LocalDate dateCur,
-//                                                                                                                         @RequestParam LocalDate dateEnd) {
+//                                                                                                         @RequestParam LocalDate dateStart,
+//                                                                                                         @RequestParam LocalDate dateCur,
+//                                                                                                         @RequestParam LocalDate dateEnd) {
 //
 //    }
+
 }
