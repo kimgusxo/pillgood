@@ -2,6 +2,7 @@ package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.User;
+import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import com.kit.pillgood.persistence.projection.GroupMemberSummary;
 import com.kit.pillgood.repository.GroupMemberRepository;
@@ -30,10 +31,21 @@ public class GroupMemberService {
      * @param: 생성할 정보가 담긴 GroupMemberDTO
      * @return: DB에 저장된 그룹원 리턴
     **/
-    public GroupMemberDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
-        GroupMember groupMember = EntityConverter.toGroupMember(groupMemberDTO);
-        groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMemberRepository.save(groupMember));
-        return groupMemberDTO;
+    public GroupMemberAndUserIndexDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
+        GroupMember groupMember = new GroupMember();
+        User user = new User();
+
+        user.setUserIndex(groupMemberAndUserIndexDTO.getUserIndex());
+        groupMember.setGroupMemberIndex(groupMemberAndUserIndexDTO.getGroupMemberIndex());
+        groupMember.setUser(user);
+        groupMember.setGroupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName());
+        groupMember.setGroupMemberBirth(groupMemberAndUserIndexDTO.getGroupMemberBirth());
+        groupMember.setGroupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone());
+        groupMember.setMessageCheck(groupMemberAndUserIndexDTO.getMessageCheck());
+
+        groupMember = groupMemberRepository.save(groupMember);
+
+        return groupMemberAndUserIndexDTO;
     }
 
     /**
@@ -42,15 +54,16 @@ public class GroupMemberService {
      * @return: DB에 저장된 그룹원 리턴
     **/
     public GroupMemberDTO updateGroupMember(Long groupMemberIndex, GroupMemberDTO groupMemberDTO) {
-        GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
-
-        if(groupMember != null) {
-            groupMember = EntityConverter.toGroupMember(groupMemberDTO);
-            groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMemberRepository.save(groupMember));
-            return groupMemberDTO;
-        } else {
-            return null;
-        }
+//        GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
+//
+//        if(groupMember != null) {
+//            groupMember = EntityConverter.toGroupMember(groupMemberDTO);
+//            groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMemberRepository.save(groupMember));
+//            return groupMemberDTO;
+//        } else {
+//            return null;
+//        }
+        return null;
     }
 
     /**
