@@ -11,6 +11,7 @@ import com.kit.pillgood.util.EntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,19 +32,31 @@ public class GroupMemberService {
      * @param: 생성할 정보가 담긴 GroupMemberDTO
      * @return: DB에 저장된 그룹원 리턴
     **/
+    @Transactional
     public GroupMemberAndUserIndexDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
         GroupMember groupMember = new GroupMember();
         User user = new User();
-
         user.setUserIndex(groupMemberAndUserIndexDTO.getUserIndex());
-        groupMember.setGroupMemberIndex(groupMemberAndUserIndexDTO.getGroupMemberIndex());
-        groupMember.setUser(user);
-        groupMember.setGroupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName());
-        groupMember.setGroupMemberBirth(groupMemberAndUserIndexDTO.getGroupMemberBirth());
-        groupMember.setGroupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone());
-        groupMember.setMessageCheck(groupMemberAndUserIndexDTO.getMessageCheck());
+
+        groupMember = GroupMember.builder()
+                .groupMemberIndex(groupMemberAndUserIndexDTO.getGroupMemberIndex())
+                .user(user)
+                .groupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName())
+                .groupMemberBirth(groupMemberAndUserIndexDTO.getGroupMemberBirth())
+                .groupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone())
+                .messageCheck(groupMemberAndUserIndexDTO.getMessageCheck())
+                .build();
 
         groupMember = groupMemberRepository.save(groupMember);
+
+//        groupMemberAndUserIndexDTO = GroupMember.builder()
+//                .groupMemberIndex()
+//                .user()
+//                .groupMemberName()
+//                .groupMemberBirth()
+//                .groupMemberPhone()
+//                .messageCheck()
+//                .build();
 
         return groupMemberAndUserIndexDTO;
     }
@@ -53,6 +66,7 @@ public class GroupMemberService {
      * @param: 수정할 groupMemberIndex, 수정할 정보가 담긴 GroupMemberDTO
      * @return: DB에 저장된 그룹원 리턴
     **/
+    @Transactional
     public GroupMemberDTO updateGroupMember(Long groupMemberIndex, GroupMemberDTO groupMemberDTO) {
 //        GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
 //
@@ -71,6 +85,7 @@ public class GroupMemberService {
     * @param: 찾을 groupMemberIndex
     * @return: DB에서 찾은 그룹원 리턴
     **/
+    @Transactional
     public GroupMemberDTO searchOneGroupMember(Long groupMemberIndex) {
         GroupMemberSummary groupMemberSummary = groupMemberRepository.findGroupMemberByGroupMemberIndex(groupMemberIndex);
         GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTOFromSummary(groupMemberSummary);
@@ -83,6 +98,7 @@ public class GroupMemberService {
      * @param: 찾을 userIndex
      * @return: DB에서 찾은 모든 그룹원 리턴
     **/
+    @Transactional
     public List<GroupMemberDTO> searchGroupMembersByUserIndex(User user) {
         List<GroupMemberSummary> groupMembers = groupMemberRepository.findGroupMembersByUser(user);
 
@@ -101,6 +117,7 @@ public class GroupMemberService {
      * @param: 삭제할 groupMemberIndex
      * @return: 리턴 없음
     **/
+    @Transactional
     public void deleteGroupMember(Long groupMemberIndex) {
         groupMemberRepository.deleteByGroupMemberIndex(groupMemberIndex);
     }
