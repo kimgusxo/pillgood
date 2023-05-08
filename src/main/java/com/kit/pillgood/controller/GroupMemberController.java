@@ -1,5 +1,6 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.domain.User;
 import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import com.kit.pillgood.service.GroupMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class GroupMemberController {
     }
 
     @GetMapping("/search/group-members")
-    public List<GroupMemberDTO> getGroupMembersByUserIndex(@RequestParam Long userIndex) {
-        return groupMemberService.searchGroupMembersByUserIndex(userIndex);
+    public List<GroupMemberDTO> getGroupMembersByUserIndex(@ModelAttribute User user) {
+        return groupMemberService.searchGroupMembersByUserIndex(user);
     }
 
     @PutMapping("/update/{group-member-index}")

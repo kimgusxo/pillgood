@@ -2,6 +2,7 @@ package com.kit.pillgood.util;
 
 import com.kit.pillgood.domain.*;
 import com.kit.pillgood.persistence.dto.*;
+import com.kit.pillgood.persistence.projection.GroupMemberSummary;
 
 public class EntityConverter {
     // Group
@@ -16,6 +17,19 @@ public class EntityConverter {
                 .messageCheck(groupMemberDTO.getMessageCheck())
                 .build();
         return groupMember;
+    }
+
+    public static GroupMemberDTO toGroupMemberDTOFromSummary(GroupMemberSummary groupMemberSummary) {
+        GroupMemberDTO groupMemberDTO = GroupMemberDTO.builder()
+                .groupMemberIndex(groupMemberSummary.getGroupMemberIndex())
+                .user(null)
+                .prescriptions(null)
+                .groupMemberName(groupMemberSummary.getGroupMemberName())
+                .groupMemberBirth(groupMemberSummary.getGroupMemberBirth())
+                .groupMemberPhone(groupMemberSummary.getGroupMemberPhone())
+                .messageCheck(groupMemberSummary.getMessageCheck())
+                .build();
+        return groupMemberDTO;
     }
 
     public static GroupMemberDTO toGroupMemberDTO(GroupMember groupMember) {

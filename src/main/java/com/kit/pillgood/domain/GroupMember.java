@@ -48,4 +48,5 @@ public class GroupMember {
     @Column(name = "MESSAGE_CHECK", nullable = false)
     @NotNull
     private Boolean messageCheck;
+
 }

@@ -1,7 +1,9 @@
 package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
+import com.kit.pillgood.domain.User;
 import com.kit.pillgood.persistence.dto.GroupMemberDTO;
+import com.kit.pillgood.persistence.projection.GroupMemberSummary;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.UserRepository;
 import com.kit.pillgood.util.EntityConverter;
@@ -28,7 +30,7 @@ public class GroupMemberService {
      * @param: 생성할 정보가 담긴 GroupMemberDTO
      * @return: DB에 저장된 그룹원 리턴
     **/
-    public GroupMemberDTO createGroupMember(GroupMemberDTO groupMemberDTO) {
+    public GroupMemberDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
         GroupMember groupMember = EntityConverter.toGroupMember(groupMemberDTO);
         groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMemberRepository.save(groupMember));
         return groupMemberDTO;
@@ -57,8 +59,9 @@ public class GroupMemberService {
     * @return: DB에서 찾은 그룹원 리턴
     **/
     public GroupMemberDTO searchOneGroupMember(Long groupMemberIndex) {
-        GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
-        GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMember);
+        GroupMemberSummary groupMemberSummary = groupMemberRepository.findGroupMemberByGroupMemberIndex(groupMemberIndex);
+        GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTOFromSummary(groupMemberSummary);
+
         return groupMemberDTO;
     }
 
@@ -67,13 +70,13 @@ public class GroupMemberService {
      * @param: 찾을 userIndex
      * @return: DB에서 찾은 모든 그룹원 리턴
     **/
-    public List<GroupMemberDTO> searchGroupMembersByUserIndex(Long userIndex) {
-        List<GroupMember> groupMembers = groupMemberRepository.findGroupMembersByUser(userIndex);
+    public List<GroupMemberDTO> searchGroupMembersByUserIndex(User user) {
+        List<GroupMemberSummary> groupMembers = groupMemberRepository.findGroupMembersByUser(user);
 
         List<GroupMemberDTO> groupMemberDTOs = new ArrayList<>();
 
-        for(GroupMember groupMember : groupMembers) {
-            GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMember);
+        for(GroupMemberSummary groupMember : groupMembers) {
+            GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTOFromSummary(groupMember);
             groupMemberDTOs.add(groupMemberDTO);
         }
 
