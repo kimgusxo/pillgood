@@ -1,11 +1,8 @@
 package com.kit.pillgood.service;
 
-import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.Notification;
 import com.kit.pillgood.persistence.dto.NotificationDTO;
-import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.NotificationRepository;
-import com.kit.pillgood.repository.UserRepository;
 import com.kit.pillgood.util.EntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +34,7 @@ public class NotificationService {
      * @return: 리턴 값 설명
     **/
     public List<NotificationDTO> searchNotificationByUserIndex(Long userIndex) {
-        List<Notification> notifications = notificationRepository.findNotificationsByUserAndNotificationCheckTrue(userIndex);
+        List<Notification> notifications = notificationRepository.findNotificationsByUser_UserIndexAndNotificationCheckTrue(userIndex);
 
         List<NotificationDTO> notificationDTOs = new ArrayList<>();
 
