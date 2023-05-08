@@ -1,4 +1,4 @@
-package com.kit.pillgood.config;
+package com.kit.pillgood.configuration;
 
 
 import org.springframework.context.annotation.Bean;
@@ -22,9 +22,9 @@ import java.util.List;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    private static final String API_NAME = "Study API";
+    private static final String API_NAME = "PillGood API";
     private static final String API_VERSION = "0.0.1";
-    private static final String API_DESCRIPTION = "Study API 명세서";
+    private static final String API_DESCRIPTION = "PillGood API 명세서";
 
     @Bean
     public Docket api() {

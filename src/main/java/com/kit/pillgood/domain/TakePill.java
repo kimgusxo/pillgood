@@ -1,5 +1,6 @@
 package com.kit.pillgood.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,16 +24,19 @@ public class TakePill {
 
     @ManyToOne
     @JoinColumn(name="PRESCRIPTION_INDEX", nullable = false)
+    @JsonIgnore
     @NotNull
     private Prescription prescription;
 
     @ManyToOne
     @JoinColumn(name="PILL_INDEX", nullable = false)
+    @JsonIgnore
     @NotNull
     private Pill pill;
 
     @Builder.Default
     @OneToMany(mappedBy = "takePill", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<TakePillCheck> takePillCheck = new ArrayList<>();
 
     @Column(name = "TAKE_DAY", nullable = false)

@@ -1,5 +1,6 @@
 package com.kit.pillgood.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -29,10 +30,12 @@ public class User {
     private String userFcmToken;
 
     @Builder.Default
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GroupMember> groupMembers = new ArrayList<>();
 
     @Builder.Default
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications = new ArrayList<>();
 

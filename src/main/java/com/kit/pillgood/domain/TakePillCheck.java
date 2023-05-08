@@ -1,5 +1,6 @@
 package com.kit.pillgood.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class TakePillCheck {
     private Long takePillCheckIndex;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="TAKE_PILL_INDEX", nullable = false)
     @NotNull
     private TakePill takePill;

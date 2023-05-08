@@ -1,5 +1,6 @@
 package com.kit.pillgood.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import lombok.*;
 
@@ -25,10 +26,12 @@ public class GroupMember {
 
     @ManyToOne
     @JoinColumn(name="USER_INDEX", nullable = false)
+    @JsonIgnore
     @NotNull
     private User user;
 
     @Builder.Default
+    @JsonIgnore
     @OneToMany(mappedBy = "groupMember", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prescription> prescriptions = new ArrayList<>();
 
@@ -45,5 +48,4 @@ public class GroupMember {
     @Column(name = "MESSAGE_CHECK", nullable = false)
     @NotNull
     private Boolean messageCheck;
-
 }
