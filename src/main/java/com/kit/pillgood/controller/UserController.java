@@ -5,6 +5,8 @@ import com.kit.pillgood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -16,12 +18,12 @@ public class UserController {
     }
 
     @PostMapping("")
-    public UserDTO createUser(@ModelAttribute UserDTO userDTO) {
+    public UserDTO createUser(@Valid @ModelAttribute UserDTO userDTO) {
         return userService.createUser(userDTO);
     }
 
    @DeleteMapping("/delete/{user-index}")
-   public void deleteUser(@PathVariable(name="user-index") Long userIndex) {
+   public void deleteUser(@Valid @PathVariable(name="user-index") Long userIndex) {
         userService.deleteUser(userIndex);
    }
 }

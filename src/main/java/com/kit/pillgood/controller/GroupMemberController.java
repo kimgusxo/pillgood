@@ -5,6 +5,7 @@ import com.kit.pillgood.service.GroupMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class GroupMemberController {
     }
     
     @PostMapping("/create")
-    public GroupMemberDTO createGroupMember(@ModelAttribute GroupMemberDTO groupMemberDTO) {
+    public GroupMemberDTO createGroupMember(@Valid @ModelAttribute GroupMemberDTO groupMemberDTO) {
         return groupMemberService.createGroupMember(groupMemberDTO);
     }
 
@@ -33,13 +34,13 @@ public class GroupMemberController {
     }
 
     @PutMapping("/update/{group-member-index}")
-    public GroupMemberDTO updateGroupMember(@PathVariable(name="group-member-index") Long groupMemberIndex,
+    public GroupMemberDTO updateGroupMember(@Valid @PathVariable(name="group-member-index") Long groupMemberIndex,
                                                            @ModelAttribute GroupMemberDTO groupMemberDTO) {
         return groupMemberService.updateGroupMember(groupMemberIndex, groupMemberDTO);
     }
 
     @DeleteMapping("/delete/{group-member-index}")
-    public void deleteGroupMember(@PathVariable(name="group-member-index") Long groupMemberIndex) {
+    public void deleteGroupMember(@Valid @PathVariable(name="group-member-index") Long groupMemberIndex) {
         groupMemberService.deleteGroupMember(groupMemberIndex);
     }
 
