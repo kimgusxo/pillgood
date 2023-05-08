@@ -34,11 +34,10 @@ public class GroupMemberService {
     **/
     @Transactional
     public GroupMemberAndUserIndexDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
-        GroupMember groupMember = new GroupMember();
         User user = new User();
         user.setUserIndex(groupMemberAndUserIndexDTO.getUserIndex());
 
-        groupMember = GroupMember.builder()
+        GroupMember groupMember = GroupMember.builder()
                 .groupMemberIndex(groupMemberAndUserIndexDTO.getGroupMemberIndex())
                 .user(user)
                 .groupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName())
@@ -49,14 +48,14 @@ public class GroupMemberService {
 
         groupMember = groupMemberRepository.save(groupMember);
 
-//        groupMemberAndUserIndexDTO = GroupMember.builder()
-//                .groupMemberIndex()
-//                .user()
-//                .groupMemberName()
-//                .groupMemberBirth()
-//                .groupMemberPhone()
-//                .messageCheck()
-//                .build();
+        groupMemberAndUserIndexDTO = groupMemberAndUserIndexDTO.builder()
+                .groupMemberIndex(groupMember.getGroupMemberIndex())
+                .userIndex(groupMember.getUser().getUserIndex())
+                .groupMemberName(groupMember.getGroupMemberName())
+                .groupMemberBirth(groupMember.getGroupMemberBirth())
+                .groupMemberPhone(groupMember.getGroupMemberPhone())
+                .messageCheck(groupMember.getMessageCheck())
+                .build();
 
         return groupMemberAndUserIndexDTO;
     }
@@ -67,17 +66,14 @@ public class GroupMemberService {
      * @return: DB에 저장된 그룹원 리턴
     **/
     @Transactional
-    public GroupMemberDTO updateGroupMember(Long groupMemberIndex, GroupMemberDTO groupMemberDTO) {
-//        GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
-//
-//        if(groupMember != null) {
-//            groupMember = EntityConverter.toGroupMember(groupMemberDTO);
-//            groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMemberRepository.save(groupMember));
-//            return groupMemberDTO;
-//        } else {
-//            return null;
-//        }
-        return null;
+    public GroupMemberAndUserIndexDTO updateGroupMember(Long groupMemberIndex, GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
+        GroupMemberSummary groupMemberSummary = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
+
+        if(groupMemberSummary != null) {
+           return createGroupMember(groupMemberAndUserIndexDTO);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -87,7 +83,7 @@ public class GroupMemberService {
     **/
     @Transactional
     public GroupMemberDTO searchOneGroupMember(Long groupMemberIndex) {
-        GroupMemberSummary groupMemberSummary = groupMemberRepository.findGroupMemberByGroupMemberIndex(groupMemberIndex);
+        GroupMemberSummary groupMemberSummary = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
         GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTOFromSummary(groupMemberSummary);
 
         return groupMemberDTO;
@@ -99,8 +95,8 @@ public class GroupMemberService {
      * @return: DB에서 찾은 모든 그룹원 리턴
     **/
     @Transactional
-    public List<GroupMemberDTO> searchGroupMembersByUserIndex(User user) {
-        List<GroupMemberSummary> groupMembers = groupMemberRepository.findGroupMembersByUser(user);
+    public List<GroupMemberDTO> searchGroupMembersByUserIndex(Long userIndex) {
+        List<GroupMemberSummary> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
 
         List<GroupMemberDTO> groupMemberDTOs = new ArrayList<>();
 

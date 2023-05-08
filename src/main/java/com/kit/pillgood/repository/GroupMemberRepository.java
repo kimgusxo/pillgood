@@ -10,9 +10,8 @@ import java.util.List;
 
 @Repository
 public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> {
-    GroupMember findByGroupMemberIndex(Long groupMemberIndex);
-    GroupMemberSummary findGroupMemberByGroupMemberIndex(Long groupMemberIndex);
-    List<GroupMemberSummary> findGroupMembersByUser(User user);
+    GroupMemberSummary findByGroupMemberIndex(Long groupMemberIndex);
+    List<GroupMemberSummary> findByUser_UserIndex(Long userIndex);
     void deleteByGroupMemberIndex(Long groupMemberIndex);
 
 }

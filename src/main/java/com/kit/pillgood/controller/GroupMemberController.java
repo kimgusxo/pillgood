@@ -31,14 +31,14 @@ public class GroupMemberController {
     }
 
     @GetMapping("/search/group-members")
-    public List<GroupMemberDTO> getGroupMembersByUserIndex(@ModelAttribute User user) {
-        return groupMemberService.searchGroupMembersByUserIndex(user);
+    public List<GroupMemberDTO> getGroupMembersByUserIndex(@RequestParam Long userIndex) {
+        return groupMemberService.searchGroupMembersByUserIndex(userIndex);
     }
 
     @PutMapping("/update/{group-member-index}")
-    public GroupMemberDTO updateGroupMember(@Valid @PathVariable(name="group-member-index") Long groupMemberIndex,
-                                                           @ModelAttribute GroupMemberDTO groupMemberDTO) {
-        return groupMemberService.updateGroupMember(groupMemberIndex, groupMemberDTO);
+    public GroupMemberAndUserIndexDTO updateGroupMember(@Valid @PathVariable(name="group-member-index") Long groupMemberIndex,
+                                                           @ModelAttribute GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
+        return groupMemberService.updateGroupMember(groupMemberIndex, groupMemberAndUserIndexDTO);
     }
 
     @DeleteMapping("/delete/{group-member-index}")
