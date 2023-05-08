@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class PrescriptionController {
 //    }
 
     @DeleteMapping("/delete/{prescription-index}")
-    public void deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) {
+    public void deletePrescriptionByPrescriptionIndex(@Valid @PathVariable(name="prescription-index") Long prescriptionIndex) {
         prescriptionService.deletePrescription(prescriptionIndex);
     }
 }
