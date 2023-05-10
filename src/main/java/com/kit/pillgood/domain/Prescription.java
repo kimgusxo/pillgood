@@ -22,13 +22,13 @@ public class Prescription {
     @Column(name = "PRESCRIPTION_INDEX")
     private Long prescriptionIndex;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="GROUP_MEMBER_INDEX", nullable = false)
     @JsonIgnore
     @NotNull
     private GroupMember groupMember;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="DISEASE_INDEX", nullable = false)
     @JsonIgnore
     @NotNull

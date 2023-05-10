@@ -21,7 +21,7 @@ public class Notification {
     @Column(name = "NOTIFICATION_INDEX")
     private Long notificationIndex;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name="USER_INDEX", nullable = false)
     @NotNull

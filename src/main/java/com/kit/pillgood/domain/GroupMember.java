@@ -24,14 +24,12 @@ public class GroupMember {
     @Column(name = "GROUP_MEMBER_INDEX")
     private Long groupMemberIndex;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="USER_INDEX", nullable = false)
-    @JsonIgnore
     @NotNull
     private User user;
 
     @Builder.Default
-    @JsonIgnore
     @OneToMany(mappedBy = "groupMember", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prescription> prescriptions = new ArrayList<>();
 

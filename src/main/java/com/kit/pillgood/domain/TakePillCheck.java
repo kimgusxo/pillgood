@@ -21,7 +21,7 @@ public class TakePillCheck {
     @Column(name = "TAKE_PILL_CHECK_INDEX")
     private Long takePillCheckIndex;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name="TAKE_PILL_INDEX", nullable = false)
     @NotNull

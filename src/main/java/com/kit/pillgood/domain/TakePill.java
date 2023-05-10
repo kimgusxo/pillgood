@@ -22,13 +22,13 @@ public class TakePill {
     @Column(name = "TAKE_PILL_INDEX")
     private Long takePillIndex;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="PRESCRIPTION_INDEX", nullable = false)
     @JsonIgnore
     @NotNull
     private Prescription prescription;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="PILL_INDEX", nullable = false)
     @JsonIgnore
     @NotNull
