@@ -11,4 +11,5 @@ public interface PillRepository  extends JpaRepository<Pill, Long> {
     List<Pill> findPillsByPillNameAndPillShapeAndPillColorAndPillFrontWordAndPillBackWord(
             String pillName, String pillShape, String pillColor, String pillFrontWord, String pillBackWord);
     Pill findByPillName(String pillName);
+    Pill findByPillIndex(Long pillName);
 }

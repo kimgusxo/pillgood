@@ -22,8 +22,8 @@ public class UserController {
         return userService.createUser(userDTO);
     }
 
-   @DeleteMapping("/delete/{user-index}")
-   public void deleteUser(@Valid @PathVariable(name="user-index") Long userIndex) {
+    @DeleteMapping("/delete/{user-index}")
+    public void deleteUser(@Valid @PathVariable(name="user-index") Long userIndex) {
         userService.deleteUser(userIndex);
    }
 }

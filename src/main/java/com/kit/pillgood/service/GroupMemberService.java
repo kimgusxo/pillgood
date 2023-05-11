@@ -4,7 +4,6 @@ import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.User;
 import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.GroupMemberDTO;
-import com.kit.pillgood.persistence.projection.GroupMemberSummary;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.UserRepository;
 import com.kit.pillgood.util.EntityConverter;
@@ -67,9 +66,9 @@ public class GroupMemberService {
     **/
     @Transactional
     public GroupMemberAndUserIndexDTO updateGroupMember(Long groupMemberIndex, GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
-        GroupMemberSummary groupMemberSummary = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
+        GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
 
-        if(groupMemberSummary != null) {
+        if(groupMember != null) {
            return createGroupMember(groupMemberAndUserIndexDTO);
         } else {
             return null;
@@ -83,8 +82,8 @@ public class GroupMemberService {
     **/
     @Transactional
     public GroupMemberDTO searchOneGroupMember(Long groupMemberIndex) {
-        GroupMemberSummary groupMemberSummary = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
-        GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTOFromSummary(groupMemberSummary);
+        GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
+        GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMember);
 
         return groupMemberDTO;
     }
@@ -96,12 +95,12 @@ public class GroupMemberService {
     **/
     @Transactional
     public List<GroupMemberDTO> searchGroupMembersByUserIndex(Long userIndex) {
-        List<GroupMemberSummary> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
+        List<GroupMember> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
 
         List<GroupMemberDTO> groupMemberDTOs = new ArrayList<>();
 
-        for(GroupMemberSummary groupMember : groupMembers) {
-            GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTOFromSummary(groupMember);
+        for(GroupMember groupMember : groupMembers) {
+            GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMember);
             groupMemberDTOs.add(groupMemberDTO);
         }
 

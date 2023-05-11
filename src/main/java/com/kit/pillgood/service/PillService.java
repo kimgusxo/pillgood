@@ -27,10 +27,10 @@ public class PillService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
-//    public PillDTO searchPillByPillIndex(Long pillIndex) {
-//        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findById(pillIndex));
-//        return pillDTO;
-//    }
+    public PillDTO searchPillByPillIndex(Long pillIndex) {
+        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findByPillIndex(pillIndex));
+        return pillDTO;
+    }
 
     /**
      * 메소드의 간략한 설명
