@@ -54,7 +54,7 @@ public class PillService {
         String pillFrontWord = searchingConditionDTO.getPillFrontWord();
         String pillBackWord = searchingConditionDTO.getPillBackWord();
 
-        List<Pill> pills = pillRepository.findPillsByPillNameAndPillShapeAndPillColorAndPillFrontWordAndPillBackWord(
+        List<Pill> pills = pillRepository.findPillsByPillNameAndPillShapeIsNullAndPillColorIsNullAndPillFrontWordIsNullAndPillBackWordIsNull(
                 pillName, pillColor, pillShape, pillFrontWord, pillBackWord);
 
         List<PillDTO> pillDTOs = new ArrayList<>();
