@@ -16,7 +16,7 @@ public class Pill {
 
     @Id
     @Column(name = "PILL_INDEX")
-    private String pillIndex;
+    private Long pillIndex;
 
     @Column(name = "PILL_NUM", nullable = false)
     @NotNull
