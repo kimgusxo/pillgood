@@ -5,6 +5,7 @@ import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import com.kit.pillgood.service.GroupMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,7 +22,7 @@ public class GroupMemberController {
     }
     
     @PostMapping("/create")
-    public GroupMemberAndUserIndexDTO createGroupMember(@Valid @ModelAttribute GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
+    public GroupMemberAndUserIndexDTO createGroupMember(@ModelAttribute @Validated GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
         return groupMemberService.createGroupMember(groupMemberAndUserIndexDTO);
     }
 
@@ -31,18 +32,18 @@ public class GroupMemberController {
     }
 
     @GetMapping("/search/group-members")
-    public List<GroupMemberDTO> getGroupMembersByUserIndex(@RequestParam Long userIndex) {
+    public List<GroupMemberDTO> getGroupMembersByUserIndex(@RequestParam @Validated Long userIndex) {
         return groupMemberService.searchGroupMembersByUserIndex(userIndex);
     }
 
     @PutMapping("/update/{group-member-index}")
-    public GroupMemberAndUserIndexDTO updateGroupMember(@Valid @PathVariable(name="group-member-index") Long groupMemberIndex,
-                                                           @ModelAttribute GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
+    public GroupMemberAndUserIndexDTO updateGroupMember(@PathVariable (name="group-member-index") Long groupMemberIndex,
+                                                           @ModelAttribute @Validated GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
         return groupMemberService.updateGroupMember(groupMemberIndex, groupMemberAndUserIndexDTO);
     }
 
     @DeleteMapping("/delete/{group-member-index}")
-    public void deleteGroupMember(@Valid @PathVariable(name="group-member-index") Long groupMemberIndex) {
+    public void deleteGroupMember(@PathVariable(name="group-member-index") Long groupMemberIndex) {
         groupMemberService.deleteGroupMember(groupMemberIndex);
     }
 

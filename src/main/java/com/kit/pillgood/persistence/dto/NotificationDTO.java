@@ -5,16 +5,22 @@ import lombok.*;
 import com.kit.pillgood.domain.User;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 public class NotificationDTO {
     private Long notificationIndex;
+
     private User user;
+
     private String notificationContent;
-    @NotEmpty(message = "처방전 시간은 필수 값 입니다.")
+
+    @NotEmpty(message = "notificationTime 누락")
     private LocalDateTime notificationTime;
-    @NotEmpty(message = "notificationCheck은 필수 값 입니다.")
+
+    @NotEmpty(message = "notificationCheck 누락")
+    @Pattern(regexp = "[0-1]", message = "boolean 값으로 입력하세요")
     private boolean notificationCheck;
 }

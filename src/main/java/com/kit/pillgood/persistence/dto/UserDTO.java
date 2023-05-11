@@ -4,6 +4,7 @@ import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.Notification;
 import lombok.*;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
@@ -12,19 +13,22 @@ import java.util.List;
 @Data
 @Builder
 public class UserDTO {
+    @NotEmpty(message = "userIndex 누락")
     private Long userIndex;
 
-    @NotEmpty(message = "userEmail은 필수 값 입니다.")
-    @Pattern(regexp = "[a-z0-9]+@[a-z]+\\.[a-z]{2,3}", message = "메시지 형식으로 입력하세요")
+    @NotEmpty(message = "userEmail 누락")
+    @Email
     private String userEmail;
 
-    @NotEmpty(message = "userFcmToken은 필수 값 입니다.")
+    @NotEmpty(message = "userFcmToken 누락")
     private String userFcmToken;
 
     @Builder.Default
+    @NotEmpty(message = "groupMembers 누락")
     private List<GroupMember> groupMembers = new ArrayList<>();
 
     @Builder.Default
+    @NotEmpty(message = "notifications 누락")
     private List<Notification> notifications = new ArrayList<>();
     
 
