@@ -14,23 +14,27 @@ import java.util.List;
 @Data
 @Builder
 public class PrescriptionDTO {
+    @NotEmpty(message = "prescriptionIndex 누락")
     private Long prescriptionIndex;
 
+    @NotEmpty(message = "groupMember 누락")
     private GroupMember groupMember;
 
+    @NotEmpty(message = "disease 누락")
     private Disease disease;
 
     @Builder.Default
+    @NotEmpty(message = "takePills 누락")
     private List<TakePill> takePills = new ArrayList<>();
 
-    @NotEmpty(message = "prescriptionRegistrationDate은 필수 값 입니다.")
+    @NotEmpty(message = "prescriptionRegistrationDate 누락")
     private LocalDate prescriptionRegistrationDate;
 
-    @NotEmpty(message = "prescriptionDate은 필수 값 입니다.")
+    @NotEmpty(message = "prescriptionDate 누락")
     private LocalDate prescriptionDate;
 
     private String hospitalPhone;
 
-    @NotEmpty(message = "hospitalName은 필수 값 입니다.")
+    @NotEmpty(message = "hospitalName 누락")
     private String hospitalName;
 }

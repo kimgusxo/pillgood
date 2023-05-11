@@ -35,7 +35,7 @@ public class PrescriptionController {
 //    }
 
     @DeleteMapping("/delete/{prescription-index}")
-    public void deletePrescriptionByPrescriptionIndex(@Valid @PathVariable(name="prescription-index") Long prescriptionIndex) {
+    public void deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) {
         prescriptionService.deletePrescription(prescriptionIndex);
     }
 }

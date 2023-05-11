@@ -3,6 +3,7 @@ package com.kit.pillgood.controller;
 import com.kit.pillgood.persistence.dto.NotificationDTO;
 import com.kit.pillgood.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +25,7 @@ public class NotificationController {
     }
 
     @PutMapping("/search/{notification-index}")
-    public NotificationDTO updateNotificationsByNotificationIndex(@Valid @PathVariable(name="notification-index") Long notificationIndex,
+    public NotificationDTO updateNotificationsByNotificationIndex(@PathVariable(name="notification-index") Long notificationIndex,
                                                                   @ModelAttribute NotificationDTO notificationDTO) {
         return notificationService.updateNotification(notificationIndex, notificationDTO);
     }
