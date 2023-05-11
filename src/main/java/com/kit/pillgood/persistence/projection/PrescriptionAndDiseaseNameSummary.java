@@ -1,7 +1,5 @@
 package com.kit.pillgood.persistence.projection;
 
-import com.kit.pillgood.domain.GroupMember;
-
 import java.time.LocalDate;
 
 public interface PrescriptionAndDiseaseNameSummary {

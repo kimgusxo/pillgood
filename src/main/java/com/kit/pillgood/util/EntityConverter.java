@@ -223,22 +223,15 @@ public class EntityConverter {
     }
 
     public static PrescriptionAndDiseaseNameDTO toPrescriptionAndDiseaseNameDTO(PrescriptionAndDiseaseNameSummary prescriptionAndDiseaseNameSummary) {
-        GroupMember groupMember = new GroupMember();
-        groupMember.setGroupMemberIndex(prescriptionAndDiseaseNameSummary.getGroupMemberIndex());
-
-        Disease disease = new Disease();
-        disease.setDiseaseIndex(prescriptionAndDiseaseNameSummary.getDiseaseIndex());
-        disease.setDiseaseName(prescriptionAndDiseaseNameSummary.getDiseaseName());
-
         PrescriptionAndDiseaseNameDTO prescriptionAndDiseaseNameDTO = PrescriptionAndDiseaseNameDTO.builder()
                 .prescriptionIndex(prescriptionAndDiseaseNameSummary.getPrescriptionIndex())
-                .groupMember(groupMember)
-                .disease(disease)
-                .takePills(null)
+                .groupMemberIndex(prescriptionAndDiseaseNameSummary.getGroupMemberIndex())
+                .diseaseIndex(prescriptionAndDiseaseNameSummary.getDiseaseIndex())
                 .prescriptionRegistrationDate(prescriptionAndDiseaseNameSummary.getPrescriptionRegistrationDate())
                 .prescriptionDate(prescriptionAndDiseaseNameSummary.getPrescriptionDate())
                 .hospitalPhone(prescriptionAndDiseaseNameSummary.getHospitalPhone())
                 .hospitalName(prescriptionAndDiseaseNameSummary.getHospitalName())
+                .diseaseName(prescriptionAndDiseaseNameSummary.getDiseaseName())
                 .build();
 
         return prescriptionAndDiseaseNameDTO;

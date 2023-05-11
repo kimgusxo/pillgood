@@ -12,9 +12,9 @@ import java.util.List;
 
 @Repository
 public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
-    @Query("select p.prescriptionIndex, gm.groupMemberIndex, d.diseaseIndex," +
-            "p.prescriptionRegistrationDate, p.prescriptionDate, p.hospitalPhone, p.hospitalName, d.diseaseName " +
-            "from Prescription p join p.disease d join p.groupMember gm where gm.groupMemberIndex = :groupMemberIndex")
+    @Query("select p.prescriptionIndex as prescriptionIndex, gm.groupMemberIndex as groupMemberIndex, d.diseaseIndex as diseaseIndex," +
+            "p.prescriptionRegistrationDate as prescriptionRegistrationDate, p.prescriptionDate as prescriptionDate, p.hospitalPhone as hospitalPhone, p.hospitalName as hospitalName, d.diseaseName as diseaseName " +
+            "from Prescription p left join p.disease d left join p.groupMember gm where gm.groupMemberIndex = :groupMemberIndex")
     List<PrescriptionAndDiseaseNameSummary> findPrescriptionAndDiseaseNameByGroupMemberIndex(@Param("groupMemberIndex") Long groupMemberIndex);
     List<Long> findPrescriptionIndexByGroupMember_GroupMemberIndexAndPrescriptionDateBetween(Long groupMemberIndex, LocalDate dateStart, LocalDate dateEnd);
 }
