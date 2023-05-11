@@ -1,6 +1,7 @@
 package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
+import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
 import com.kit.pillgood.persistence.dto.TakePillCheckAndGroupMemberIndexDTO;
@@ -34,25 +35,25 @@ public class TakePillService {
 //    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {
 //        // 복용해야 할 약 리스트 생성
 //    }
-//
-//    public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) {
-//        List<GroupMember> groupMembers = groupMemberRepository.findGroupMembersByUser(userIndex);
-//        List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> takePillAndTakePillCheckAndGroupMemberIndexDTOList = new ArrayList<>();
-//
-//        for(GroupMember groupMember : groupMembers) {
-//            List<Long> prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMemberAndPrescriptionDateBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
-//            for(Long prescriptionIndex : prescriptionIndexList) {
-//                List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOList = takePillRepository.findTakePillAndCheckByPrescriptionIndex(prescriptionIndex);
-//                TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO =
-//                        TakePillAndTakePillCheckAndGroupMemberIndexDTO.builder()
-//                                .groupMemberIndex(groupMember.getGroupMemberIndex())
-//                                .takePillAndTakePillCheckDTOList(takePillAndTakePillCheckDTOList)
-//                                .build();
-//                takePillAndTakePillCheckAndGroupMemberIndexDTOList.add(takePillAndTakePillCheckAndGroupMemberIndexDTO);
-//            }
-//        }
-//        return takePillAndTakePillCheckAndGroupMemberIndexDTOList;
-//    }
+
+    public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) {
+        List<GroupMember> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
+        List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> takePillAndTakePillCheckAndGroupMemberIndexDTOList = new ArrayList<>();
+
+        for(GroupMember groupMember : groupMembers) {
+            List<Long> prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMember_GroupMemberIndexAndPrescriptionDateBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
+            for(Long prescriptionIndex : prescriptionIndexList) {
+                List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOList = takePillRepository.findTakePillAndCheckByPrescriptionIndex(prescriptionIndex);
+                TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO =
+                        TakePillAndTakePillCheckAndGroupMemberIndexDTO.builder()
+                                .groupMemberIndex(groupMember.getGroupMemberIndex())
+                                .takePillAndTakePillCheckDTOList(takePillAndTakePillCheckDTOList)
+                                .build();
+                takePillAndTakePillCheckAndGroupMemberIndexDTOList.add(takePillAndTakePillCheckAndGroupMemberIndexDTO);
+            }
+        }
+        return takePillAndTakePillCheckAndGroupMemberIndexDTOList;
+    }
 
 //    public MedicationInfoDTO searchMedicationInfoListByUserIndexAndTakeDate(Long userIndex, LocalDate takeDate) {
 //        // 유저 인덱스와 해당 날짜로 그룹원의 복용 정보(약, 질병 등) 검색

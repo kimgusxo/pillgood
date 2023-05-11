@@ -22,5 +22,4 @@ public class PrescriptionAndDiseaseNameDTO {
     private LocalDate prescriptionDate;
     private String hospitalPhone;
     private String hospitalName;
-    private String diseaseName;
 }

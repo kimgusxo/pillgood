@@ -2,6 +2,7 @@ package com.kit.pillgood.util;
 
 import com.kit.pillgood.domain.*;
 import com.kit.pillgood.persistence.dto.*;
+import com.kit.pillgood.persistence.projection.PrescriptionAndDiseaseNameSummary;
 
 public class EntityConverter {
     // Group
@@ -219,6 +220,28 @@ public class EntityConverter {
                 .build();
 
         return userDTO;
+    }
+
+    public static PrescriptionAndDiseaseNameDTO toPrescriptionAndDiseaseNameDTO(PrescriptionAndDiseaseNameSummary prescriptionAndDiseaseNameSummary) {
+        GroupMember groupMember = new GroupMember();
+        groupMember.setGroupMemberIndex(prescriptionAndDiseaseNameSummary.getGroupMemberIndex());
+
+        Disease disease = new Disease();
+        disease.setDiseaseIndex(prescriptionAndDiseaseNameSummary.getDiseaseIndex());
+        disease.setDiseaseName(prescriptionAndDiseaseNameSummary.getDiseaseName());
+
+        PrescriptionAndDiseaseNameDTO prescriptionAndDiseaseNameDTO = PrescriptionAndDiseaseNameDTO.builder()
+                .prescriptionIndex(prescriptionAndDiseaseNameSummary.getPrescriptionIndex())
+                .groupMember(groupMember)
+                .disease(disease)
+                .takePills(null)
+                .prescriptionRegistrationDate(prescriptionAndDiseaseNameSummary.getPrescriptionRegistrationDate())
+                .prescriptionDate(prescriptionAndDiseaseNameSummary.getPrescriptionDate())
+                .hospitalPhone(prescriptionAndDiseaseNameSummary.getHospitalPhone())
+                .hospitalName(prescriptionAndDiseaseNameSummary.getHospitalName())
+                .build();
+
+        return prescriptionAndDiseaseNameDTO;
     }
 
 }
