@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 public class PillDTO {
 
     @NotEmpty(message = "pillIndex 누락")
-    private String pillIndex;
+    private Long pillIndex;
 
     @NotEmpty(message = "pillNum 누락")
     private String pillNum;

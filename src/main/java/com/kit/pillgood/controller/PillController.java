@@ -19,12 +19,12 @@ public class PillController {
         this.pillService = pillService;
     }
 
-    @GetMapping("/search/{pill-index}")
+    @GetMapping("/search/pill-index/{pill-index}")
     public PillDTO getPillByPillIndex(@PathVariable(name="pill-index") Long pillIndex) {
         return pillService.searchPillByPillIndex(pillIndex);
     }
 
-    @GetMapping("/search/{pill-name}")
+    @GetMapping("/search/pill-name/{pill-name}")
     public PillDTO getPillByPillName(@PathVariable(name="pill-name") String pillName) {
         return pillService.searchPillByPillName(pillName);
     }
