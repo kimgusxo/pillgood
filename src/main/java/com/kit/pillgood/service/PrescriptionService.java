@@ -31,7 +31,6 @@ public class PrescriptionService {
     @Transactional
     public List<PrescriptionAndDiseaseNameDTO> searchGroupMemberPrescriptionsByGroupMemberIndex(Long groupMemberIndex) {
         List<PrescriptionAndDiseaseNameSummary> prescriptionAndDiseaseNameSummaries = prescriptionRepository.findPrescriptionAndDiseaseNameByGroupMemberIndex(groupMemberIndex);
-        prescriptionAndDiseaseNameSummaries.stream().forEach(p-> System.out.println("p.getPrescriptionIndex() = " + p.getPrescriptionIndex()));
         List<PrescriptionAndDiseaseNameDTO> prescriptionAndDiseaseNameDTOs = new ArrayList<>();
 
         for(PrescriptionAndDiseaseNameSummary prescriptionAndDiseaseNameSummary : prescriptionAndDiseaseNameSummaries) {

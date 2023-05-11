@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 public class NotificationDTO {
     private Long notificationIndex;
 
-    private User user;
-
     private String notificationContent;
 
     @NotEmpty(message = "notificationTime 누락")

@@ -51,23 +51,6 @@ public class NotificationService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
-    public NotificationDTO updateNotification(Long notificationIndex, NotificationDTO notificationDTO) {
-        Notification notification = notificationRepository.findByNotificationIndex(notificationIndex);
-
-        if(notification != null) {
-            notification = EntityConverter.toNotification(notificationDTO);
-            notificationDTO = EntityConverter.toNotificationDTO(notificationRepository.save(notification));
-            return notificationDTO;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
     public void sendAutoPushMessageNotification() {
         // 자동 메세지 전송
     }

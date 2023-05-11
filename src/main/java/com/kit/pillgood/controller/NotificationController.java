@@ -23,10 +23,4 @@ public class NotificationController {
     public List<NotificationDTO> getNotificationsByUserIndex(@PathVariable(name="user-index") Long userIndex) {
         return notificationService.searchNotificationByUserIndex(userIndex);
     }
-
-    @PutMapping("/search/{notification-index}")
-    public NotificationDTO updateNotificationsByNotificationIndex(@PathVariable(name="notification-index") Long notificationIndex,
-                                                                  @ModelAttribute NotificationDTO notificationDTO) {
-        return notificationService.updateNotification(notificationIndex, notificationDTO);
-    }
 }
