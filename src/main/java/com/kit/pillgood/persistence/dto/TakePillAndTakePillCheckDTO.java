@@ -34,7 +34,6 @@ public class TakePillAndTakePillCheckDTO {
     @NotEmpty(message = "takePillCheckIndex 누락")
     private Long takePillCheckIndex;
 
-
     @NotEmpty(message = "takeDate 누락")
     private LocalDate takeDate;
 

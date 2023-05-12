@@ -9,8 +9,6 @@ public class EntityConverter {
     public static GroupMember toGroupMember(GroupMemberDTO groupMemberDTO) {
         GroupMember groupMember = GroupMember.builder()
                 .groupMemberIndex(groupMemberDTO.getGroupMemberIndex())
-                .user(groupMemberDTO.getUser())
-                .prescriptions(groupMemberDTO.getPrescriptions())
                 .groupMemberName(groupMemberDTO.getGroupMemberName())
                 .groupMemberBirth(groupMemberDTO.getGroupMemberBirth())
                 .groupMemberPhone(groupMemberDTO.getGroupMemberPhone())
@@ -22,8 +20,7 @@ public class EntityConverter {
     public static GroupMemberDTO toGroupMemberDTO(GroupMember groupMember) {
         GroupMemberDTO groupMemberDTO = GroupMemberDTO.builder()
                 .groupMemberIndex(groupMember.getGroupMemberIndex())
-                .user(null)
-                .prescriptions(null)
+                .userIndex(null)
                 .groupMemberName(groupMember.getGroupMemberName())
                 .groupMemberBirth(groupMember.getGroupMemberBirth())
                 .groupMemberPhone(groupMember.getGroupMemberPhone())
@@ -120,12 +117,9 @@ public class EntityConverter {
         Prescription prescription = Prescription.builder()
                 .prescriptionIndex(prescriptionDTO.getPrescriptionIndex())
                 .prescriptionDate(prescriptionDTO.getPrescriptionDate())
-                .disease(prescriptionDTO.getDisease())
                 .prescriptionRegistrationDate(prescriptionDTO.getPrescriptionRegistrationDate())
                 .hospitalName(prescriptionDTO.getHospitalName())
                 .hospitalPhone(prescriptionDTO.getHospitalPhone())
-                .takePills(prescriptionDTO.getTakePills())
-                .groupMember(prescriptionDTO.getGroupMember())
                 .prescriptionDate(prescriptionDTO.getPrescriptionDate())
                 .build();
 
@@ -135,8 +129,8 @@ public class EntityConverter {
     public static PrescriptionDTO toPrescriptionDTO(Prescription prescription) {
         PrescriptionDTO prescriptionDTO = PrescriptionDTO.builder()
                 .prescriptionIndex(prescription.getPrescriptionIndex())
-                .disease(prescription.getDisease())
-                .groupMember(prescription.getGroupMember())
+                .diseaseIndex(null)
+                .groupMemberIndex(null)
                 .hospitalName(prescription.getHospitalName())
                 .hospitalPhone(prescription.getHospitalPhone())
                 .prescriptionDate(prescription.getPrescriptionDate())
@@ -152,7 +146,6 @@ public class EntityConverter {
         TakePillCheck takePillCheck = TakePillCheck.builder()
                 .takeCheck(takePillCheckDTO.getTakeCheck())
                 .takePillCheckIndex(takePillCheckDTO.getTakePillCheckIndex())
-                .takePill(takePillCheckDTO.getTakePill())
                 .takePillTime(takePillCheckDTO.getTakePillTime())
                 .build();
 
@@ -163,7 +156,7 @@ public class EntityConverter {
         TakePillCheckDTO takePillCheckDTO = TakePillCheckDTO.builder()
                 .takeCheck(takePillCheck.getTakeCheck())
                 .takePillCheckIndex(takePillCheck.getTakePillCheckIndex())
-                .takePill(takePillCheck.getTakePill())
+                .takePillIndex(null)
                 .takePillTime(takePillCheck.getTakePillTime())
                 .build();
 
@@ -174,11 +167,8 @@ public class EntityConverter {
     public static TakePill toTakePill(TakePillDTO takePillDTO) {
         TakePill takePill = TakePill.builder()
                 .takePillIndex(takePillDTO.getTakePillIndex())
-                .pill(takePillDTO.getPill())
                 .takeDay(takePillDTO.getTakeDay())
                 .takeCount(takePillDTO.getTakeCount())
-                .takePillCheck(takePillDTO.getTakePillCheck())
-                .prescription(takePillDTO.getPrescription())
                 .build();
 
         return takePill;
@@ -187,24 +177,21 @@ public class EntityConverter {
     public static TakePillDTO toTakePillDTO(TakePill takePill) {
         TakePillDTO takePillDTO = TakePillDTO.builder()
                 .takePillIndex(takePill.getTakePillIndex())
-                .pill(takePill.getPill())
+                .pillIndex(null)
                 .takeDay(takePill.getTakeDay())
                 .takeCount(takePill.getTakeCount())
-                .takePillCheck(takePill.getTakePillCheck())
-                .prescription(takePill.getPrescription())
+                .prescriptionIndex(null)
                 .build();
 
         return takePillDTO;
     }
 
     // User
-    public static User toUser(UserDTO diseaseDTO) {
+    public static User toUser(UserDTO userDTO) {
         User user = User.builder()
-                .userIndex(diseaseDTO.getUserIndex())
-                .userEmail(diseaseDTO.getUserEmail())
-                .userFcmToken(diseaseDTO.getUserFcmToken())
-                .notifications(diseaseDTO.getNotifications())
-                .groupMembers(diseaseDTO.getGroupMembers())
+                .userIndex(userDTO.getUserIndex())
+                .userEmail(userDTO.getUserEmail())
+                .userFcmToken(userDTO.getUserFcmToken())
                 .build();
 
         return user;
@@ -215,8 +202,6 @@ public class EntityConverter {
                 .userIndex(user.getUserIndex())
                 .userEmail(user.getUserEmail())
                 .userFcmToken(user.getUserFcmToken())
-                .notifications(user.getNotifications())
-                .groupMembers(user.getGroupMembers())
                 .build();
 
         return userDTO;

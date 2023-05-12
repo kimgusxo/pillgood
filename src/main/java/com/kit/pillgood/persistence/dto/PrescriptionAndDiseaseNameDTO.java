@@ -1,15 +1,10 @@
 package com.kit.pillgood.persistence.dto;
 
-import com.kit.pillgood.domain.Disease;
-import com.kit.pillgood.domain.GroupMember;
-import com.kit.pillgood.domain.TakePill;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
