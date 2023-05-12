@@ -19,10 +19,7 @@ public class GroupMemberDTO {
     private Long groupMemberIndex;
 
     @NotEmpty(message = "user 누락")
-    private User user;
-
-    @Builder.Default
-    private List<Prescription> prescriptions = new ArrayList<>();
+    private Long userIndex;
 
     @NotEmpty(message = "groupMemberName 누락")
     private String groupMemberName;

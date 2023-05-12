@@ -26,8 +26,7 @@ public class TakePillAndTakePillCheckDTO {
     private Pill pill;
 
     @NotEmpty(message = "takePillCheck 누락")
-    @Builder.Default
-    private List<TakePillCheck> takePillCheck = new ArrayList<>();
+    private List<Long> takePillCheckIndexList = new ArrayList<>();
 
     @NotEmpty(message = "takeDay 누락")
     private Integer takeDay;
