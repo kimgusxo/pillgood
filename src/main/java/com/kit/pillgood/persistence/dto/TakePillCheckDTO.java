@@ -14,7 +14,7 @@ public class TakePillCheckDTO {
     private Long takePillCheckIndex;
 
     @NotEmpty(message = "takePill 누락")
-    private TakePill takePill;
+    private Long takePillIndex;
 
     @NotEmpty(message = "takeDate 누락")
     private LocalDate takeDate;

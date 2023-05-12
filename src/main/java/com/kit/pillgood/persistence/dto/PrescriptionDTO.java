@@ -21,11 +21,8 @@ public class PrescriptionDTO {
     private Long groupMemberIndex;
 
     @NotEmpty(message = "disease 누락")
-    private Disease disease;
+    private Long diseaseIndex;
 
-    @Builder.Default
-    @NotEmpty(message = "takePills 누락")
-    private List<Long> takePillIndexList = new ArrayList<>();
 
     @NotEmpty(message = "prescriptionRegistrationDate 누락")
     private LocalDate prescriptionRegistrationDate;

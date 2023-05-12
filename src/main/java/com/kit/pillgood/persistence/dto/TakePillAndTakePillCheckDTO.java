@@ -20,13 +20,10 @@ public class TakePillAndTakePillCheckDTO {
     private Long takePillIndex;
 
     @NotEmpty(message = "prescription 누락")
-    private Prescription prescription;
+    private Long prescriptionIndex;
 
     @NotEmpty(message = "pill 누락")
-    private Pill pill;
-
-    @NotEmpty(message = "takePillCheck 누락")
-    private List<Long> takePillCheckIndexList = new ArrayList<>();
+    private Long pillIndex;
 
     @NotEmpty(message = "takeDay 누락")
     private Integer takeDay;
@@ -37,8 +34,6 @@ public class TakePillAndTakePillCheckDTO {
     @NotEmpty(message = "takePillCheckIndex 누락")
     private Long takePillCheckIndex;
 
-    @NotEmpty(message = "takePill 누락")
-    private TakePill takePill;
 
     @NotEmpty(message = "takeDate 누락")
     private LocalDate takeDate;
