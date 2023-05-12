@@ -14,7 +14,6 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class GroupMember {

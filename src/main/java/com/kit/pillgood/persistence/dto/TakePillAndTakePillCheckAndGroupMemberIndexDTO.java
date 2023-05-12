@@ -1,5 +1,6 @@
 package com.kit.pillgood.persistence.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,6 @@ import java.util.List;
 @Builder
 public class TakePillAndTakePillCheckAndGroupMemberIndexDTO {
     Long groupMemberIndex;
-    List<TakePillAndTakePillCheckSummary> takePillAndTakePillCheckSummaries;
+    List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOs;
 
 }

@@ -5,6 +5,7 @@ import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
 import com.kit.pillgood.persistence.dto.TakePillCheckAndGroupMemberIndexDTO;
+import com.kit.pillgood.persistence.projection.PrescriptionIndexSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 import com.kit.pillgood.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +43,29 @@ public class TakePillService {
         List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> takePillAndTakePillCheckAndGroupMemberIndexDTOList = new ArrayList<>();
 
         for(GroupMember groupMember : groupMembers) {
-            List<Long> prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMember_GroupMemberIndexAndPrescriptionDateBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
-            for(Long prescriptionIndex : prescriptionIndexList) {
-                List<TakePillAndTakePillCheckSummary> takePillAndTakePillCheckSummaries = takePillRepository.findTakePillAndCheckByPrescriptionIndex(prescriptionIndex);
+            List<PrescriptionIndexSummary> prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMember_GroupMemberIndexAndPrescriptionDateBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
+            for(PrescriptionIndexSummary prescriptionIndex : prescriptionIndexList) {
+                List<TakePillAndTakePillCheckSummary> takePillAndTakePillCheckSummaries = takePillRepository.findTakePillAndCheckByPrescriptionIndex(prescriptionIndex.getPrescriptionIndex());
+                List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOs = new ArrayList<>();
+                for(TakePillAndTakePillCheckSummary takePillAndTakePillCheckSummary : takePillAndTakePillCheckSummaries) {
+                    TakePillAndTakePillCheckDTO takePillAndTakePillCheckDTO
+                        = TakePillAndTakePillCheckDTO.builder()
+                            .takePillIndex(takePillAndTakePillCheckSummary.getTakePillIndex())
+                            .prescriptionIndex(takePillAndTakePillCheckSummary.getPrescriptionIndex())
+                            .pillIndex(takePillAndTakePillCheckSummary.getPillIndex())
+                            .takeDay(takePillAndTakePillCheckSummary.getTakeDay())
+                            .takeCount(takePillAndTakePillCheckSummary.getTakeCount())
+                            .takePillCheckIndex(takePillAndTakePillCheckSummary.getTakePillCheckIndex())
+                            .takeDate(takePillAndTakePillCheckSummary.getTakeDate())
+                            .takePillTime(takePillAndTakePillCheckSummary.getTakePillTime())
+                            .takeCheck(takePillAndTakePillCheckSummary.getTakeCheck())
+                            .build();
+                    takePillAndTakePillCheckDTOs.add(takePillAndTakePillCheckDTO);
+                }
                 TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO =
                         TakePillAndTakePillCheckAndGroupMemberIndexDTO.builder()
                                 .groupMemberIndex(groupMember.getGroupMemberIndex())
-                                .takePillAndTakePillCheckSummaries(takePillAndTakePillCheckSummaries)
+                                .takePillAndTakePillCheckDTOs(takePillAndTakePillCheckDTOs)
                                 .build();
                 takePillAndTakePillCheckAndGroupMemberIndexDTOList.add(takePillAndTakePillCheckAndGroupMemberIndexDTO);
             }
@@ -59,7 +76,7 @@ public class TakePillService {
 //    public MedicationInfoDTO searchMedicationInfoListByUserIndexAndTakeDate(Long userIndex, LocalDate takeDate) {
 //        // 유저 인덱스와 해당 날짜로 그룹원의 복용 정보(약, 질병 등) 검색
 //    }
-//
+
 //    public List<TakePillCheckAndGroupMemberIndexDTO> updateTakePillCheck(Long takePillCheckIndex, TakePillCheckDTO takePillCheckDTO) {
 //        // 복용 현황 갱신
 //    }

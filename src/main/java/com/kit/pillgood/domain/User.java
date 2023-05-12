@@ -12,7 +12,6 @@ import java.util.List;
 @Setter
 @Entity
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class User {

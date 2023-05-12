@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Pill {
