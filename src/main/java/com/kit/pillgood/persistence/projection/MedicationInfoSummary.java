@@ -10,5 +10,4 @@ public interface MedicationInfoSummary {
     Long getTakePillCheckIndex();
     Boolean getTakeCheck();
     Integer getTakePillTime();
-
 }

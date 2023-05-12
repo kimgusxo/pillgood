@@ -1,13 +1,10 @@
 package com.kit.pillgood.controller;
 
-import com.kit.pillgood.persistence.dto.InitialCalendarAndTakePillsInfoDTO;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
-import com.kit.pillgood.persistence.dto.TakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.service.TakePillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -30,8 +27,8 @@ public class TakePillController {
         return takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
     }
 
-    @GetMapping("")
-    public List<MedicationInfoDTO> getTakePillsByGroupMemberIndexListAndTargetDate(@ModelAttribute List<Long> groupMemberIndexList,
+    @PostMapping("")
+    public List<MedicationInfoDTO> getTakePillsByGroupMemberIndexListAndTargetDate(@RequestBody List<Long> groupMemberIndexList,
                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDate) {
         return takePillService.searchMedicationInfoListByGroupMemberIndexListAndTargetDate(groupMemberIndexList, targetDate);
     }

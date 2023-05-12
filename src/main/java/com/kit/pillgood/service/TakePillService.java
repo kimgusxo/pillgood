@@ -6,6 +6,7 @@ import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
 import com.kit.pillgood.persistence.dto.TakePillCheckAndGroupMemberIndexDTO;
+import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionIndexSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 import com.kit.pillgood.repository.*;
@@ -74,8 +75,24 @@ public class TakePillService {
         return takePillAndTakePillCheckAndGroupMemberIndexDTOList;
     }
 
-    public MedicationInfoDTO searchMedicationInfoListByGroupMemberIndexListAndTargetDate(List<Long> groupMemberIndexList, LocalDate targetDate) {
-        return takePillRepository.
+    public List<MedicationInfoDTO> searchMedicationInfoListByGroupMemberIndexListAndTargetDate(List<Long> groupMemberIndexList, LocalDate targetDate) {
+        List<MedicationInfoDTO> medicationInfoDTOs = new ArrayList<>();
+        for(Long groupMemberIndex : groupMemberIndexList) {
+           MedicationInfoSummary medicationInfoSummary = takePillRepository.findMedicationInfoByGroupMemberIndexAndTargetDate(groupMemberIndex, targetDate);
+           MedicationInfoDTO medicationInfoDTO = MedicationInfoDTO.builder()
+                   .groupMemberIndex(medicationInfoSummary.getGroupMemberIndex())
+                   .groupMemberName(medicationInfoSummary.getGroupMemberName())
+                   .pillIndex(medicationInfoSummary.getPillIndex())
+                   .diseaseIndex(medicationInfoSummary.getDiseaseIndex())
+                   .pillName(medicationInfoSummary.getPillName())
+                   .diseaseName(medicationInfoSummary.getDiseaseName())
+                   .takePillCheckIndex(medicationInfoSummary.getTakePillCheckIndex())
+                   .takeCheck(medicationInfoSummary.getTakeCheck())
+                   .takePillTime(medicationInfoSummary.getTakePillTime())
+                   .build();
+           medicationInfoDTOs.add(medicationInfoDTO);
+        }
+        return medicationInfoDTOs;
     }
 
 //    public List<TakePillCheckAndGroupMemberIndexDTO> updateTakePillCheck(Long takePillCheckIndex, TakePillCheckDTO takePillCheckDTO) {
