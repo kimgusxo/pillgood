@@ -23,13 +23,10 @@ public class UserDTO {
     @NotEmpty(message = "userFcmToken 누락")
     private String userFcmToken;
 
-    @Builder.Default
     @NotEmpty(message = "groupMembers 누락")
-    private List<GroupMember> groupMembers = new ArrayList<>();
+    private List<Long> groupMemberIndexList = new ArrayList<>();
 
-    @Builder.Default
     @NotEmpty(message = "notifications 누락")
-    private List<Notification> notifications = new ArrayList<>();
+    private List<Long> notificationIndexList = new ArrayList<>();
     
-
 }
