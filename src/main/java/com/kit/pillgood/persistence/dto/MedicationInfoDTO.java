@@ -11,7 +11,6 @@ public class MedicationInfoDTO {
     private String pillName;
     private Long diseaseIndex;
     private String diseaseName;
-    private String diseaseProperties;
     private Long takePillCheckIndex;
     private Boolean takeCheck;
     private Integer takePillTime;

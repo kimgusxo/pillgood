@@ -2,12 +2,14 @@ package com.kit.pillgood.repository;
 
 import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
+import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -20,4 +22,10 @@ public interface TakePillRepository  extends JpaRepository<TakePill, Long> {
             "from TakePill tp join TakePillCheck tpc on tp.takePillIndex = tpc.takePill.takePillIndex " +
             "join tp.prescription p on p.prescriptionIndex = :prescriptionIndex")
     List<TakePillAndTakePillCheckSummary> findTakePillAndCheckByPrescriptionIndex(@Param("prescriptionIndex") Long prescriptionIndex);
+
+    @Query("select * " +
+            "from Prescription p join p.groupMember gm join p.disease d" +
+            "join TakePill tp")
+    MedicationInfoSummary findMedicationInfoByGroupMemberIndexAndTargetDate(@Param("groupMemberIndex") Long groupMemberIndex,
+                                                                            @Param("targetDate") LocalDate targetDate);
 }

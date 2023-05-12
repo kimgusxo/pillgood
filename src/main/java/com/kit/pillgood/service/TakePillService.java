@@ -2,6 +2,7 @@ package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.TakePill;
+import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
 import com.kit.pillgood.persistence.dto.TakePillCheckAndGroupMemberIndexDTO;
@@ -33,7 +34,7 @@ public class TakePillService {
 //    public TakePill createTakePill(Long prescriptionIndex, Long pillIndex, Integer takeDay, Integer takeCount) {
 //        // 복용해야 할 약 생성
 //    }
-//
+
 //    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {
 //        // 복용해야 할 약 리스트 생성
 //    }
@@ -73,9 +74,9 @@ public class TakePillService {
         return takePillAndTakePillCheckAndGroupMemberIndexDTOList;
     }
 
-//    public MedicationInfoDTO searchMedicationInfoListByUserIndexAndTakeDate(Long userIndex, LocalDate takeDate) {
-//        // 유저 인덱스와 해당 날짜로 그룹원의 복용 정보(약, 질병 등) 검색
-//    }
+    public MedicationInfoDTO searchMedicationInfoListByGroupMemberIndexListAndTargetDate(List<Long> groupMemberIndexList, LocalDate targetDate) {
+        return takePillRepository.
+    }
 
 //    public List<TakePillCheckAndGroupMemberIndexDTO> updateTakePillCheck(Long takePillCheckIndex, TakePillCheckDTO takePillCheckDTO) {
 //        // 복용 현황 갱신

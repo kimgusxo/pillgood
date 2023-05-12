@@ -8,10 +8,7 @@ import com.kit.pillgood.service.TakePillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,12 +30,12 @@ public class TakePillController {
         return takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
     }
 
-//    @GetMapping("")
-//    public List<MedicationInfoDTO> getTakePillsByUserIndexAndDate(@RequestParam Long userIndex,
-//                                                                  @RequestParam LocalDate date) {
-//
-//    }
-//
+    @GetMapping("")
+    public List<MedicationInfoDTO> getTakePillsByGroupMemberIndexListAndTargetDate(@ModelAttribute List<Long> groupMemberIndexList,
+                                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDate) {
+        return takePillService.searchMedicationInfoListByGroupMemberIndexListAndTargetDate(groupMemberIndexList, targetDate);
+    }
+
 //    @GetMapping("/initial-data")
 //    public List<InitialCalendarAndTakePillsInfoDTO> getInitialCalenderAndTakePillsBuUserIndexBetweenDate(@RequestParam Long userIndex,
 //                                                                                                         @RequestParam LocalDate dateStart,
