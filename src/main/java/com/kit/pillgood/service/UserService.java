@@ -1,13 +1,16 @@
 package com.kit.pillgood.service;
 
 import com.google.firebase.auth.*;
+import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.User;
+import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
 import com.kit.pillgood.repository.UserRepository;
 import com.kit.pillgood.util.EntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +24,20 @@ public class UserService {
     }
 
     /**
+     * 특정 유저 조회 메소드
+     * @param: 이메일
+     * @return: userDTO
+     **/
+    public UserDTO searchUser(String email) {
+        User user = userRepository.findByUserEmail(email);
+        if(user.getUserIndex() != null){
+            UserDTO userDTO = EntityConverter.toUserDTO(userRepository.findByUserEmail(email));
+            return userDTO;
+        }
+        return null;
+    }
+
+    /**
      * 유저를 생성하는 메소드
      * @param: 생성할 UserDTO
      * @return: DB에서 생성할 UserDTO
@@ -31,8 +48,33 @@ public class UserService {
         return userDTO;
     }
 
-    public void deleteUser(Long userIndex) {
-        userRepository.deleteById(userIndex);
+    /**
+     * 유저 업데이트 메소드
+     * @param: 변경된 UserDTO
+     * @return: DB에서 변경된 UserDTO
+     **/
+    @Transactional
+    public UserDTO updateUserToken(UserDTO userDTO) {
+        User user = userRepository.findByUserIndex(userDTO.getUserIndex());
+
+        if(user != null) {
+            return createUser(userDTO);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * 유저 삭제 메소드
+     * @param: 유저 인덱스
+     * @return: void
+     **/
+    public boolean deleteUser(UserDTO userDTO) {
+        deleteFirebaseUser(userDTO.getUserEmail());
+        userRepository.deleteById(userDTO.getUserIndex());
+        return true;
     }
 
     /**
@@ -94,7 +136,7 @@ public class UserService {
      * @param: String email
      * @return: boolean
      **/
-    public boolean deleteFirevaseUser(String email){
+    public boolean deleteFirebaseUser(String email){
         ListUsersPage page = null;
         try {
             page = FirebaseAuth.getInstance().listUsers(null);
@@ -120,5 +162,6 @@ public class UserService {
 
         return true;
     }
+
 
 }

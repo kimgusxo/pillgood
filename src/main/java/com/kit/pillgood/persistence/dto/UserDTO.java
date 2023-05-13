@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 @Builder
 public class UserDTO {
-    @NotEmpty(message = "userIndex 누락")
     private Long userIndex;
 
     @NotEmpty(message = "userEmail 누락")
