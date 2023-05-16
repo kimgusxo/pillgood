@@ -55,15 +55,15 @@ public class UserService {
      **/
     @Transactional
     public UserDTO updateUserToken(UserDTO userDTO) {
-        User user = userRepository.findByUserIndex(userDTO.getUserIndex());
+        Long userIndex = userDTO.getUserIndex();
+        User user = userRepository.findByUserIndex(userIndex);
 
         if(user != null) {
+            deleteUser(userIndex);
             return createUser(userDTO);
         }
-
         return null;
     }
-
 
 
     /**
@@ -71,9 +71,8 @@ public class UserService {
      * @param: 유저 인덱스
      * @return: void
      **/
-    public boolean deleteUser(UserDTO userDTO) {
-        deleteFirebaseUser(userDTO.getUserEmail());
-        userRepository.deleteById(userDTO.getUserIndex());
+    public boolean deleteUser(Long userIndex) {
+        userRepository.deleteById(userIndex);
         return true;
     }
 
@@ -136,7 +135,9 @@ public class UserService {
      * @param: String email
      * @return: boolean
      **/
-    public boolean deleteFirebaseUser(String email){
+    public boolean deleteFirebaseUser(UserDTO userDTO){
+        Long userIndex = userDTO.getUserIndex();
+        String userEmail = userDTO.getUserEmail();
         ListUsersPage page = null;
         try {
             page = FirebaseAuth.getInstance().listUsers(null);
@@ -144,18 +145,19 @@ public class UserService {
             throw new RuntimeException(e);
         }
 
-        String userEmail = "";
-        String userUid = "";
+        String firebaseUserEmail = "";
+        String firebaseUserUid = "";
         for (ExportedUserRecord user : page.iterateAll()) {
-            userEmail = user.getEmail();
-            if (userEmail.equals(email)){
-                userUid = user.getUid();
+            firebaseUserEmail = user.getEmail();
+            if (firebaseUserEmail.equals(userEmail)){
+                firebaseUserUid = user.getUid();
                 break;
             }
         }
 
         try {
-            FirebaseAuth.getInstance().deleteUser(userUid);
+            FirebaseAuth.getInstance().deleteUser(firebaseUserUid);
+            deleteUser(userIndex);
         } catch (FirebaseAuthException e) {
             throw new RuntimeException(e);
         }

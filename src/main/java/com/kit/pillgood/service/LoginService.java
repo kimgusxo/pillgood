@@ -11,12 +11,16 @@ public class LoginService {
         this.userService = userService;
     }
 
+    /**
+     * 로그인 기능
+     * @param: 생성 될 userDTO
+     * @return: 생성 된 userDTO
+     **/
+    public UserDTO login(String userEmail, String userToken){
 
-    public UserDTO login(UserDTO uDTO){
-
-        // firebase에 등록되지 않음 유저
-        String userEmail = uDTO.getUserEmail();
+        // firebase에 등록 여부 확인
         if(!userService.isFirebaseUser(userEmail)){
+            System.out.println("firebase 미등록");
             return null; // firebase에 등록되지 않은 유저 예외
         }
 
@@ -26,7 +30,7 @@ public class LoginService {
             // mysql 생성
             userDTO = UserDTO.builder()
                             .userIndex(null)
-                            .userFcmToken(null)
+                            .userFcmToken(userToken)
                             .userEmail(userEmail)
                             .build();
 
