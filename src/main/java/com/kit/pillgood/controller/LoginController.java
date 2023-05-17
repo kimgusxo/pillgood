@@ -1,8 +1,11 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
+import com.kit.pillgood.exeptions.exeption.superExeption.BindException;
+import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
+import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.LoginService;
-import com.kit.pillgood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +27,8 @@ public class LoginController {
      * @return: userDTO
      **/
     @PostMapping("/login")
-    public UserDTO createUser(@RequestParam String userEmail, String userToken){
-        return loginService.login(userEmail, userToken);
+    public UserDTO createUser(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, BindException {
+        return loginService.login(loginDTO);
     }
 
     /**

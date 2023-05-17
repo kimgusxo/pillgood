@@ -3,6 +3,7 @@ package com.kit.pillgood.controller;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
+import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -60,7 +61,7 @@ public class UserController {
      * @return: userDTO
      **/
     @PostMapping("/update_token")
-    public UserDTO login(@ModelAttribute @Validated UserDTO userDTO) {
+    public UserDTO login(@ModelAttribute @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) {
         UserDTO uDTO = userService.updateUserToken(userDTO);
         return uDTO;
     }

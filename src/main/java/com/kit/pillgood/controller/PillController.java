@@ -2,9 +2,11 @@ package com.kit.pillgood.controller;
 
 import com.kit.pillgood.persistence.dto.PillDTO;
 import com.kit.pillgood.persistence.dto.SearchingConditionDTO;
+import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.PillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +32,7 @@ public class PillController {
     }
 
     @GetMapping("/search/pills")
-    public List<PillDTO> getSearchingPills(@ModelAttribute SearchingConditionDTO searchingConditionDTO) {
+    public List<PillDTO> getSearchingPills(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) SearchingConditionDTO searchingConditionDTO) {
         return pillService.searchPillByAttributesOfPill(searchingConditionDTO);
     }
 }

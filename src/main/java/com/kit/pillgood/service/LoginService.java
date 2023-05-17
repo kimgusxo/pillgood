@@ -1,5 +1,7 @@
 package com.kit.pillgood.service;
 
+import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
+import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +18,13 @@ public class LoginService {
      * @param: 생성 될 userDTO
      * @return: 생성 된 userDTO
      **/
-    public UserDTO login(String userEmail, String userToken){
+    public UserDTO login(LoginDTO loginDTO) throws NonRegistrationFirebaseException {
+        String userEmail = loginDTO.getUserEamil();
+        String userToken = loginDTO.getUserToken();
 
         // firebase에 등록 여부 확인
         if(!userService.isFirebaseUser(userEmail)){
-            System.out.println("firebase 미등록");
-            return null; // firebase에 등록되지 않은 유저 예외
+            throw new NonRegistrationFirebaseException();
         }
 
         // mysql에 등록되지 않은 유저
