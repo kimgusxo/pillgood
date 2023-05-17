@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/login")
 public class LoginController {
 
-    private final UserService userService;
     private final LoginService loginService;
 
     @Autowired
-    public LoginController(UserService userService, LoginService loginService) {
-        this.userService = userService;
+    public LoginController(LoginService loginService) {
         this.loginService = loginService;
     }
 
@@ -24,11 +22,10 @@ public class LoginController {
      * 로그인 기능
      * @param: userDTO
      * @return: userDTO
-    **/
-    @PostMapping("/update_token")
-    public UserDTO login(@ModelAttribute @Validated UserDTO userDTO) {
-        UserDTO uDTO = userService.updateUserToken(userDTO);
-        return uDTO;
+     **/
+    @PostMapping("/login")
+    public UserDTO createUser(@RequestParam String userEmail, String userToken){
+        return loginService.login(userEmail, userToken);
     }
 
     /**

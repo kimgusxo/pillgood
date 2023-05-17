@@ -26,8 +26,8 @@ public class UserController {
 //    }
 
     @PostMapping("/delete")
-    public boolean deleteUser(@ModelAttribute @Validated UserDTO userDTO) {
-        return userService.deleteUser(userDTO);
+    public boolean deleteUser(@RequestParam Long userIndex) {
+        return userService.deleteUser(userIndex);
    }
 
 //    @GetMapping("/users")
@@ -54,9 +54,15 @@ public class UserController {
 //        return deleteResponse;
 //    }
 
+    /**
+     * 토큰 갱신 기능
+     * @param: userDTO
+     * @return: userDTO
+     **/
     @PostMapping("/update_token")
-    public UserDTO getUserToken(@ModelAttribute @Validated UserDTO userDTO){
-        return userService.updateUserToken(userDTO);
+    public UserDTO login(@ModelAttribute @Validated UserDTO userDTO) {
+        UserDTO uDTO = userService.updateUserToken(userDTO);
+        return uDTO;
     }
 
 }

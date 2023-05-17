@@ -69,8 +69,10 @@ public class GroupMemberService {
         GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
 
         if(groupMember != null) {
+            deleteGroupMember(groupMemberIndex);
            return createGroupMember(groupMemberAndUserIndexDTO);
         } else {
+            // 존재하지 않음 예외 처리
             return null;
         }
     }
