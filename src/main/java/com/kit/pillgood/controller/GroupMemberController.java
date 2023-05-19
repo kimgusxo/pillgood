@@ -1,6 +1,5 @@
 package com.kit.pillgood.controller;
 
-import com.kit.pillgood.domain.User;
 import com.kit.pillgood.exeptions.exeption.AlreadyExistGroupException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

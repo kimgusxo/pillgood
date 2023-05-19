@@ -43,7 +43,7 @@ public class GroupMemberService {
             throw new NonRegistrationUserException();
         }
 
-        if(userRepository.findByUserIndexAndGroupPhoneNumber(userIndex, groupMemberPhonNumber)){
+        if(groupMemberRepository.findByUserIndexAndGroupMemberPhone(userIndex, groupMemberPhonNumber)){
             throw new AlreadyExistGroupException();
         }
 
