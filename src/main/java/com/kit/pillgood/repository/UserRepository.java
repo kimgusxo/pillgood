@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUserIndex(Long userIndex);
     User findByUserEmail(String email);
-    Boolean findByUserIndexAndGroupPhoneNumber(Long userIndex, String groupPhoneNumber);
 }

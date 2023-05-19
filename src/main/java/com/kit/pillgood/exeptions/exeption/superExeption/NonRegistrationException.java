@@ -9,6 +9,7 @@ public class NonRegistrationException extends Exception{
     public NonRegistrationException(String message, HttpStatus httpStatus){
         super(message);
         this.httpStatus = httpStatus;
+        
     }
 
 }
