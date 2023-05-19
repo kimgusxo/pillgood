@@ -2,6 +2,9 @@ package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.User;
+import com.kit.pillgood.exeptions.exeption.AlreadyExistGroupException;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import com.kit.pillgood.repository.GroupMemberRepository;
@@ -32,12 +35,23 @@ public class GroupMemberService {
      * @return: DB에 저장된 그룹원 리턴
     **/
     @Transactional
-    public GroupMemberAndUserIndexDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
+    public GroupMemberAndUserIndexDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, AlreadyExistGroupException {
+        Long userIndex = groupMemberAndUserIndexDTO.getUserIndex();
+        String groupMemberPhonNumber = groupMemberAndUserIndexDTO.getGroupMemberPhone();
+
+        if(userRepository.findByUserIndex(userIndex) == null){
+            throw new NonRegistrationUserException();
+        }
+
+        if(groupMemberRepository.findByUser_UserIndexAndGroupMemberPhone(userIndex, groupMemberPhonNumber)){
+            throw new AlreadyExistGroupException();
+        }
+
         User user = new User();
         user.setUserIndex(groupMemberAndUserIndexDTO.getUserIndex());
 
         GroupMember groupMember = GroupMember.builder()
-                .groupMemberIndex(groupMemberAndUserIndexDTO.getGroupMemberIndex())
+                .groupMemberIndex(null)
                 .user(user)
                 .groupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName())
                 .groupMemberBirth(groupMemberAndUserIndexDTO.getGroupMemberBirth())
@@ -65,13 +79,14 @@ public class GroupMemberService {
      * @return: DB에 저장된 그룹원 리턴
     **/
     @Transactional
-    public GroupMemberAndUserIndexDTO updateGroupMember(Long groupMemberIndex, GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
+    public GroupMemberAndUserIndexDTO updateGroupMember(Long groupMemberIndex, GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, NonRegistrationGroupException, AlreadyExistGroupException {
         GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
 
         if(groupMember != null) {
+            deleteGroupMember(groupMemberIndex);
            return createGroupMember(groupMemberAndUserIndexDTO);
         } else {
-            return null;
+            throw new NonRegistrationGroupException();
         }
     }
 
@@ -81,11 +96,14 @@ public class GroupMemberService {
     * @return: DB에서 찾은 그룹원 리턴
     **/
     @Transactional
-    public GroupMemberDTO searchOneGroupMember(Long groupMemberIndex) {
+    public GroupMemberDTO searchOneGroupMember(Long groupMemberIndex) throws NonRegistrationGroupException {
         GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
-        GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMember);
 
-        return groupMemberDTO;
+        if(groupMember == null){
+            throw new NonRegistrationGroupException();
+        }
+
+        return EntityConverter.toGroupMemberDTO(groupMember);
     }
 
     /**
@@ -94,8 +112,13 @@ public class GroupMemberService {
      * @return: DB에서 찾은 모든 그룹원 리턴
     **/
     @Transactional
-    public List<GroupMemberDTO> searchGroupMembersByUserIndex(Long userIndex) {
+    public List<GroupMemberDTO> searchGroupMembersByUserIndex(Long userIndex) throws NonRegistrationUserException {
+        if(userRepository.findByUserIndex(userIndex) == null){
+            throw new NonRegistrationUserException();
+        }
+
         List<GroupMember> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
+
 
         List<GroupMemberDTO> groupMemberDTOs = new ArrayList<>();
 
@@ -113,7 +136,10 @@ public class GroupMemberService {
      * @return: 리턴 없음
     **/
     @Transactional
-    public void deleteGroupMember(Long groupMemberIndex) {
+    public void deleteGroupMember(Long groupMemberIndex) throws NonRegistrationGroupException {
+        if(groupMemberRepository.findByGroupMemberIndex(groupMemberIndex) == null){
+            throw new NonRegistrationGroupException();
+        }
         groupMemberRepository.deleteByGroupMemberIndex(groupMemberIndex);
     }
 }

@@ -222,4 +222,12 @@ public class EntityConverter {
         return prescriptionAndDiseaseNameDTO;
     }
 
+    public static TakePillAndTakePillCheckDTO toTakePillAndTakePillCheckDTO() {
+        return null;
+    }
+
+    public static TakePillAndTakePillCheckAndGroupMemberIndexDTO toTakePillAndTakePillCheckAndGroupMemberIndexDTO() {
+        return null;
+    }
+
 }

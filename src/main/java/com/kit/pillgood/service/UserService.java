@@ -3,6 +3,10 @@ package com.kit.pillgood.service;
 import com.google.firebase.auth.*;
 import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.User;
+import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.exeptions.exeption.superExeption.AlreadyExistException;
+import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
 import com.kit.pillgood.repository.UserRepository;
@@ -28,13 +32,15 @@ public class UserService {
      * @param: 이메일
      * @return: userDTO
      **/
-    public UserDTO searchUser(String email) {
+    public UserDTO searchUser(String email) throws NonRegistrationUserException {
         User user = userRepository.findByUserEmail(email);
+
         if(user.getUserIndex() != null){
             UserDTO userDTO = EntityConverter.toUserDTO(userRepository.findByUserEmail(email));
             return userDTO;
+        } else{
+            throw new NonRegistrationUserException();
         }
-        return null;
     }
 
     /**
@@ -43,6 +49,12 @@ public class UserService {
      * @return: DB에서 생성할 UserDTO
     **/
     public UserDTO createUser(UserDTO userDTO) {
+        if(userRepository.findByUserEmail(userDTO.getUserEmail()) != null){
+            try {
+                deleteUser(userDTO.getUserIndex());
+            } catch (NonRegistrationUserException ignore) {
+            }
+        }
         User user = EntityConverter.toUser(userDTO);
         userDTO = EntityConverter.toUserDTO(userRepository.save(user));
         return userDTO;
@@ -54,16 +66,18 @@ public class UserService {
      * @return: DB에서 변경된 UserDTO
      **/
     @Transactional
-    public UserDTO updateUserToken(UserDTO userDTO) {
-        User user = userRepository.findByUserIndex(userDTO.getUserIndex());
+    public UserDTO updateUserToken(UserDTO userDTO) throws NonRegistrationUserException {
+        Long userIndex = userDTO.getUserIndex();
+        User user = userRepository.findByUserIndex(userIndex);
 
         if(user != null) {
+            deleteUser(userIndex);
             return createUser(userDTO);
         }
-
-        return null;
+        else{
+            throw new NonRegistrationUserException();
+        }
     }
-
 
 
     /**
@@ -71,9 +85,12 @@ public class UserService {
      * @param: 유저 인덱스
      * @return: void
      **/
-    public boolean deleteUser(UserDTO userDTO) {
-        deleteFirebaseUser(userDTO.getUserEmail());
-        userRepository.deleteById(userDTO.getUserIndex());
+    public boolean deleteUser(Long userIndex) throws NonRegistrationUserException {
+        try{
+            userRepository.deleteById(userIndex);
+        }catch(IllegalArgumentException ignored){
+            throw new NonRegistrationUserException();
+        }
         return true;
     }
 
@@ -111,13 +128,13 @@ public class UserService {
      * @param: String email
      * @return: boolean
      **/
-    public boolean isFirebaseUser(String email)  {
+    public boolean isFirebaseUser(String email) throws EtcFirebaseException {
 
         ListUsersPage page = null;
         try {
             page = FirebaseAuth.getInstance().listUsers(null);
         } catch (FirebaseAuthException e) {
-            throw new RuntimeException(e);
+            throw new EtcFirebaseException();
         }
 
         String userEmail = "";
@@ -136,29 +153,33 @@ public class UserService {
      * @param: String email
      * @return: boolean
      **/
-    public boolean deleteFirebaseUser(String email){
+    public boolean deleteFirebaseUser(UserDTO userDTO) throws EtcFirebaseException, NonRegistrationUserException {
+        Long userIndex = userDTO.getUserIndex();
+        String userEmail = userDTO.getUserEmail();
         ListUsersPage page = null;
         try {
             page = FirebaseAuth.getInstance().listUsers(null);
         } catch (FirebaseAuthException e) {
-            throw new RuntimeException(e);
+            throw new EtcFirebaseException();
         }
 
-        String userEmail = "";
-        String userUid = "";
+        String firebaseUserEmail = "";
+        String firebaseUserUid = "";
         for (ExportedUserRecord user : page.iterateAll()) {
-            userEmail = user.getEmail();
-            if (userEmail.equals(email)){
-                userUid = user.getUid();
+            firebaseUserEmail = user.getEmail();
+            if (firebaseUserEmail.equals(userEmail)){
+                firebaseUserUid = user.getUid();
                 break;
             }
         }
 
         try {
-            FirebaseAuth.getInstance().deleteUser(userUid);
+            FirebaseAuth.getInstance().deleteUser(firebaseUserUid);
         } catch (FirebaseAuthException e) {
-            throw new RuntimeException(e);
+            throw new EtcFirebaseException();
         }
+
+        deleteUser(userIndex);
 
         return true;
     }

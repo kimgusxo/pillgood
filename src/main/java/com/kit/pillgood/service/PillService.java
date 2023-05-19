@@ -48,14 +48,13 @@ public class PillService {
      * @return: 리턴 값 설명
     **/
     public List<PillDTO> searchPillByAttributesOfPill(SearchingConditionDTO searchingConditionDTO) {
-        String pillName = searchingConditionDTO.getPillName();
-        String pillColor = searchingConditionDTO.getPillColor();
-        String pillShape = searchingConditionDTO.getPillShape();
-        String pillFrontWord = searchingConditionDTO.getPillFrontWord();
-        String pillBackWord = searchingConditionDTO.getPillBackWord();
 
         List<Pill> pills = pillRepository.findPillsByPillNameAndPillShapeOrPillColorOrPillFrontWordOrPillBackWord(
-                pillName, pillColor, pillShape, pillFrontWord, pillBackWord);
+                searchingConditionDTO.getPillName(),
+                searchingConditionDTO.getPillColor(),
+                searchingConditionDTO.getPillShape(),
+                searchingConditionDTO.getPillFrontWord(),
+                searchingConditionDTO.getPillBackWord());
 
         List<PillDTO> pillDTOs = new ArrayList<>();
 

@@ -1,8 +1,10 @@
 package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.Notification;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.NotificationDTO;
 import com.kit.pillgood.repository.NotificationRepository;
+import com.kit.pillgood.repository.UserRepository;
 import com.kit.pillgood.util.EntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,12 @@ import java.util.List;
 @Service
 public class NotificationService {
     private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public NotificationService(NotificationRepository notificationRepository) {
+    public NotificationService(NotificationRepository notificationRepository, UserRepository userRepository) {
         this.notificationRepository = notificationRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -33,7 +37,12 @@ public class NotificationService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
-    public List<NotificationDTO> searchNotificationByUserIndex(Long userIndex) {
+    public List<NotificationDTO> searchNotificationByUserIndex(Long userIndex) throws NonRegistrationUserException {
+
+        if(userRepository.findByUserIndex(userIndex) == null){
+            throw new NonRegistrationUserException();
+        }
+
         List<Notification> notifications = notificationRepository.findNotificationsByUser_UserIndexAndNotificationCheckTrue(userIndex);
 
         List<NotificationDTO> notificationDTOs = new ArrayList<>();

@@ -16,6 +16,10 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://repo.clojars.org'
+        name 'Clojars'
+    }
 }
 
 dependencies {
@@ -36,6 +40,12 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
+
+    implementation 'org.scicloj:clojisr-rengine:0.1.1'
+    implementation 'org.openpnp:opencv:4.5.5-0'
+    implementation 'org.openpnp:opencv:4.6.0-0'
+
+    implementation 'net.sourceforge.tess4j:tess4j:4.5.1'
 }
 
 tasks.named('test') {
