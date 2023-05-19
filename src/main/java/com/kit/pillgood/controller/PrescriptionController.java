@@ -1,15 +1,11 @@
 package com.kit.pillgood.controller;
 
-import com.kit.pillgood.domain.Prescription;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.persistence.dto.PrescriptionAndDiseaseNameDTO;
-import com.kit.pillgood.persistence.dto.PrescriptionDTO;
 import com.kit.pillgood.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,7 +19,7 @@ public class PrescriptionController {
     }
 
     @GetMapping("/search/{group-member-index}")
-    public List<PrescriptionAndDiseaseNameDTO> getPrescriptionsByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) {
+    public List<PrescriptionAndDiseaseNameDTO> getPrescriptionsByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) throws NonRegistrationGroupException {
         return prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex);
     }
 

@@ -1,18 +1,16 @@
 package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
-import com.kit.pillgood.domain.TakePill;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
-import com.kit.pillgood.persistence.dto.TakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionIndexSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 import com.kit.pillgood.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -22,14 +20,16 @@ public class TakePillService {
     private final GroupMemberRepository groupMemberRepository;
     private final TakePillRepository takePillRepository;
     private final PrescriptionRepository prescriptionRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public TakePillService(GroupMemberRepository groupMemberRepository,
                            TakePillRepository takePillRepository,
-                           PrescriptionRepository prescriptionRepository){
+                           PrescriptionRepository prescriptionRepository, UserRepository userRepository){
         this.groupMemberRepository = groupMemberRepository;
         this.takePillRepository = takePillRepository;
         this.prescriptionRepository = prescriptionRepository;
+        this.userRepository = userRepository;
     }
 
 //    public TakePill createTakePill(Long prescriptionIndex, Long pillIndex, Integer takeDay, Integer takeCount) {
@@ -40,7 +40,10 @@ public class TakePillService {
 //        // 복용해야 할 약 리스트 생성
 //    }
 
-    public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) {
+    public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) throws NonRegistrationUserException {
+        if(userRepository.findByUserIndex(userIndex) == null){
+            throw new NonRegistrationUserException();
+        }
         List<GroupMember> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
         List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> takePillAndTakePillCheckAndGroupMemberIndexDTOList = new ArrayList<>();
 

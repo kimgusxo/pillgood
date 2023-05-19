@@ -1,8 +1,12 @@
 package com.kit.pillgood.controller;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
+import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -26,8 +30,8 @@ public class UserController {
 //    }
 
     @PostMapping("/delete")
-    public boolean deleteUser(@RequestParam Long userIndex) {
-        return userService.deleteUser(userIndex);
+    public boolean deleteUser(@ModelAttribute @Validated(ValidationGroups.groupDelete.class) UserDTO userDTO) throws EtcFirebaseException, NonRegistrationUserException {
+        return userService.deleteFirebaseUser(userDTO);
    }
 
 //    @GetMapping("/users")
@@ -60,9 +64,8 @@ public class UserController {
      * @return: userDTO
      **/
     @PostMapping("/update_token")
-    public UserDTO login(@ModelAttribute @Validated UserDTO userDTO) {
-        UserDTO uDTO = userService.updateUserToken(userDTO);
-        return uDTO;
+    public UserDTO updateUserToken(@ModelAttribute @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException, AlreadyExistUserException {
+        return userService.updateUserToken(userDTO);
     }
 
 }

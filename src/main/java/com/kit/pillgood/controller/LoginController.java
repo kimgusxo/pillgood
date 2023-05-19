@@ -1,8 +1,14 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.exeptions.exeption.superExeption.AlreadyExistException;
+import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
+import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
+import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.LoginService;
-import com.kit.pillgood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +24,17 @@ public class LoginController {
         this.loginService = loginService;
     }
 
+
     /**
      * 로그인 기능
      * @param: userDTO
      * @return: userDTO
      **/
-    @PostMapping("/login")
-    public UserDTO createUser(@RequestParam String userEmail, String userToken){
-        return loginService.login(userEmail, userToken);
+    @PostMapping("/")
+    public UserDTO login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
+        return loginService.login(loginDTO);
     }
+
 
     /**
      * 메소드의 간략한 설명

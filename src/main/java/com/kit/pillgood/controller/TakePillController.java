@@ -1,5 +1,6 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.service.TakePillService;
@@ -23,7 +24,7 @@ public class TakePillController {
     @GetMapping("/search/calendar-data")
     public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
                                                                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
-                                                                                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd) {
+                                                                                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd) throws NonRegistrationUserException {
         return takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
     }
 
