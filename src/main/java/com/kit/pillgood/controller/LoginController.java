@@ -9,14 +9,17 @@ import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
 import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.LoginService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-
+    private final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
     private final LoginService loginService;
 
     @Autowired
@@ -32,7 +35,13 @@ public class LoginController {
      **/
     @PostMapping("/")
     public UserDTO login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
-        return loginService.login(loginDTO);
+            try{
+                LOGGER.info("start login controller: ");
+                return loginService.login(loginDTO);
+            }catch (Exception e){
+                LOGGER.error("login controller error : {}", e.getMessage());
+                throw e;
+            }
     }
 
 
