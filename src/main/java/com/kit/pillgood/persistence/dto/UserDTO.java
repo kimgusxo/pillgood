@@ -15,11 +15,11 @@ import java.util.List;
 public class UserDTO {
     private Long userIndex;
 
-    @NotEmpty(groups = {ValidationGroups.groupUpdate.class},message = "userEmail은 필수 값입니다.")
-    @Email(groups = {ValidationGroups.groupUpdate.class})
+    @NotEmpty(groups = {ValidationGroups.groupUpdate.class, ValidationGroups.groupDelete.class},message = "userEmail은 필수 값입니다.")
+    @Email(groups = {ValidationGroups.groupUpdate.class, ValidationGroups.groupDelete.class})
     private String userEmail;
 
-    @NotEmpty(groups = {ValidationGroups.groupUpdate.class}, message = "userFcmToken은 필수 값입니다.")
+    @NotEmpty(groups = {ValidationGroups.groupUpdate.class, ValidationGroups.groupDelete.class}, message = "userFcmToken은 필수 값입니다.")
     private String userFcmToken;
 
     

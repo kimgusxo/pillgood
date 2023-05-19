@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class NonRegistrationGroupException extends NonRegistrationException {
     public NonRegistrationGroupException(){
-        super("등록되지 않은 그룹원 입니다.", HttpStatus.UNAUTHORIZED);
+        super("등록되지 않은 그룹원 입니다.", HttpStatus.NOT_FOUND);
     }
 }

@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class NonRegistrationUserException extends NonRegistrationException {
     public NonRegistrationUserException(){
-        super("등록되지 않은 유저 입니다.", HttpStatus.UNAUTHORIZED);
+        super("등록되지 않은 유저 입니다.", HttpStatus.NOT_FOUND);
     }
 }

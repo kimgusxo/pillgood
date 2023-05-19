@@ -1,6 +1,10 @@
 package com.kit.pillgood.service;
 
+import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.exeptions.exeption.superExeption.AlreadyExistException;
+import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
 import org.springframework.stereotype.Service;
@@ -18,7 +22,7 @@ public class LoginService {
      * @param: 생성 될 userDTO
      * @return: 생성 된 userDTO
      **/
-    public UserDTO login(LoginDTO loginDTO) throws NonRegistrationFirebaseException {
+    public UserDTO login(LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
         String userEmail = loginDTO.getUserEamil();
         String userToken = loginDTO.getUserToken();
 

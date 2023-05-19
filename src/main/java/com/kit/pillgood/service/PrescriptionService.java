@@ -1,16 +1,14 @@
 package com.kit.pillgood.service;
 
+import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.persistence.dto.PrescriptionAndDiseaseNameDTO;
-import com.kit.pillgood.persistence.dto.PrescriptionDTO;
 import com.kit.pillgood.persistence.projection.PrescriptionAndDiseaseNameSummary;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.PrescriptionRepository;
-import com.kit.pillgood.repository.UserRepository;
 import com.kit.pillgood.util.EntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +16,12 @@ import java.util.List;
 @Service
 public class PrescriptionService {
     private final PrescriptionRepository prescriptionRepository;
+    private final GroupMemberRepository groupMemberRepository;
 
     @Autowired
-    public PrescriptionService(PrescriptionRepository prescriptionRepository) {
+    public PrescriptionService(PrescriptionRepository prescriptionRepository, GroupMemberRepository groupMemberRepository) {
         this.prescriptionRepository = prescriptionRepository;
+        this.groupMemberRepository = groupMemberRepository;
     }
 
 //    public PrescriptionDTO createPrescription(Long userIndex, Long groupMemberIndex, MultipartFile imageFile) {
@@ -29,7 +29,12 @@ public class PrescriptionService {
 //    }
 
     @Transactional
-    public List<PrescriptionAndDiseaseNameDTO> searchGroupMemberPrescriptionsByGroupMemberIndex(Long groupMemberIndex) {
+    public List<PrescriptionAndDiseaseNameDTO> searchGroupMemberPrescriptionsByGroupMemberIndex(Long groupMemberIndex) throws NonRegistrationGroupException {
+
+        if(groupMemberRepository.findByGroupMemberIndex(groupMemberIndex) == null){
+            throw new NonRegistrationGroupException();
+        }
+
         List<PrescriptionAndDiseaseNameSummary> prescriptionAndDiseaseNameSummaries = prescriptionRepository.findPrescriptionAndDiseaseNameByGroupMemberIndex(groupMemberIndex);
         List<PrescriptionAndDiseaseNameDTO> prescriptionAndDiseaseNameDTOs = new ArrayList<>();
 

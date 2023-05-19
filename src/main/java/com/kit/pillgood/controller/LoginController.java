@@ -1,7 +1,10 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
-import com.kit.pillgood.exeptions.exeption.superExeption.BindException;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.exeptions.exeption.superExeption.AlreadyExistException;
+import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
 import com.kit.pillgood.persistence.dto.ValidationGroups;
@@ -21,15 +24,17 @@ public class LoginController {
         this.loginService = loginService;
     }
 
+
     /**
      * 로그인 기능
      * @param: userDTO
      * @return: userDTO
      **/
-    @PostMapping("/login")
-    public UserDTO createUser(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, BindException {
+    @PostMapping("/")
+    public UserDTO login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
         return loginService.login(loginDTO);
     }
+
 
     /**
      * 메소드의 간략한 설명

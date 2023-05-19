@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 public class DiseaseDTO {
 
-    @NotEmpty(groups = {ValidationGroups.groupUpdate.class, ValidationGroups.groupDelete.class})
+    @NotEmpty(groups = {ValidationGroups.groupUpdate.class})
     private Long diseaseIndex;
 
     private String diseaseClassification;

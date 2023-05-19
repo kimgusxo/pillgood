@@ -1,5 +1,6 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.NotificationDTO;
 import com.kit.pillgood.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class NotificationController {
     }
 
     @GetMapping("/search/{user-index}")
-    public List<NotificationDTO> getNotificationsByUserIndex(@PathVariable(name="user-index") Long userIndex) {
+    public List<NotificationDTO> getNotificationsByUserIndex(@PathVariable(name="user-index") Long userIndex) throws NonRegistrationUserException {
         return notificationService.searchNotificationByUserIndex(userIndex);
     }
 }
