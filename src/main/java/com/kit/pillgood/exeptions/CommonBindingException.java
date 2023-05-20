@@ -52,15 +52,21 @@ public class CommonBindingException {
         return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
     }
 
-    @ExceptionHandler(NonFoundPillIndexException.class)
+    @ExceptionHandler(NonExistsPillIndexException.class)
     @ResponseBody
-    public ErrorResponse handleNonFoundPillIndexException(NonFoundPillIndexException e){
+    public ErrorResponse handleNonExistsPillIndexException(NonExistsPillIndexException e){
         return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
     }
 
-    @ExceptionHandler(NonFoundPillNameException.class)
+    @ExceptionHandler(NonExistsPillNameException.class)
     @ResponseBody
-    public ErrorResponse handleNonFoundPillNameException(NonFoundPillNameException e){
+    public ErrorResponse handleNonExistsPillNameException(NonExistsPillNameException e){
+        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    }
+
+    @ExceptionHandler(NonExistsPrescriptionIndexException.class)
+    @ResponseBody
+    public ErrorResponse handleNonExistsPrescriptionIndexException(NonExistsPrescriptionIndexException e){
         return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
     }
 
@@ -69,7 +75,6 @@ public class CommonBindingException {
     public ErrorResponse handleBindException(BindException e){
         return ErrorResponse.of(Objects.requireNonNull(e.getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST.value());
     }
-
 
 
     @ExceptionHandler(SQLException.class)

@@ -9,6 +9,8 @@ import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionIndexSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 import com.kit.pillgood.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +19,10 @@ import java.util.*;
 
 @Service
 public class TakePillService {
+    private final Logger LOGGER = LoggerFactory.getLogger(TakePillService.class);
     private final GroupMemberRepository groupMemberRepository;
     private final TakePillRepository takePillRepository;
     private final PrescriptionRepository prescriptionRepository;
-    private final UserRepository userRepository;
 
     @Autowired
     public TakePillService(GroupMemberRepository groupMemberRepository,
@@ -29,7 +31,6 @@ public class TakePillService {
         this.groupMemberRepository = groupMemberRepository;
         this.takePillRepository = takePillRepository;
         this.prescriptionRepository = prescriptionRepository;
-        this.userRepository = userRepository;
     }
 
 //    public TakePill createTakePill(Long prescriptionIndex, Long pillIndex, Integer takeDay, Integer takeCount) {
@@ -41,9 +42,7 @@ public class TakePillService {
 //    }
 
     public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) throws NonRegistrationUserException {
-        if(userRepository.findByUserIndex(userIndex) == null){
-            throw new NonRegistrationUserException();
-        }
+
         List<GroupMember> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
         List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> takePillAndTakePillCheckAndGroupMemberIndexDTOList = new ArrayList<>();
 

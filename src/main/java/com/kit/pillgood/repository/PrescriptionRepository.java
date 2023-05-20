@@ -18,4 +18,5 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Long
             "from Prescription p left join p.disease d left join p.groupMember gm where gm.groupMemberIndex = :groupMemberIndex")
     List<PrescriptionAndDiseaseNameSummary> findPrescriptionAndDiseaseNameByGroupMemberIndex(@Param("groupMemberIndex") Long groupMemberIndex);
     List<PrescriptionIndexSummary> findPrescriptionIndexByGroupMember_GroupMemberIndexAndPrescriptionDateBetween(Long groupMemberIndex, LocalDate dateStart, LocalDate dateEnd);
+    boolean existsByPrescriptionIndex(Long prescriptionIndex);
 }

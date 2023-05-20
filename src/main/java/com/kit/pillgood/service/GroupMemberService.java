@@ -162,7 +162,7 @@ public class GroupMemberService {
     **/
     @Transactional
     public void deleteGroupMember(Long groupMemberIndex) throws NonRegistrationGroupException {
-        if(groupMemberRepository.findByGroupMemberIndex(groupMemberIndex) == null){
+        if(!groupMemberRepository.existsByGroupMemberIndex(groupMemberIndex)){
             throw new NonRegistrationGroupException();
         }
         groupMemberRepository.deleteByGroupMemberIndex(groupMemberIndex);
