@@ -29,6 +29,18 @@ public class EntityConverter {
         return groupMemberDTO;
     }
 
+    public static GroupMemberAndUserIndexDTO toGroupMemberAndUserIndexDTO(GroupMember groupMember) {
+        GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = GroupMemberAndUserIndexDTO.builder()
+                .groupMemberIndex(groupMember.getGroupMemberIndex())
+                .userIndex(groupMember.getUser().getUserIndex())
+                .groupMemberName(groupMember.getGroupMemberName())
+                .groupMemberBirth(groupMember.getGroupMemberBirth())
+                .groupMemberPhone(groupMember.getGroupMemberPhone())
+                .messageCheck(groupMember.getMessageCheck())
+                .build();
+        return groupMemberAndUserIndexDTO;
+    }
+
     // Disease
     public static Disease toDisease(DiseaseDTO diseaseDTO) {
         Disease disease = Disease.builder()

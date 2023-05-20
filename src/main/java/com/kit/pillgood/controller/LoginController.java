@@ -35,13 +35,7 @@ public class LoginController {
      **/
     @PostMapping("/")
     public UserDTO login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
-            try{
-                LOGGER.info("start login controller: ");
-                return loginService.login(loginDTO);
-            }catch (Exception e){
-                LOGGER.error("login controller error : {}", e.getMessage());
-                throw e;
-            }
+        return loginService.login(loginDTO);
     }
 
 

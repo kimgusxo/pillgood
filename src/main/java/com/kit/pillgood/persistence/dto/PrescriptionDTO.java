@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +15,13 @@ import java.util.List;
 @Data
 @Builder
 public class PrescriptionDTO {
-    @NotEmpty(message = "prescriptionIndex 누락")
+    @NotNull(message = "prescriptionIndex 누락")
     private Long prescriptionIndex;
 
-    @NotEmpty(message = "groupMember 누락")
+    @NotNull(message = "groupMember 누락")
     private Long groupMemberIndex;
 
-    @NotEmpty(message = "disease 누락")
+    @NotNull(message = "disease 누락")
     private Long diseaseIndex;
 
 

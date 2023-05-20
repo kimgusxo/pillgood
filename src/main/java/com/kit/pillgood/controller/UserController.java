@@ -29,9 +29,9 @@ public class UserController {
 //        return userService.createUser(userDTO);
 //    }
 
-    @PostMapping("/delete")
-    public boolean deleteUser(@ModelAttribute @Validated(ValidationGroups.groupDelete.class) UserDTO userDTO) throws EtcFirebaseException, NonRegistrationUserException {
-        return userService.deleteFirebaseUser(userDTO);
+    @DeleteMapping("/delete/{user-index}")
+    public boolean deleteUser(@PathVariable(name="user-index") Long userIndex) throws EtcFirebaseException, NonRegistrationUserException {
+        return userService.deleteFirebaseUser(userIndex);
    }
 
 //    @GetMapping("/users")
@@ -63,9 +63,10 @@ public class UserController {
      * @param: userDTO
      * @return: userDTO
      **/
-    @PostMapping("/update_token")
-    public UserDTO updateUserToken(@ModelAttribute @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException, AlreadyExistUserException {
-        return userService.updateUserToken(userDTO);
+    @PutMapping("/update-token/{user-index}")
+    public UserDTO updateUserToken(@PathVariable("user-index") Long userIndex,
+            @ModelAttribute @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException, AlreadyExistUserException {
+        return userService.updateUserToken(userIndex, userDTO);
     }
 
 }
