@@ -23,7 +23,7 @@ public class LoginService {
      * @return: 생성 된 userDTO
      **/
     public UserDTO login(LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
-        String userEmail = loginDTO.getUserEamil();
+        String userEmail = loginDTO.getUserEmail();
         String userToken = loginDTO.getUserToken();
 
         // firebase에 등록 여부 확인
