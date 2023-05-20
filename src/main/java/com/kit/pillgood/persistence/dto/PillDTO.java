@@ -3,12 +3,13 @@ package com.kit.pillgood.persistence.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 public class PillDTO {
 
-    @NotEmpty(message = "pillIndex 누락")
+    @NotNull(message = "pillIndex 누락")
     private Long pillIndex;
 
     @NotEmpty(message = "pillNum 누락")

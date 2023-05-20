@@ -43,7 +43,7 @@ public class GroupMemberService {
             throw new NonRegistrationUserException();
         }
 
-        if(groupMemberRepository.findByUser_UserIndexAndGroupMemberPhone(userIndex, groupMemberPhonNumber)){
+        if(groupMemberRepository.existsByUser_UserIndexAndGroupMemberPhone(userIndex, groupMemberPhonNumber)){
             throw new AlreadyExistGroupException();
         }
 
@@ -61,14 +61,7 @@ public class GroupMemberService {
 
         groupMember = groupMemberRepository.save(groupMember);
 
-        groupMemberAndUserIndexDTO = groupMemberAndUserIndexDTO.builder()
-                .groupMemberIndex(groupMember.getGroupMemberIndex())
-                .userIndex(groupMember.getUser().getUserIndex())
-                .groupMemberName(groupMember.getGroupMemberName())
-                .groupMemberBirth(groupMember.getGroupMemberBirth())
-                .groupMemberPhone(groupMember.getGroupMemberPhone())
-                .messageCheck(groupMember.getMessageCheck())
-                .build();
+        groupMemberAndUserIndexDTO = EntityConverter.toGroupMemberAndUserIndexDTO(groupMember);
 
         return groupMemberAndUserIndexDTO;
     }
@@ -80,14 +73,46 @@ public class GroupMemberService {
     **/
     @Transactional
     public GroupMemberAndUserIndexDTO updateGroupMember(Long groupMemberIndex, GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, NonRegistrationGroupException, AlreadyExistGroupException {
+
         GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
 
         if(groupMember != null) {
+            GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = settingUpdateGruopMemberData(groupMemberAndUserIndexDTO, groupMember);
+
             deleteGroupMember(groupMemberIndex);
-           return createGroupMember(groupMemberAndUserIndexDTO);
+
+           return createGroupMember(newGroupMemberAndUserIndexDTO);
         } else {
             throw new NonRegistrationGroupException();
         }
+    }
+
+
+    /**
+     * updateGroupMember() 파라미터 groupMemberAndUserIndexDTO에 없는 값을 기존 그룹원의 값으로 채우는 함수
+     * @param: 수정할 정보가 담긴 GroupMemberAndUserIndexDTO, 수정 전 GroupMember
+     * @return: DB에 저장될 GroupMemberAndUserIndexDTO 리턴
+     **/
+    private GroupMemberAndUserIndexDTO settingUpdateGruopMemberData(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, GroupMember groupMember){
+        GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = groupMemberAndUserIndexDTO;
+
+        if(newGroupMemberAndUserIndexDTO.getGroupMemberBirth() == null){
+            newGroupMemberAndUserIndexDTO.setGroupMemberBirth(groupMember.getGroupMemberBirth());
+        }
+        if(newGroupMemberAndUserIndexDTO.getGroupMemberName() == null){
+            newGroupMemberAndUserIndexDTO.setGroupMemberName(groupMember.getGroupMemberName());
+        }
+        if(newGroupMemberAndUserIndexDTO.getGroupMemberPhone() == null){
+            newGroupMemberAndUserIndexDTO.setGroupMemberPhone(groupMember.getGroupMemberPhone());
+        }
+        if(newGroupMemberAndUserIndexDTO.getMessageCheck() == null){
+            newGroupMemberAndUserIndexDTO.setMessageCheck(groupMember.getMessageCheck());
+        }
+        if (newGroupMemberAndUserIndexDTO.getUserIndex() == null){
+            newGroupMemberAndUserIndexDTO.setUserIndex(groupMember.getUser().getUserIndex());
+        }
+
+        return newGroupMemberAndUserIndexDTO;
     }
 
     /**

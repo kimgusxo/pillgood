@@ -1,16 +1,14 @@
 package com.kit.pillgood.service;
 
 import com.google.firebase.auth.*;
-import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.User;
-import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
-import com.kit.pillgood.exeptions.exeption.superExeption.AlreadyExistException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
-import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
 import com.kit.pillgood.repository.UserRepository;
 import com.kit.pillgood.util.EntityConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +18,13 @@ import java.util.List;
 
 @Service
 public class UserService {
+    private final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
     /**
      * 특정 유저 조회 메소드
      * @param: 이메일
@@ -49,7 +47,7 @@ public class UserService {
      * @return: DB에서 생성할 UserDTO
     **/
     public UserDTO createUser(UserDTO userDTO) {
-        if(userRepository.findByUserEmail(userDTO.getUserEmail()) != null){
+        if(userRepository.existsByUserEmail(userDTO.getUserEmail())){
             try {
                 deleteUser(userDTO.getUserIndex());
             } catch (NonRegistrationUserException ignore) {
@@ -57,6 +55,7 @@ public class UserService {
         }
         User user = EntityConverter.toUser(userDTO);
         userDTO = EntityConverter.toUserDTO(userRepository.save(user));
+        LOGGER.info("[info] 유저 생성 완료 user={}", user );
         return userDTO;
     }
 
@@ -68,11 +67,12 @@ public class UserService {
     @Transactional
     public UserDTO updateUserToken(UserDTO userDTO) throws NonRegistrationUserException {
         Long userIndex = userDTO.getUserIndex();
-        User user = userRepository.findByUserIndex(userIndex);
 
-        if(user != null) {
+        if(userRepository.existsByUserIndex(userIndex)) {
             deleteUser(userIndex);
-            return createUser(userDTO);
+            UserDTO nweUserDTO = createUser(userDTO);
+            LOGGER.info("[info] 유저 변경 완료 user={}", nweUserDTO );
+            return nweUserDTO;
         }
         else{
             throw new NonRegistrationUserException();
@@ -82,16 +82,17 @@ public class UserService {
 
     /**
      * 유저 삭제 메소드
+     *
      * @param: 유저 인덱스
-     * @return: void
      **/
-    public boolean deleteUser(Long userIndex) throws NonRegistrationUserException {
+    private void deleteUser(Long userIndex) throws NonRegistrationUserException {
         try{
             userRepository.deleteById(userIndex);
-        }catch(IllegalArgumentException ignored){
+            LOGGER.info("[info] 유저 삭제 완료 userIndex={}", userIndex );
+        }catch(IllegalArgumentException e){
+            LOGGER.info("[err] userRepository.deleteById() 수행 오류 {}",e.getMessage());
             throw new NonRegistrationUserException();
         }
-        return true;
     }
 
     /**
@@ -134,6 +135,7 @@ public class UserService {
         try {
             page = FirebaseAuth.getInstance().listUsers(null);
         } catch (FirebaseAuthException e) {
+            LOGGER.info("[err]  firebase api 오류 {}", e.getMessage());
             throw new EtcFirebaseException();
         }
 
@@ -141,10 +143,12 @@ public class UserService {
         for (ExportedUserRecord user : page.iterateAll()) {
             userEmail = user.getEmail();
             if (userEmail.equals(email)){
+                LOGGER.info("[info}]  firebaseUser={} exists", userEmail);
                 return true;
             }
         }
 
+        LOGGER.info("[info}]  firebaseUser={} notFound",  email);
         return false;
     }
 
@@ -153,34 +157,46 @@ public class UserService {
      * @param: String email
      * @return: boolean
      **/
-    public boolean deleteFirebaseUser(UserDTO userDTO) throws EtcFirebaseException, NonRegistrationUserException {
-        Long userIndex = userDTO.getUserIndex();
-        String userEmail = userDTO.getUserEmail();
+    public boolean deleteFirebaseUser(Long userIndex) throws EtcFirebaseException, NonRegistrationUserException {
+        User user = userRepository.findByUserIndex(userIndex);
+
+        if(user == null){
+            LOGGER.info("[err] 등록된 유저 없음, !firebase에 등록 되어있을 가능성 존재 {}", userIndex);
+            throw new NonRegistrationUserException();
+        }
+
+        String userEmail = user.getUserEmail();
         ListUsersPage page = null;
         try {
             page = FirebaseAuth.getInstance().listUsers(null);
         } catch (FirebaseAuthException e) {
+            LOGGER.info("[err] deleteFirebaseUser; firebase api 오류 {}", e.getMessage());
             throw new EtcFirebaseException();
         }
 
         String firebaseUserEmail = "";
         String firebaseUserUid = "";
-        for (ExportedUserRecord user : page.iterateAll()) {
-            firebaseUserEmail = user.getEmail();
+        for (ExportedUserRecord authUser : page.iterateAll()) {
+            firebaseUserEmail = authUser.getEmail();
             if (firebaseUserEmail.equals(userEmail)){
-                firebaseUserUid = user.getUid();
+                firebaseUserUid = authUser.getUid();
                 break;
             }
         }
 
         try {
             FirebaseAuth.getInstance().deleteUser(firebaseUserUid);
-        } catch (FirebaseAuthException e) {
+            LOGGER.info("[info] firebase유저 삭제 완료 email:{}", firebaseUserEmail );
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("[err] firebase에 등록되지 않음 userEmail:{}", user.getUserEmail());
             throw new EtcFirebaseException();
+        } catch (FirebaseAuthException e) {
+            throw new RuntimeException(e);
         }
 
         deleteUser(userIndex);
 
+        LOGGER.info("[info] {} 삭제 완료",  user.getUserEmail());
         return true;
     }
 
