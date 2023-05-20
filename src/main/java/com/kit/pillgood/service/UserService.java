@@ -65,8 +65,7 @@ public class UserService {
      * @return: DB에서 변경된 UserDTO
      **/
     @Transactional
-    public UserDTO updateUserToken(UserDTO userDTO) throws NonRegistrationUserException {
-        Long userIndex = userDTO.getUserIndex();
+    public UserDTO updateUserToken(Long userIndex, UserDTO userDTO) throws NonRegistrationUserException {
 
         if(userRepository.existsByUserIndex(userIndex)) {
             deleteUser(userIndex);

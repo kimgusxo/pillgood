@@ -63,9 +63,10 @@ public class UserController {
      * @param: userDTO
      * @return: userDTO
      **/
-    @PutMapping("/update-token")
-    public UserDTO updateUserToken(@ModelAttribute @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException, AlreadyExistUserException {
-        return userService.updateUserToken(userDTO);
+    @PutMapping("/update-token/{user-index}")
+    public UserDTO updateUserToken(@PathVariable("user-index") Long userIndex,
+            @ModelAttribute @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException, AlreadyExistUserException {
+        return userService.updateUserToken(userIndex, userDTO);
     }
 
 }
