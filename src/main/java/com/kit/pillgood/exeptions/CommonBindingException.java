@@ -1,9 +1,6 @@
 package com.kit.pillgood.exeptions;
 
-import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
-import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
-import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
-import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.exeptions.exeption.*;
 import com.kit.pillgood.exeptions.exeption.superExeption.AlreadyExistException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import org.springframework.http.HttpStatus;
@@ -45,7 +42,25 @@ public class CommonBindingException {
 
     @ExceptionHandler(AlreadyExistUserException.class)
     @ResponseBody
-    public ErrorResponse hadleAlreadyExistException(AlreadyExistUserException e){
+    public ErrorResponse hadleAlreadyExistUserException(AlreadyExistUserException e){
+        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    }
+
+    @ExceptionHandler(AlreadyExistGroupException.class)
+    @ResponseBody
+    public ErrorResponse hadleAlreadyExistGroupException(AlreadyExistGroupException e){
+        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    }
+
+    @ExceptionHandler(NonFoundPillIndexException.class)
+    @ResponseBody
+    public ErrorResponse handleNonFoundPillIndexException(NonFoundPillIndexException e){
+        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    }
+
+    @ExceptionHandler(NonFoundPillNameException.class)
+    @ResponseBody
+    public ErrorResponse handleNonFoundPillNameException(NonFoundPillNameException e){
         return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
     }
 
@@ -54,6 +69,8 @@ public class CommonBindingException {
     public ErrorResponse handleBindException(BindException e){
         return ErrorResponse.of(Objects.requireNonNull(e.getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST.value());
     }
+
+
 
     @ExceptionHandler(SQLException.class)
     @ResponseBody

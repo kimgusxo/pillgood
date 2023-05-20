@@ -1,5 +1,7 @@
 package com.kit.pillgood.persistence.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kit.pillgood.ConstraintValidatior.DateValid;
 import com.kit.pillgood.domain.Prescription;
 import com.kit.pillgood.domain.User;
 import lombok.AllArgsConstructor;
@@ -7,11 +9,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.executable.ValidateOnExecution;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +33,9 @@ public class GroupMemberAndUserIndexDTO {
     @NotEmpty(groups = {ValidationGroups.groupCreate.class}, message = "그룹원 이름은 필수 값입니다.")
     private String groupMemberName;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @NotEmpty(groups = {ValidationGroups.groupCreate.class}, message = "생일은 필수 값입니다.")
-    @Future(groups = {ValidationGroups.groupCreate.class}, message = "LocalDate type 형식으로 입력하세요(yyyy-MM-dd)")
+    @NotNull(groups = {ValidationGroups.groupCreate.class}, message = "생일은 필수 값입니다.")
+    @JsonFormat(pattern = "YYYY-MM-DD")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate groupMemberBirth;
 
     @NotEmpty(groups = {ValidationGroups.groupCreate.class}, message = "핸드폰 번호는 필수 값입니다.")

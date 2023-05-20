@@ -2,6 +2,7 @@ package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.Pill;
+import com.kit.pillgood.exeptions.exeption.NonFoundPillIndexException;
 import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import com.kit.pillgood.persistence.dto.PillDTO;
 import com.kit.pillgood.persistence.dto.SearchingConditionDTO;
@@ -27,8 +28,12 @@ public class PillService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
-    public PillDTO searchPillByPillIndex(Long pillIndex) {
-        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findByPillIndex(pillIndex));
+    public PillDTO searchPillByPillIndex(Long pillIndex) throws NonFoundPillIndexException {
+        Pill pill = pillRepository.findByPillIndex(pillIndex);
+        if(pill == null){
+            throw new NonFoundPillIndexException();
+        }
+        PillDTO pillDTO = EntityConverter.toPillDTO(pill);
         return pillDTO;
     }
 
