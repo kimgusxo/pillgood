@@ -2,11 +2,14 @@ package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.Pill;
-import com.kit.pillgood.persistence.dto.GroupMemberDTO;
+import com.kit.pillgood.exeptions.exeption.NonExistsPillIndexException;
+import com.kit.pillgood.exeptions.exeption.NonExistsPillNameException;
 import com.kit.pillgood.persistence.dto.PillDTO;
 import com.kit.pillgood.persistence.dto.SearchingConditionDTO;
 import com.kit.pillgood.repository.PillRepository;
 import com.kit.pillgood.util.EntityConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.List;
 
 @Service
 public class PillService {
+    private final Logger LOGGER = LoggerFactory.getLogger(PillService.class);
     private final PillRepository pillRepository;
 
     @Autowired
@@ -27,8 +31,14 @@ public class PillService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
-    public PillDTO searchPillByPillIndex(Long pillIndex) {
-        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findByPillIndex(pillIndex));
+    public PillDTO searchPillByPillIndex(Long pillIndex) throws NonExistsPillIndexException {
+        Pill pill = pillRepository.findByPillIndex(pillIndex);
+        if(pill == null){
+            LOGGER.info("[err] pillIndex={}를 찾을 수 없음", pillIndex);
+            throw new NonExistsPillIndexException();
+        }
+        PillDTO pillDTO = EntityConverter.toPillDTO(pill);
+        LOGGER.info("pillIndex={} 조회 성공", pillIndex);
         return pillDTO;
     }
 
@@ -37,8 +47,14 @@ public class PillService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
-    public PillDTO searchPillByPillName(String pillName) {
-        PillDTO pillDTO = EntityConverter.toPillDTO(pillRepository.findByPillName(pillName));
+    public PillDTO searchPillByPillName(String pillName) throws NonExistsPillNameException {
+        Pill pill = pillRepository.findByPillName(pillName);
+        if(pill == null){
+            LOGGER.info("[err] pillName={}을 찾을 수 없음", pillName);
+            throw new NonExistsPillNameException();
+        }
+        PillDTO pillDTO = EntityConverter.toPillDTO(pill);
+        LOGGER.info("pillIndex={} 조회 성공", pillName);
         return pillDTO;
     }
 
@@ -62,6 +78,8 @@ public class PillService {
             PillDTO pillDTO = EntityConverter.toPillDTO(pill);
             pillDTOs.add(pillDTO);
         }
+
+        LOGGER.info("약 리스트 조회 성공 {}", pillDTOs);
 
         return pillDTOs;
     }

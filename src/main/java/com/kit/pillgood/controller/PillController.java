@@ -1,5 +1,7 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.exeptions.exeption.NonExistsPillIndexException;
+import com.kit.pillgood.exeptions.exeption.NonExistsPillNameException;
 import com.kit.pillgood.persistence.dto.PillDTO;
 import com.kit.pillgood.persistence.dto.SearchingConditionDTO;
 import com.kit.pillgood.persistence.dto.ValidationGroups;
@@ -22,12 +24,12 @@ public class PillController {
     }
 
     @GetMapping("/search/pill-index/{pill-index}")
-    public PillDTO getPillByPillIndex(@PathVariable(name="pill-index") Long pillIndex) {
+    public PillDTO getPillByPillIndex(@PathVariable(name="pill-index") Long pillIndex) throws NonExistsPillIndexException {
         return pillService.searchPillByPillIndex(pillIndex);
     }
 
     @GetMapping("/search/pill-name/{pill-name}")
-    public PillDTO getPillByPillName(@PathVariable(name="pill-name") String pillName) {
+    public PillDTO getPillByPillName(@PathVariable(name="pill-name") String pillName) throws NonExistsPillNameException {
         return pillService.searchPillByPillName(pillName);
     }
 

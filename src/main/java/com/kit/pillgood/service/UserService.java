@@ -66,23 +66,36 @@ public class UserService {
      **/
     @Transactional
     public UserDTO updateUserToken(Long userIndex, UserDTO userDTO) throws NonRegistrationUserException {
+        User user = userRepository.findByUserIndex(userIndex);
 
-        if(userRepository.existsByUserIndex(userIndex)) {
+        if(user != null) {
             deleteUser(userIndex);
-            UserDTO nweUserDTO = createUser(userDTO);
-            LOGGER.info("[info] 유저 변경 완료 user={}", nweUserDTO );
-            return nweUserDTO;
+            UserDTO updateUserDTO = settingUpdateUserData(userDTO, user);
+            LOGGER.info("[info] 유저 변경 완료 user={}", updateUserDTO );
+            return createUser(updateUserDTO);
         }
         else{
             throw new NonRegistrationUserException();
         }
     }
 
+    /**
+     * updateUserToken() 파라미터 userDTO에 없는 값을 기존 그룹원의 값으로 채우는 함수
+     * @param: 수정할 정보가 담긴 userDTO, 수정 전 user
+     * @return: DB에 저장될 UserDTO 리턴
+     **/
+    private UserDTO settingUpdateUserData(UserDTO userDTO, User user){
+        UserDTO updateUserDTO = userDTO;
+        if(userDTO.getUserEmail() == null){
+            userDTO.setUserEmail(user.getUserEmail());
+        }
+        return updateUserDTO;
+    }
 
     /**
      * 유저 삭제 메소드
-     *
      * @param: 유저 인덱스
+     * @return: void
      **/
     private void deleteUser(Long userIndex) throws NonRegistrationUserException {
         try{

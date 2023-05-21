@@ -1,5 +1,6 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.exeptions.exeption.NonExistsPrescriptionIndexException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.persistence.dto.PrescriptionAndDiseaseNameDTO;
 import com.kit.pillgood.service.PrescriptionService;
@@ -31,7 +32,7 @@ public class PrescriptionController {
 //    }
 
     @DeleteMapping("/delete/{prescription-index}")
-    public void deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) {
+    public void deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) throws NonExistsPrescriptionIndexException {
         prescriptionService.deletePrescription(prescriptionIndex);
     }
 }
