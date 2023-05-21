@@ -66,11 +66,17 @@ public class OCRService {
         Imgcodecs.imwrite("C:/Users/lenovo/Pictures/OCRTest/AdaptiveBinary.png", binaryImage1);
 
         // 팽창 모폴로지
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(30, 30));
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(25, 25));
         Mat denoisedImage = new Mat();
         Imgproc.morphologyEx(binaryImage1, denoisedImage, Imgproc.MORPH_DILATE, kernel);
 
         Imgcodecs.imwrite("C:/Users/lenovo/Pictures/OCRTest/Mopology.png", denoisedImage);
+
+//        // 블러
+//        Mat BlurImage = new Mat();
+//        Imgproc.GaussianBlur(denoisedImage, BlurImage, new Size(3, 3), 0);
+//
+//        Imgcodecs.imwrite("C:/Users/lenovo/Pictures/OCRTest/Blur.png", BlurImage);
 
         // 컨투어 검출
         List<MatOfPoint> contours = new ArrayList<>();
@@ -85,7 +91,7 @@ public class OCRService {
             double epsilon = 0.02 * Imgproc.arcLength(contour2f, true);
             Imgproc.approxPolyDP(contour2f, approxCurve, epsilon, true);
 
-            if (approxCurve.total() == 4) {
+            if (approxCurve.total() >= 4) {
                 Rect rect = Imgproc.boundingRect(new MatOfPoint(approxCurve.toArray()));
                 textRegions.add(rect);
             }
@@ -99,17 +105,6 @@ public class OCRService {
         // 결과 이미지 저장
         Imgcodecs.imwrite("C:/Users/lenovo/Pictures/OCRTest/box.png", image);
 
-//        // 캐니엣지 검출
-//        Mat edges = new Mat();
-//        Imgproc.Canny(denoisedImage, edges, 100, 200);
-//
-//        Imgcodecs.imwrite("C:/Users/lenovo/Pictures/OCRTest/Canny.png", edges);
-
-//        // 블러
-//        Mat BlurImage = new Mat();
-//        Imgproc.GaussianBlur(denoisedImage, BlurImage, new Size(3, 3), 0);
-//
-//        Imgcodecs.imwrite("C:/Users/lenovo/Pictures/OCRTest/Blur.png", BlurImage);
     }
 
     public Mat cloneImagePreProcessing(Mat clone) {
@@ -132,6 +127,8 @@ public class OCRService {
                 801,                           // 블록 크기 (홀수)
                 50                           // 평균값에서 차감할 값
         );
+
+        Imgcodecs.imwrite("C:/Users/lenovo/Pictures/OCRTest/CloneBinary.png", binaryImage1);
 
         Mat lines = new Mat();
         Imgproc.HoughLinesP(binaryImage1, lines, 1, Math.PI / 180, 100, 100, 3);
