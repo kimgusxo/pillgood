@@ -1,11 +1,14 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.common.ResponseFormat;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.service.TakePillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,16 +25,19 @@ public class TakePillController {
     }
 
     @GetMapping("/search/calendar-data")
-    public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
+    public ResponseEntity<ResponseFormat> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
                                                                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
                                                                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd) throws NonRegistrationUserException {
-        return takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd);
+        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd));
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
     @PostMapping("/search")
-    public List<MedicationInfoDTO> getTakePillsByGroupMemberIndexListAndTargetDate(@RequestBody List<Long> groupMemberIndexList,
+    public ResponseEntity<ResponseFormat> getTakePillsByGroupMemberIndexListAndTargetDate(@RequestBody List<Long> groupMemberIndexList,
                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDate) {
-        return takePillService.searchMedicationInfoListByGroupMemberIndexListAndTargetDate(groupMemberIndexList, targetDate);
+
+        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), takePillService.searchMedicationInfoListByGroupMemberIndexListAndTargetDate(groupMemberIndexList, targetDate));
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
 //    @GetMapping("/initial-data")
