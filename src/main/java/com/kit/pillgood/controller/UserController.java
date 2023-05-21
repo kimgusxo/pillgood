@@ -1,6 +1,7 @@
 package com.kit.pillgood.controller;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import com.kit.pillgood.common.ResponseFormat;
 import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
@@ -9,6 +10,8 @@ import com.kit.pillgood.persistence.dto.UserDTO;
 import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,9 +67,10 @@ public class UserController {
      * @return: userDTO
      **/
     @PutMapping("/update-token/{user-index}")
-    public UserDTO updateUserToken(@PathVariable("user-index") Long userIndex,
-            @ModelAttribute @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException, AlreadyExistUserException {
-        return userService.updateUserToken(userIndex, userDTO);
+    public ResponseEntity<ResponseFormat> updateUserToken(@PathVariable("user-index") Long userIndex,
+            @ModelAttribute @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException {
+        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), userService.updateUserToken(userIndex, userDTO));
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
 }

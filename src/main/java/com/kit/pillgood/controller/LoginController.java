@@ -1,5 +1,6 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.common.ResponseFormat;
 import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
@@ -12,6 +13,8 @@ import com.kit.pillgood.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +37,9 @@ public class LoginController {
      * @return: userDTO
      **/
     @PostMapping("/")
-    public UserDTO login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
-        return loginService.login(loginDTO);
+    public ResponseEntity<ResponseFormat> login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
+        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), loginService.login(loginDTO));
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
 

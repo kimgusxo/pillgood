@@ -27,7 +27,7 @@ public class TakePillService {
     @Autowired
     public TakePillService(GroupMemberRepository groupMemberRepository,
                            TakePillRepository takePillRepository,
-                           PrescriptionRepository prescriptionRepository, UserRepository userRepository){
+                           PrescriptionRepository prescriptionRepository){
         this.groupMemberRepository = groupMemberRepository;
         this.takePillRepository = takePillRepository;
         this.prescriptionRepository = prescriptionRepository;

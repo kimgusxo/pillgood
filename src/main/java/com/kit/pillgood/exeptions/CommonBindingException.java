@@ -1,7 +1,7 @@
 package com.kit.pillgood.exeptions;
 
+import com.kit.pillgood.common.ResponseFormat;
 import com.kit.pillgood.exeptions.exeption.*;
-import com.kit.pillgood.exeptions.exeption.superExeption.AlreadyExistException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.validation.BindException;
 
-import java.net.ConnectException;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -18,69 +17,69 @@ import java.util.Objects;
 public class CommonBindingException {
     @ExceptionHandler(NonRegistrationFirebaseException.class)
     @ResponseBody
-    public ErrorResponse handleNonRegistrationFirebaseExeption(NonRegistrationFirebaseException e){
-        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    public ResponseFormat handleNonRegistrationFirebaseExeption(NonRegistrationFirebaseException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(NonRegistrationUserException.class)
     @ResponseBody
-    public ErrorResponse handleNonRegistrationUserExeption(NonRegistrationUserException e){
-        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    public ResponseFormat handleNonRegistrationUserExeption(NonRegistrationUserException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(NonRegistrationGroupException.class)
     @ResponseBody
-    public ErrorResponse handleNonRegistrationGroupExeption(NonRegistrationGroupException e){
-        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    public ResponseFormat handleNonRegistrationGroupExeption(NonRegistrationGroupException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(EtcFirebaseException.class)
     @ResponseBody
-    public ErrorResponse handleEtcFirebaseException(EtcFirebaseException e){
-        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    public ResponseFormat handleEtcFirebaseException(EtcFirebaseException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(AlreadyExistUserException.class)
     @ResponseBody
-    public ErrorResponse hadleAlreadyExistUserException(AlreadyExistUserException e){
-        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    public ResponseFormat hadleAlreadyExistUserException(AlreadyExistUserException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(AlreadyExistGroupException.class)
     @ResponseBody
-    public ErrorResponse hadleAlreadyExistGroupException(AlreadyExistGroupException e){
-        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    public ResponseFormat hadleAlreadyExistGroupException(AlreadyExistGroupException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(NonExistsPillIndexException.class)
     @ResponseBody
-    public ErrorResponse handleNonExistsPillIndexException(NonExistsPillIndexException e){
-        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    public ResponseFormat handleNonExistsPillIndexException(NonExistsPillIndexException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(NonExistsPillNameException.class)
     @ResponseBody
-    public ErrorResponse handleNonExistsPillNameException(NonExistsPillNameException e){
-        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    public ResponseFormat handleNonExistsPillNameException(NonExistsPillNameException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(NonExistsPrescriptionIndexException.class)
     @ResponseBody
-    public ErrorResponse handleNonExistsPrescriptionIndexException(NonExistsPrescriptionIndexException e){
-        return ErrorResponse.of(e.getMessage(), e.getHttpStatus().value());
+    public ResponseFormat handleNonExistsPrescriptionIndexException(NonExistsPrescriptionIndexException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(BindException.class)
     @ResponseBody
-    public ErrorResponse handleBindException(BindException e){
-        return ErrorResponse.of(Objects.requireNonNull(e.getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST.value());
+    public ResponseFormat handleBindException(BindException e){
+        return ResponseFormat.of(Objects.requireNonNull(e.getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST.value());
     }
 
 
     @ExceptionHandler(SQLException.class)
     @ResponseBody
-    public ErrorResponse handleSQLException(SQLException e){
-        return ErrorResponse.of("SQL Exception", e.getErrorCode());
+    public ResponseFormat handleSQLException(SQLException e){
+        return ResponseFormat.of("SQL Exception", e.getErrorCode());
     }
 
 }
