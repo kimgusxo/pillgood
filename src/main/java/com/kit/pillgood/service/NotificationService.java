@@ -70,6 +70,6 @@ public class NotificationService {
      * @return: 리턴 값 설명
     **/
     public void sendCreatedPrescriptionNotification(Long userIndex, Long groupMemberIndex) {
-        // 처방전 알림 생성 후 전송
+
     }
 }
