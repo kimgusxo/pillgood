@@ -178,6 +178,7 @@ public class NotificationService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
+
 //    @Scheduled(cron="1 0 0 * * *")
 //    public void settingTodayNotification() {
 //        // 00시 알림 당일 알림 일괄 생성
@@ -250,5 +251,6 @@ public class NotificationService {
     @Scheduled(cron="0 30 21 * * *")
     public void sendBedTimeNotification(){
         System.out.println(new Date() + " Cron test");
+
     }
 }
