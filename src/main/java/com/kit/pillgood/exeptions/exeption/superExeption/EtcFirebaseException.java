@@ -8,6 +8,6 @@ public class EtcFirebaseException extends Exception{
     private final HttpStatus httpStatus;
     public EtcFirebaseException(){
         super("firebase API err");
-        this.httpStatus = HttpStatus.UNAUTHORIZED;
+        this.httpStatus = HttpStatus.NOT_IMPLEMENTED;
     }
 }

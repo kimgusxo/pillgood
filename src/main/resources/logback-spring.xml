@@ -22,7 +22,7 @@
             <level>DEBUG</level>
         </filter>
         <file>${logdir}/${moduleId}/${logback}/debug_${type}.log</file>
-        <append>false</append>
+        <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${logdir}/${moduleId}/${logback}/debug_${type}.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -37,7 +37,7 @@
             <level>INFO</level>
         </filter>
         <file>${logdir}/${moduleId}/${logback}/info_${type}.log</file>
-        <append>false</append>
+        <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${logdir}/${moduleId}/${logback}/info_${type}.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <maxHistory>30</maxHistory>

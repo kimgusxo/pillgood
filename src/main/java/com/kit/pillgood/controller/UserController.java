@@ -69,7 +69,7 @@ public class UserController {
     @PutMapping("/update-token/{user-index}")
     public ResponseEntity<ResponseFormat> updateUserToken(@PathVariable("user-index") Long userIndex,
             @ModelAttribute @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), userService.updateUserToken(userIndex, userDTO));
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), userService.updateUserToken(userIndex, userDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 

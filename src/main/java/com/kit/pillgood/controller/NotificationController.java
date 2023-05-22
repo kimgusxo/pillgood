@@ -1,6 +1,7 @@
 package com.kit.pillgood.controller;
 
 import com.kit.pillgood.common.ResponseFormat;
+import com.kit.pillgood.exeptions.exeption.NonRegistrationNotificationException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.NotificationDTO;
 import com.kit.pillgood.service.NotificationService;
@@ -25,7 +26,15 @@ public class NotificationController {
 
     @GetMapping("/search/{user-index}")
     public ResponseEntity<ResponseFormat> getNotificationsByUserIndex(@PathVariable(name="user-index") Long userIndex) throws NonRegistrationUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), notificationService.searchNotificationByUserIndex(userIndex));
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), notificationService.searchNotificationByUserIndex(userIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
+
+    @PutMapping("/update/{notification-index}")
+    public ResponseEntity<ResponseFormat> updateNotificationCheckTrue(@PathVariable(name="notification-index") Long notificationIndex) throws NonRegistrationNotificationException, NonRegistrationUserException {
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), notificationService.updateNotificationCheck(notificationIndex));
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
+    }
+
+
 }

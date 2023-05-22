@@ -7,10 +7,14 @@ import com.kit.pillgood.exeptions.exeption.superExeption.AlreadyExistException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
+    private final Logger LOGGER = LoggerFactory.getLogger(LoginService.class);
+
     private UserService userService;
 
     public LoginService(UserService userService) {
@@ -28,6 +32,7 @@ public class LoginService {
 
         // firebase에 등록 여부 확인
         if(!userService.isFirebaseUser(userEmail)){
+            LOGGER.info("[err] 존재하지 않는 FirebaseUser={} 조회", userEmail);
             throw new NonRegistrationFirebaseException();
         }
 
@@ -43,7 +48,7 @@ public class LoginService {
 
             userService.createUser(userDTO);
         }
-
+        LOGGER.info("사용자 로그인 {}", userEmail);
         return userDTO;
 
     }

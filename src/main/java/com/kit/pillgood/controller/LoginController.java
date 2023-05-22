@@ -38,7 +38,7 @@ public class LoginController {
      **/
     @PostMapping("/")
     public ResponseEntity<ResponseFormat> login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), loginService.login(loginDTO));
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), loginService.login(loginDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
