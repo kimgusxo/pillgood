@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -41,6 +42,7 @@ public class TakePillService {
 //        // 복용해야 할 약 리스트 생성
 //    }
 
+    @Transactional
     public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) throws NonRegistrationUserException {
 
         List<GroupMember> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
@@ -77,6 +79,7 @@ public class TakePillService {
         return takePillAndTakePillCheckAndGroupMemberIndexDTOList;
     }
 
+    @Transactional
     public List<MedicationInfoDTO> searchMedicationInfoListByGroupMemberIndexListAndTargetDate(List<Long> groupMemberIndexList, LocalDate targetDate) {
         List<MedicationInfoDTO> medicationInfoDTOs = new ArrayList<>();
         for(Long groupMemberIndex : groupMemberIndexList) {

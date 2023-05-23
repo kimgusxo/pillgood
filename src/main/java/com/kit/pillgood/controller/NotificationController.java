@@ -36,5 +36,12 @@ public class NotificationController {
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
+    @GetMapping("/update")
+    public ResponseEntity<ResponseFormat> notificationTest(){
+        notificationService.settingTodayNotification();
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
+    }
+
 
 }
