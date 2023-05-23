@@ -197,6 +197,7 @@ public class NotificationService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
+
     @Scheduled(cron="1 0 0 * * *")
     public void settingTodayNotification() {
         LOGGER.info(".settingTodayNotification 알림 내역 조회 실행");
@@ -210,13 +211,6 @@ public class NotificationService {
 
         // 3일 이전 알림 내역 삭제
         deleteNotification();
-
-        sendWakeUpTimeNotification();
-        sendMorningTimeNotification();
-        sendLunchTimeNotification();
-        sendDinnerTimeNotification();
-        sendBedTimeNotification();
-
     }
 
     /**
@@ -266,8 +260,9 @@ public class NotificationService {
 
         // 알림 일괄 전송
         // 누구에서 뭐를
-        System.out.println(wakeUpTimeNotifications.get(0).getUserFcmToken());
-        System.out.println(wakeUpTimeNotifications.get(0).getGroupMemberName() + "님 기상약 알림 입니다.");
+//        System.out.println(wakeUpTimeNotifications.get(0).getUserFcmToken());
+//        System.out.println(wakeUpTimeNotifications.get(0).getGroupMemberName() + "님 기상약 알림 입니다.");
+        morningTimeNotifications.forEach(i -> System.out.println(i.getGroupMemberName()));
         LOGGER.info(".sendWakeUpTimeNotification  WakeUpTime 알림 전송 완료");
 
 
