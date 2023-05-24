@@ -10,6 +10,8 @@ import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.UserRepository;
 import com.kit.pillgood.util.EntityConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ import java.util.List;
 
 @Service
 public class GroupMemberService {
-
+    private final Logger LOGGER = LoggerFactory.getLogger(GroupMemberService.class);
     private final UserRepository userRepository;
     private final GroupMemberRepository groupMemberRepository;
 
@@ -39,11 +41,13 @@ public class GroupMemberService {
         Long userIndex = groupMemberAndUserIndexDTO.getUserIndex();
         String groupMemberPhonNumber = groupMemberAndUserIndexDTO.getGroupMemberPhone();
 
-        if(userRepository.findByUserIndex(userIndex) == null){
+        if(!userRepository.existsByUserIndex(userIndex)){
+            LOGGER.info("[err] 존재하지 않은 userIndex={} 검색", userIndex);
             throw new NonRegistrationUserException();
         }
 
-        if(groupMemberRepository.existsByUser_UserIndexAndGroupMemberPhone(userIndex, groupMemberPhonNumber)){
+        if(groupMemberRepository.existsByGroupMemberPhone(groupMemberPhonNumber)){
+            LOGGER.info("[err] 이미 등록된 전화번호={} 등록 시도", groupMemberPhonNumber);
             throw new AlreadyExistGroupException();
         }
 
@@ -62,6 +66,7 @@ public class GroupMemberService {
         groupMember = groupMemberRepository.save(groupMember);
 
         groupMemberAndUserIndexDTO = EntityConverter.toGroupMemberAndUserIndexDTO(groupMember);
+        LOGGER.info("그룹원 생성 완료{}", groupMemberAndUserIndexDTO);
 
         return groupMemberAndUserIndexDTO;
     }
@@ -76,15 +81,18 @@ public class GroupMemberService {
 
         GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
 
-        if(groupMember != null) {
-            GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = settingUpdateGruopMemberData(groupMemberAndUserIndexDTO, groupMember);
-
-            deleteGroupMember(groupMemberIndex);
-
-           return createGroupMember(newGroupMemberAndUserIndexDTO);
-        } else {
+        if(groupMember == null) {
+            LOGGER.info(".updateGroupMember [err] 존재하지 않는 그룹맴버={} 조회", groupMemberAndUserIndexDTO);
             throw new NonRegistrationGroupException();
         }
+
+        GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = settingUpdateGroupMemberData(groupMemberAndUserIndexDTO, groupMember);
+        GroupMemberAndUserIndexDTO newGroupMemberAndUserDTO = createGroupMember(newGroupMemberAndUserIndexDTO);
+        deleteGroupMember(groupMemberIndex);
+
+        LOGGER.info(".updateGroupMember 그룹맴버 수정 완료 {}", newGroupMemberAndUserDTO);
+
+        return newGroupMemberAndUserDTO;
     }
 
 
@@ -93,26 +101,25 @@ public class GroupMemberService {
      * @param: 수정할 정보가 담긴 GroupMemberAndUserIndexDTO, 수정 전 GroupMember
      * @return: DB에 저장될 GroupMemberAndUserIndexDTO 리턴
      **/
-    private GroupMemberAndUserIndexDTO settingUpdateGruopMemberData(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, GroupMember groupMember){
-        GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = groupMemberAndUserIndexDTO;
+    private GroupMemberAndUserIndexDTO settingUpdateGroupMemberData(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, GroupMember groupMember){
 
-        if(newGroupMemberAndUserIndexDTO.getGroupMemberBirth() == null){
-            newGroupMemberAndUserIndexDTO.setGroupMemberBirth(groupMember.getGroupMemberBirth());
+        if(groupMemberAndUserIndexDTO.getGroupMemberBirth() == null){
+            groupMemberAndUserIndexDTO.setGroupMemberBirth(groupMember.getGroupMemberBirth());
         }
-        if(newGroupMemberAndUserIndexDTO.getGroupMemberName() == null){
-            newGroupMemberAndUserIndexDTO.setGroupMemberName(groupMember.getGroupMemberName());
+        if(groupMemberAndUserIndexDTO.getGroupMemberName() == null){
+            groupMemberAndUserIndexDTO.setGroupMemberName(groupMember.getGroupMemberName());
         }
-        if(newGroupMemberAndUserIndexDTO.getGroupMemberPhone() == null){
-            newGroupMemberAndUserIndexDTO.setGroupMemberPhone(groupMember.getGroupMemberPhone());
+        if(groupMemberAndUserIndexDTO.getGroupMemberPhone() == null){
+            groupMemberAndUserIndexDTO.setGroupMemberPhone(groupMember.getGroupMemberPhone());
         }
-        if(newGroupMemberAndUserIndexDTO.getMessageCheck() == null){
-            newGroupMemberAndUserIndexDTO.setMessageCheck(groupMember.getMessageCheck());
+        if(groupMemberAndUserIndexDTO.getMessageCheck() == null){
+            groupMemberAndUserIndexDTO.setMessageCheck(groupMember.getMessageCheck());
         }
-        if (newGroupMemberAndUserIndexDTO.getUserIndex() == null){
-            newGroupMemberAndUserIndexDTO.setUserIndex(groupMember.getUser().getUserIndex());
+        if (groupMemberAndUserIndexDTO.getUserIndex() == null){
+            groupMemberAndUserIndexDTO.setUserIndex(groupMember.getUser().getUserIndex());
         }
 
-        return newGroupMemberAndUserIndexDTO;
+        return groupMemberAndUserIndexDTO;
     }
 
     /**
@@ -125,6 +132,7 @@ public class GroupMemberService {
         GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
 
         if(groupMember == null){
+            LOGGER.info("[err] 존재하지 않는 groupMemberIndex={} 조회", groupMemberIndex);
             throw new NonRegistrationGroupException();
         }
 
@@ -138,7 +146,8 @@ public class GroupMemberService {
     **/
     @Transactional
     public List<GroupMemberDTO> searchGroupMembersByUserIndex(Long userIndex) throws NonRegistrationUserException {
-        if(userRepository.findByUserIndex(userIndex) == null){
+        if(!userRepository.existsByUserIndex(userIndex)){
+            LOGGER.info("[err] 존재하지 않는 userIndex={} 조회", userIndex);
             throw new NonRegistrationUserException();
         }
 
@@ -152,19 +161,23 @@ public class GroupMemberService {
             groupMemberDTOs.add(groupMemberDTO);
         }
 
+        LOGGER.info("그룹원 조회 완료 {}", groupMemberDTOs);
+
         return groupMemberDTOs;
     }
 
     /**
      * 그룹원을 삭제하는 메소드
      * @param: 삭제할 groupMemberIndex
-     * @return: 리턴 없음
+     * @return: void
     **/
     @Transactional
     public void deleteGroupMember(Long groupMemberIndex) throws NonRegistrationGroupException {
         if(!groupMemberRepository.existsByGroupMemberIndex(groupMemberIndex)){
+            LOGGER.info("[err] 존재하지 않는 groupMemberIndex={} 조회", groupMemberIndex);
             throw new NonRegistrationGroupException();
         }
         groupMemberRepository.deleteByGroupMemberIndex(groupMemberIndex);
+        LOGGER.info("그룹원 삭제 완료 groupMemberIndex={}", groupMemberIndex);
     }
 }

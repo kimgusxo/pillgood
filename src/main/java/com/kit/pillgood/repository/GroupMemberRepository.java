@@ -11,6 +11,6 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
     GroupMember findByGroupMemberIndex(Long groupMemberIndex);
     List<GroupMember> findByUser_UserIndex(Long userIndex);
     void deleteByGroupMemberIndex(Long groupMemberIndex);
-    boolean existsByUser_UserIndexAndGroupMemberPhone(Long userIndex, String groupPhoneNumber);
+    boolean existsByGroupMemberPhone(String groupPhoneNumber);
     boolean existsByGroupMemberIndex(Long groupMemberIndex);
 }

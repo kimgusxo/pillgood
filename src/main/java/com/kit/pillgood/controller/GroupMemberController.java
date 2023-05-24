@@ -31,7 +31,7 @@ public class GroupMemberController {
     **/
     @PostMapping("/create")
     public ResponseEntity<ResponseFormat> createGroupMember(@ModelAttribute @Validated(ValidationGroups.groupCreate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, AlreadyExistGroupException {
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), groupMemberService.createGroupMember(groupMemberAndUserIndexDTO));
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.createGroupMember(groupMemberAndUserIndexDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
@@ -39,28 +39,28 @@ public class GroupMemberController {
     public ResponseEntity<ResponseFormat> getGroupMemberByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) throws NonRegistrationGroupException {
         GroupMemberDTO groupMemberDTO = groupMemberService.searchOneGroupMember(groupMemberIndex);
 
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), groupMemberDTO);
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberDTO);
 
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
     @GetMapping("/search/group-members")
     public ResponseEntity<ResponseFormat> getGroupMembersByUserIndex(@RequestParam Long userIndex) throws NonRegistrationUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), groupMemberService.searchGroupMembersByUserIndex(userIndex));
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.searchGroupMembersByUserIndex(userIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
     @PutMapping("/update/{group-member-index}")
     public ResponseEntity<ResponseFormat> updateGroupMember(@PathVariable (name="group-member-index") Long groupMemberIndex,
                                                            @ModelAttribute @Validated(ValidationGroups.groupUpdate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, NonRegistrationGroupException, AlreadyExistGroupException {
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(),  groupMemberService.updateGroupMember(groupMemberIndex, groupMemberAndUserIndexDTO));
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(),  groupMemberService.updateGroupMember(groupMemberIndex, groupMemberAndUserIndexDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{group-member-index}")
     public ResponseEntity<ResponseFormat> deleteGroupMember(@PathVariable(name="group-member-index") Long groupMemberIndex) throws NonRegistrationGroupException {
         groupMemberService.deleteGroupMember(groupMemberIndex);
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value());
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 

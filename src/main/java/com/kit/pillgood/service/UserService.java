@@ -68,15 +68,17 @@ public class UserService {
     public UserDTO updateUserToken(Long userIndex, UserDTO userDTO) throws NonRegistrationUserException {
         User user = userRepository.findByUserIndex(userIndex);
 
-        if(user != null) {
-            deleteUser(userIndex);
-            UserDTO updateUserDTO = settingUpdateUserData(userDTO, user);
-            LOGGER.info("[info] 유저 변경 완료 user={}", updateUserDTO );
-            return createUser(updateUserDTO);
-        }
-        else{
+        if(user == null) {
             throw new NonRegistrationUserException();
         }
+
+        UserDTO updateUserDTO = settingUpdateUserData(userDTO, user);
+
+        UserDTO newUserDTO = createUser(updateUserDTO);
+        deleteUser(userIndex);
+        LOGGER.info("[info] 유저 변경 완료 user={}", updateUserDTO );
+
+        return newUserDTO;
     }
 
     /**
@@ -86,8 +88,8 @@ public class UserService {
      **/
     private UserDTO settingUpdateUserData(UserDTO userDTO, User user){
         UserDTO updateUserDTO = userDTO;
-        if(userDTO.getUserEmail() == null){
-            userDTO.setUserEmail(user.getUserEmail());
+        if(updateUserDTO.getUserEmail() == null){
+            updateUserDTO.setUserEmail(user.getUserEmail());
         }
         return updateUserDTO;
     }

@@ -24,7 +24,7 @@ public class PrescriptionController {
 
     @GetMapping("/search/{group-member-index}")
     public ResponseEntity<ResponseFormat> getPrescriptionsByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) throws NonRegistrationGroupException {
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex));
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
@@ -38,7 +38,7 @@ public class PrescriptionController {
     @DeleteMapping("/delete/{prescription-index}")
     public ResponseEntity<ResponseFormat> deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) throws NonExistsPrescriptionIndexException {
         prescriptionService.deletePrescription(prescriptionIndex);
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value());
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 }

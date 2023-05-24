@@ -35,7 +35,8 @@ public class PrescriptionService {
     @Transactional
     public List<PrescriptionAndDiseaseNameDTO> searchGroupMemberPrescriptionsByGroupMemberIndex(Long groupMemberIndex) throws NonRegistrationGroupException {
 
-        if(groupMemberRepository.findByGroupMemberIndex(groupMemberIndex) == null){
+        if(!groupMemberRepository.existsByGroupMemberIndex(groupMemberIndex)){
+            LOGGER.info("[err] 존재하지 않는 그룹원={} 조회", groupMemberIndex);
             throw new NonRegistrationGroupException();
         }
 

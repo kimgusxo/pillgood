@@ -28,7 +28,7 @@ public class TakePillController {
     public ResponseEntity<ResponseFormat> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
                                                                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
                                                                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd) throws NonRegistrationUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd));
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
@@ -36,7 +36,7 @@ public class TakePillController {
     public ResponseEntity<ResponseFormat> getTakePillsByGroupMemberIndexListAndTargetDate(@RequestBody List<Long> groupMemberIndexList,
                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDate) {
 
-        ResponseFormat responseFormat = ResponseFormat.of("성공 코드", HttpStatus.OK.value(), takePillService.searchMedicationInfoListByGroupMemberIndexListAndTargetDate(groupMemberIndexList, targetDate));
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), takePillService.searchMedicationInfoListByGroupMemberIndexListAndTargetDate(groupMemberIndexList, targetDate));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
