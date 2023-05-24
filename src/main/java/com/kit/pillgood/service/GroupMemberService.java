@@ -86,7 +86,7 @@ public class GroupMemberService {
             throw new NonRegistrationGroupException();
         }
 
-        GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = settingUpdateGruopMemberData(groupMemberAndUserIndexDTO, groupMember);
+        GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = settingUpdateGroupMemberData(groupMemberAndUserIndexDTO, groupMember);
         GroupMemberAndUserIndexDTO newGroupMemberAndUserDTO = createGroupMember(newGroupMemberAndUserIndexDTO);
         deleteGroupMember(groupMemberIndex);
 
@@ -101,26 +101,25 @@ public class GroupMemberService {
      * @param: 수정할 정보가 담긴 GroupMemberAndUserIndexDTO, 수정 전 GroupMember
      * @return: DB에 저장될 GroupMemberAndUserIndexDTO 리턴
      **/
-    private GroupMemberAndUserIndexDTO settingUpdateGruopMemberData(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, GroupMember groupMember){
-        GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = groupMemberAndUserIndexDTO;
+    private GroupMemberAndUserIndexDTO settingUpdateGroupMemberData(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, GroupMember groupMember){
 
-        if(newGroupMemberAndUserIndexDTO.getGroupMemberBirth() == null){
-            newGroupMemberAndUserIndexDTO.setGroupMemberBirth(groupMember.getGroupMemberBirth());
+        if(groupMemberAndUserIndexDTO.getGroupMemberBirth() == null){
+            groupMemberAndUserIndexDTO.setGroupMemberBirth(groupMember.getGroupMemberBirth());
         }
-        if(newGroupMemberAndUserIndexDTO.getGroupMemberName() == null){
-            newGroupMemberAndUserIndexDTO.setGroupMemberName(groupMember.getGroupMemberName());
+        if(groupMemberAndUserIndexDTO.getGroupMemberName() == null){
+            groupMemberAndUserIndexDTO.setGroupMemberName(groupMember.getGroupMemberName());
         }
-        if(newGroupMemberAndUserIndexDTO.getGroupMemberPhone() == null){
-            newGroupMemberAndUserIndexDTO.setGroupMemberPhone(groupMember.getGroupMemberPhone());
+        if(groupMemberAndUserIndexDTO.getGroupMemberPhone() == null){
+            groupMemberAndUserIndexDTO.setGroupMemberPhone(groupMember.getGroupMemberPhone());
         }
-        if(newGroupMemberAndUserIndexDTO.getMessageCheck() == null){
-            newGroupMemberAndUserIndexDTO.setMessageCheck(groupMember.getMessageCheck());
+        if(groupMemberAndUserIndexDTO.getMessageCheck() == null){
+            groupMemberAndUserIndexDTO.setMessageCheck(groupMember.getMessageCheck());
         }
-        if (newGroupMemberAndUserIndexDTO.getUserIndex() == null){
-            newGroupMemberAndUserIndexDTO.setUserIndex(groupMember.getUser().getUserIndex());
+        if (groupMemberAndUserIndexDTO.getUserIndex() == null){
+            groupMemberAndUserIndexDTO.setUserIndex(groupMember.getUser().getUserIndex());
         }
 
-        return newGroupMemberAndUserIndexDTO;
+        return groupMemberAndUserIndexDTO;
     }
 
     /**
@@ -170,7 +169,7 @@ public class GroupMemberService {
     /**
      * 그룹원을 삭제하는 메소드
      * @param: 삭제할 groupMemberIndex
-     * @return: 리턴 없음
+     * @return: void
     **/
     @Transactional
     public void deleteGroupMember(Long groupMemberIndex) throws NonRegistrationGroupException {

@@ -3,7 +3,6 @@ package com.kit.pillgood.service;
 import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
-import com.kit.pillgood.exeptions.exeption.superExeption.AlreadyExistException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
     private final Logger LOGGER = LoggerFactory.getLogger(LoginService.class);
 
-    private UserService userService;
+    private final UserService userService;
 
     public LoginService(UserService userService) {
         this.userService = userService;

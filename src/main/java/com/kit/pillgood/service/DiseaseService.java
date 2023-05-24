@@ -24,7 +24,6 @@ public class DiseaseService {
      * @return: 리턴 값 설명
     **/
     public DiseaseDTO searchDiseaseByDiseaseCode(String diseaseCode) {
-        DiseaseDTO diseaseDTO = EntityConverter.toDiseaseDTO(diseaseRepository.findByDiseaseCode(diseaseCode));
-        return diseaseDTO;
+        return EntityConverter.toDiseaseDTO(diseaseRepository.findByDiseaseCode(diseaseCode));
     }
 }

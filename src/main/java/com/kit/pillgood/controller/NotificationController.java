@@ -31,17 +31,9 @@ public class NotificationController {
     }
 
     @PutMapping("/update/{notification-index}")
-    public ResponseEntity<ResponseFormat> updateNotificationCheckTrue(@PathVariable(name="notification-index") Long notificationIndex) throws NonRegistrationNotificationException, NonRegistrationUserException {
+    public ResponseEntity<ResponseFormat> updateNotificationCheckToTrue(@PathVariable(name="notification-index") Long notificationIndex) throws NonRegistrationNotificationException, NonRegistrationUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), notificationService.updateNotificationCheck(notificationIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
-
-    @GetMapping("/update")
-    public ResponseEntity<ResponseFormat> notificationTest(){
-        notificationService.settingTodayNotification();
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
-        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
-    }
-
 
 }

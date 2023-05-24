@@ -88,8 +88,8 @@ public class UserService {
      **/
     private UserDTO settingUpdateUserData(UserDTO userDTO, User user){
         UserDTO updateUserDTO = userDTO;
-        if(userDTO.getUserEmail() == null){
-            userDTO.setUserEmail(user.getUserEmail());
+        if(updateUserDTO.getUserEmail() == null){
+            updateUserDTO.setUserEmail(user.getUserEmail());
         }
         return updateUserDTO;
     }
