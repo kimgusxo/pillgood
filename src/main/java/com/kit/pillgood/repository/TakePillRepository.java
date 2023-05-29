@@ -20,7 +20,8 @@ public interface TakePillRepository  extends JpaRepository<TakePill, Long> {
             "tp.takeDay as takeDay, tp.takeCount as takeCount, tpc.takePillCheckIndex as takePillCheckIndex, " +
             "tpc.takeDate as takeDate, tpc.takePillTime as takePillTime, tpc.takeCheck as takeCheck " +
             "from TakePill tp join TakePillCheck tpc on tp.takePillIndex = tpc.takePill.takePillIndex " +
-            "join tp.prescription p on p.prescriptionIndex = :prescriptionIndex")
+            "join tp.prescription p on p.prescriptionIndex = :prescriptionIndex " +
+            "order by tpc.takeDate ASC")
     List<TakePillAndTakePillCheckSummary> findTakePillAndCheckByPrescriptionIndex(@Param("prescriptionIndex") Long prescriptionIndex);
 
     @Query("select gm.groupMemberIndex as groupMemberIndex, gm.groupMemberName as groupMemberName, " +
