@@ -5,29 +5,6 @@ import com.kit.pillgood.persistence.dto.*;
 import com.kit.pillgood.persistence.projection.PrescriptionAndDiseaseNameSummary;
 
 public class EntityConverter {
-    // Group
-    public static GroupMember toGroupMember(GroupMemberDTO groupMemberDTO) {
-        GroupMember groupMember = GroupMember.builder()
-                .groupMemberIndex(groupMemberDTO.getGroupMemberIndex())
-                .groupMemberName(groupMemberDTO.getGroupMemberName())
-                .groupMemberBirth(groupMemberDTO.getGroupMemberBirth())
-                .groupMemberPhone(groupMemberDTO.getGroupMemberPhone())
-                .messageCheck(groupMemberDTO.getMessageCheck())
-                .build();
-        return groupMember;
-    }
-
-    public static GroupMemberDTO toGroupMemberDTO(GroupMember groupMember) {
-        GroupMemberDTO groupMemberDTO = GroupMemberDTO.builder()
-                .groupMemberIndex(groupMember.getGroupMemberIndex())
-                .userIndex(null)
-                .groupMemberName(groupMember.getGroupMemberName())
-                .groupMemberBirth(groupMember.getGroupMemberBirth())
-                .groupMemberPhone(groupMember.getGroupMemberPhone())
-                .messageCheck(groupMember.getMessageCheck())
-                .build();
-        return groupMemberDTO;
-    }
 
     public static GroupMemberAndUserIndexDTO toGroupMemberAndUserIndexDTO(GroupMember groupMember) {
         GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = GroupMemberAndUserIndexDTO.builder()

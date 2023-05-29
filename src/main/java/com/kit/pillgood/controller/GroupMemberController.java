@@ -5,7 +5,6 @@ import com.kit.pillgood.exeptions.exeption.AlreadyExistGroupException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
-import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.GroupMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +36,9 @@ public class GroupMemberController {
 
     @GetMapping("/search/{group-member-index}")
     public ResponseEntity<ResponseFormat> getGroupMemberByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) throws NonRegistrationGroupException {
-        GroupMemberDTO groupMemberDTO = groupMemberService.searchOneGroupMember(groupMemberIndex);
+        GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = groupMemberService.searchOneGroupMember(groupMemberIndex);
 
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberDTO);
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberAndUserIndexDTO);
 
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }

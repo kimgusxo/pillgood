@@ -6,7 +6,6 @@ import com.kit.pillgood.exeptions.exeption.AlreadyExistGroupException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
-import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.UserRepository;
 import com.kit.pillgood.util.EntityConverter;
@@ -128,7 +127,7 @@ public class GroupMemberService {
     * @return: DB에서 찾은 그룹원 리턴
     **/
     @Transactional
-    public GroupMemberDTO searchOneGroupMember(Long groupMemberIndex) throws NonRegistrationGroupException {
+    public GroupMemberAndUserIndexDTO searchOneGroupMember(Long groupMemberIndex) throws NonRegistrationGroupException {
         GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
 
         if(groupMember == null){
@@ -136,7 +135,7 @@ public class GroupMemberService {
             throw new NonRegistrationGroupException();
         }
 
-        return EntityConverter.toGroupMemberDTO(groupMember);
+        return EntityConverter.toGroupMemberAndUserIndexDTO(groupMember);
     }
 
     /**
@@ -145,7 +144,7 @@ public class GroupMemberService {
      * @return: DB에서 찾은 모든 그룹원 리턴
     **/
     @Transactional
-    public List<GroupMemberDTO> searchGroupMembersByUserIndex(Long userIndex) throws NonRegistrationUserException {
+    public List<GroupMemberAndUserIndexDTO> searchGroupMembersByUserIndex(Long userIndex) throws NonRegistrationUserException {
         if(!userRepository.existsByUserIndex(userIndex)){
             LOGGER.info("[err] 존재하지 않는 userIndex={} 조회", userIndex);
             throw new NonRegistrationUserException();
@@ -154,16 +153,16 @@ public class GroupMemberService {
         List<GroupMember> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
 
 
-        List<GroupMemberDTO> groupMemberDTOs = new ArrayList<>();
+        List<GroupMemberAndUserIndexDTO> groupMemberAndUserIndexDTOS = new ArrayList<>();
 
         for(GroupMember groupMember : groupMembers) {
-            GroupMemberDTO groupMemberDTO = EntityConverter.toGroupMemberDTO(groupMember);
-            groupMemberDTOs.add(groupMemberDTO);
+            GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = EntityConverter.toGroupMemberAndUserIndexDTO(groupMember);
+            groupMemberAndUserIndexDTOS.add(groupMemberAndUserIndexDTO);
         }
 
-        LOGGER.info("그룹원 조회 완료 {}", groupMemberDTOs);
+        LOGGER.info("그룹원 조회 완료 {}", groupMemberAndUserIndexDTOS);
 
-        return groupMemberDTOs;
+        return groupMemberAndUserIndexDTOS;
     }
 
     /**

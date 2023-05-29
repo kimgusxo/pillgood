@@ -1,7 +1,5 @@
 package com.kit.pillgood.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kit.pillgood.persistence.dto.GroupMemberDTO;
 import lombok.*;
 
 import javax.persistence.*;
