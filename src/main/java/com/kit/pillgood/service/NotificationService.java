@@ -204,10 +204,9 @@ public class NotificationService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
-
     @Scheduled(cron="1 0 0 * * *")
     public void settingTodayNotification() {
-        LOGGER.info(".settingTodayNotification 알림 내역 조회 실행");
+        LOGGER.info(".settingTodayNotification 알림 일괄 생성 실행");
         // 00시 알림 당일 알림 일괄 생성
         wakeUpTimeNotifications = searchTodayNotification(LocalDate.now(),1);
         morningTimeNotifications = searchTodayNotification(LocalDate.now(),2);
@@ -250,51 +249,54 @@ public class NotificationService {
      **/
     @Scheduled(cron="0 30 6 * * *")
     public void sendWakeUpTimeNotification() throws EtcFirebaseException {
-        List<Notification> notificationList = new ArrayList<>();
-        User user = new User();
-        wakeUpTimeNotifications.forEach(n -> {
-            user.setUserIndex(n.getUserIndex());
-            notificationList.add(
-                    Notification.builder()
-                            .notificationIndex(null)
-                            .notificationTime(LocalDateTime.now())
-                            .notificationContent(n.getGroupMemberName() + "님 기상약 알림 입니다.")
-                            .user(user)
-                            .notificationCheck(false)
-                            .build()
-            );
-        });
+        if(!wakeUpTimeNotifications.isEmpty()){
 
-        // 알림 일괄 전송
-        List<Message> messages = new ArrayList<>();
-        bedTimeNotifications.forEach(n -> {
-            messages.add(
-                    Message.builder()
-                            .setNotification(FirebaseNotification.builder()
-                                    .setTitle("알림")
-                                    .setBody(n.getGroupMemberName() + "님 기상약 알림 입니다.")
-                                    .build())
-                            .setToken(n.getUserFcmToken())
-                            .build()
-            );
-        });
+            List<Notification> notificationList = new ArrayList<>();
+            User user = new User();
+            wakeUpTimeNotifications.forEach(n -> {
+                user.setUserIndex(n.getUserIndex());
+                notificationList.add(
+                        Notification.builder()
+                                .notificationIndex(null)
+                                .notificationTime(LocalDateTime.now())
+                                .notificationContent(n.getGroupMemberName() + "님 기상약 알림 입니다.")
+                                .user(user)
+                                .notificationCheck(false)
+                                .build()
+                );
+            });
 
-        BatchResponse response;
-        try {
-            response = FirebaseMessaging.getInstance().sendAll(messages);
-            LOGGER.info(".sendWakeUpTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
-        } catch (FirebaseMessagingException e) {
-            LOGGER.info(".sendWakeUpTimeNotification [err] fail firebase send notification {}", e.getMessage());
-            throw new EtcFirebaseException();
+            // 알림 일괄 전송
+            List<Message> messages = new ArrayList<>();
+            bedTimeNotifications.forEach(n -> {
+                messages.add(
+                        Message.builder()
+                                .setNotification(FirebaseNotification.builder()
+                                        .setTitle("알림")
+                                        .setBody(n.getGroupMemberName() + "님 기상약 알림 입니다.")
+                                        .build())
+                                .setToken(n.getUserFcmToken())
+                                .build()
+                );
+            });
+
+            BatchResponse response;
+            try {
+                response = FirebaseMessaging.getInstance().sendAll(messages);
+                LOGGER.info(".sendWakeUpTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
+            } catch (FirebaseMessagingException e) {
+                LOGGER.info(".sendWakeUpTimeNotification [err] fail firebase send notification {}", e.getMessage());
+                throw new EtcFirebaseException();
+            }
+
+
+            // notificationDTOList의 정보로 알림 전송 후 notification 생성
+            notificationRepository.saveAll(notificationList);
+            LOGGER.info(".sendWakeUpTimeNotification  WakeUpTime 알림 생성 완료{} ", notificationList);
         }
-
-
-        // notificationDTOList의 정보로 알림 전송 후 notification 생성
-        notificationRepository.saveAll(notificationList);
-        LOGGER.info(".sendWakeUpTimeNotification  WakeUpTime 알림 생성 완료{} ", notificationList);
-
-
-
+        else {
+            LOGGER.info(".sendWakeUpTimeNotification  전송할 알림이 없습니다.");
+        }
     }
 
     /**
@@ -304,48 +306,53 @@ public class NotificationService {
      **/
     @Scheduled(cron="0 30 8 * * *")
     public void sendMorningTimeNotification () throws EtcFirebaseException {
-        List<Notification> notificationList = new ArrayList<>();
-        User user = new User();
-        morningTimeNotifications.forEach(n -> {
-            user.setUserIndex(n.getUserIndex());
-            notificationList.add(
-                    Notification.builder()
-                            .notificationIndex(null)
-                            .notificationTime(LocalDateTime.now())
-                            .notificationContent(n.getGroupMemberName() + "님 아침약 알림 입니다.")
-                            .user(user)
-                            .notificationCheck(false)
-                            .build()
-            );
-        });
+        if(!morningTimeNotifications.isEmpty()) {
+            List<Notification> notificationList = new ArrayList<>();
+            User user = new User();
+            morningTimeNotifications.forEach(n -> {
+                user.setUserIndex(n.getUserIndex());
+                notificationList.add(
+                        Notification.builder()
+                                .notificationIndex(null)
+                                .notificationTime(LocalDateTime.now())
+                                .notificationContent(n.getGroupMemberName() + "님 아침약 알림 입니다.")
+                                .user(user)
+                                .notificationCheck(false)
+                                .build()
+                );
+            });
 
-        // 알림 일괄 전송
-        List<Message> messages = new ArrayList<>();
-        bedTimeNotifications.forEach(n -> {
-            messages.add(
-                    Message.builder()
-                            .setNotification(FirebaseNotification.builder()
-                                    .setTitle("알림")
-                                    .setBody(n.getGroupMemberName() + "님 아침약 알림 입니다.")
-                                    .build())
-                            .setToken(n.getUserFcmToken())
-                            .build()
-            );
-        });
+            // 알림 일괄 전송
+            List<Message> messages = new ArrayList<>();
+            bedTimeNotifications.forEach(n -> {
+                messages.add(
+                        Message.builder()
+                                .setNotification(FirebaseNotification.builder()
+                                        .setTitle("알림")
+                                        .setBody(n.getGroupMemberName() + "님 아침약 알림 입니다.")
+                                        .build())
+                                .setToken(n.getUserFcmToken())
+                                .build()
+                );
+            });
 
-        BatchResponse response;
-        try {
-            response = FirebaseMessaging.getInstance().sendAll(messages);
-            LOGGER.info(".sendMorningTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
-        } catch (FirebaseMessagingException e) {
-            LOGGER.info(".sendMorningTimeNotification [err] fail firebase send notification {}", e.getMessage());
-            throw new EtcFirebaseException();
+            BatchResponse response;
+            try {
+                response = FirebaseMessaging.getInstance().sendAll(messages);
+                LOGGER.info(".sendMorningTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
+            } catch (FirebaseMessagingException e) {
+                LOGGER.info(".sendMorningTimeNotification [err] fail firebase send notification {}", e.getMessage());
+                throw new EtcFirebaseException();
+            }
+
+
+            // notificationDTOList의 정보로 알림 전송 후 notification 생성
+            notificationRepository.saveAll(notificationList);
+            LOGGER.info(".sendMorningTimeNotification  MorningTime 알림 생성 완료{} ", notificationList);
         }
-
-
-        // notificationDTOList의 정보로 알림 전송 후 notification 생성
-        notificationRepository.saveAll(notificationList);
-        LOGGER.info(".sendMorningTimeNotification  MorningTime 알림 생성 완료{} ",notificationList );
+        else {
+            LOGGER.info(".sendMorningTimeNotification  전송할 알림이 없습니다.");
+        }
     }
 
     /**
@@ -355,48 +362,53 @@ public class NotificationService {
      **/
     @Scheduled(cron="0 30 12 * * *")
     public void sendLunchTimeNotification() throws EtcFirebaseException {
-        List<Notification> notificationList = new ArrayList<>();
-        User user = new User();
-        lunchTimeNotification.forEach(n -> {
-            user.setUserIndex(n.getUserIndex());
-            notificationList.add(
-                    Notification.builder()
-                            .notificationIndex(null)
-                            .notificationTime(LocalDateTime.now())
-                            .notificationContent(n.getGroupMemberName() + "님 점심약 알림 입니다.")
-                            .user(user)
-                            .notificationCheck(false)
-                            .build()
-            );
-        });
+        if(!lunchTimeNotification.isEmpty()) {
+            List<Notification> notificationList = new ArrayList<>();
+            User user = new User();
+            lunchTimeNotification.forEach(n -> {
+                user.setUserIndex(n.getUserIndex());
+                notificationList.add(
+                        Notification.builder()
+                                .notificationIndex(null)
+                                .notificationTime(LocalDateTime.now())
+                                .notificationContent(n.getGroupMemberName() + "님 점심약 알림 입니다.")
+                                .user(user)
+                                .notificationCheck(false)
+                                .build()
+                );
+            });
 
-        // 알림 일괄 전송
-        List<Message> messages = new ArrayList<>();
-        bedTimeNotifications.forEach(n -> {
-            messages.add(
-                    Message.builder()
-                            .setNotification(FirebaseNotification.builder()
-                                    .setTitle("알림")
-                                    .setBody(n.getGroupMemberName() + "님 점심약 알림 입니다.")
-                                    .build())
-                            .setToken(n.getUserFcmToken())
-                            .build()
-            );
-        });
+            // 알림 일괄 전송
+            List<Message> messages = new ArrayList<>();
+            bedTimeNotifications.forEach(n -> {
+                messages.add(
+                        Message.builder()
+                                .setNotification(FirebaseNotification.builder()
+                                        .setTitle("알림")
+                                        .setBody(n.getGroupMemberName() + "님 점심약 알림 입니다.")
+                                        .build())
+                                .setToken(n.getUserFcmToken())
+                                .build()
+                );
+            });
 
-        BatchResponse response;
-        try {
-            response = FirebaseMessaging.getInstance().sendAll(messages);
-            LOGGER.info(".sendLunchTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
-        } catch (FirebaseMessagingException e) {
-            LOGGER.info(".sendLunchTimeNotification [err] fail firebase send notification {}", e.getMessage());
-            throw new EtcFirebaseException();
+            BatchResponse response;
+            try {
+                response = FirebaseMessaging.getInstance().sendAll(messages);
+                LOGGER.info(".sendLunchTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
+            } catch (FirebaseMessagingException e) {
+                LOGGER.info(".sendLunchTimeNotification [err] fail firebase send notification {}", e.getMessage());
+                throw new EtcFirebaseException();
+            }
+
+
+            // notificationDTOList의 정보로 알림 전송 후 notification 생성
+            notificationRepository.saveAll(notificationList);
+            LOGGER.info(".sendLunchTimeNotification  MorningTime 알림 생성 완료{} ", notificationList);
         }
-
-
-        // notificationDTOList의 정보로 알림 전송 후 notification 생성
-        notificationRepository.saveAll(notificationList);
-        LOGGER.info(".sendLunchTimeNotification  MorningTime 알림 생성 완료{} ",notificationList );
+        else {
+            LOGGER.info(".sendLunchTimeNotification  전송할 알림이 없습니다.");
+        }
     }
 
     /**
@@ -406,48 +418,52 @@ public class NotificationService {
      **/
     @Scheduled(cron="0 30 17 * * *")
     public void sendDinnerTimeNotification() throws EtcFirebaseException {
-        List<Notification> notificationList = new ArrayList<>();
-        User user = new User();
-        dinnerTimeNotifications.forEach(n -> {
-            user.setUserIndex(n.getUserIndex());
-            notificationList.add(
-                    Notification.builder()
-                            .notificationIndex(null)
-                            .notificationTime(LocalDateTime.now())
-                            .notificationContent(n.getGroupMemberName() + "님 저녁약 알림 입니다.")
-                            .user(user)
-                            .notificationCheck(false)
-                            .build()
-            );
-        });
+        if(!dinnerTimeNotifications.isEmpty()) {
+            List<Notification> notificationList = new ArrayList<>();
+            User user = new User();
+            dinnerTimeNotifications.forEach(n -> {
+                user.setUserIndex(n.getUserIndex());
+                notificationList.add(
+                        Notification.builder()
+                                .notificationIndex(null)
+                                .notificationTime(LocalDateTime.now())
+                                .notificationContent(n.getGroupMemberName() + "님 저녁약 알림 입니다.")
+                                .user(user)
+                                .notificationCheck(false)
+                                .build()
+                );
+            });
 
-        // 알림 일괄 전송
-        List<Message> messages = new ArrayList<>();
-        bedTimeNotifications.forEach(n -> {
-            messages.add(
-                    Message.builder()
-                            .setNotification(FirebaseNotification.builder()
-                                    .setTitle("알림")
-                                    .setBody(n.getGroupMemberName() + "님 저녁약 알림 입니다.")
-                                    .build())
-                            .setToken(n.getUserFcmToken())
-                            .build()
-            );
-        });
+            // 알림 일괄 전송
+            List<Message> messages = new ArrayList<>();
+            bedTimeNotifications.forEach(n -> {
+                messages.add(
+                        Message.builder()
+                                .setNotification(FirebaseNotification.builder()
+                                        .setTitle("알림")
+                                        .setBody(n.getGroupMemberName() + "님 저녁약 알림 입니다.")
+                                        .build())
+                                .setToken(n.getUserFcmToken())
+                                .build()
+                );
+            });
 
-        BatchResponse response;
-        try {
-            response = FirebaseMessaging.getInstance().sendAll(messages);
-            LOGGER.info(".sendDinnerTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
-        } catch (FirebaseMessagingException e) {
-            LOGGER.info(".sendDinnerTimeNotification [err] fail firebase send notification {}", e.getMessage());
-            throw new EtcFirebaseException();
+            BatchResponse response;
+            try {
+                response = FirebaseMessaging.getInstance().sendAll(messages);
+                LOGGER.info(".sendDinnerTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
+            } catch (FirebaseMessagingException e) {
+                LOGGER.info(".sendDinnerTimeNotification [err] fail firebase send notification {}", e.getMessage());
+                throw new EtcFirebaseException();
+            }
+            
+            // notification 저장
+            notificationRepository.saveAll(notificationList);
+            LOGGER.info(".sendDinnerTimeNotification  DinnerTime 알림 생성 완료{} ", notificationList);
         }
-
-
-        // notificationDTOList의 정보로 알림 전송 후 notification 생성
-        notificationRepository.saveAll(notificationList);
-        LOGGER.info(".sendDinnerTimeNotification  DinnerTime 알림 생성 완료{} ", notificationList );
+        else {
+            LOGGER.info(".sendDinnerTimeNotification  전송할 알림이 없습니다.");
+        }
     }
 
     /**
@@ -457,46 +473,51 @@ public class NotificationService {
      **/
     @Scheduled(cron="0 30 21 * * *")
     public void sendBedTimeNotification() throws EtcFirebaseException {
-        List<Notification> notificationList = new ArrayList<>();
-        User user = new User();
-        bedTimeNotifications.forEach(n -> {
-            user.setUserIndex(n.getUserIndex());
-            notificationList.add(
-                    Notification.builder()
-                            .notificationIndex(null)
-                            .notificationTime(LocalDateTime.now())
-                            .notificationContent(n.getGroupMemberName() + "님 취침약 알림 입니다.")
-                            .user(user)
-                            .notificationCheck(false)
-                            .build()
-            );
-        });
+        if(!bedTimeNotifications.isEmpty()) {
+            List<Notification> notificationList = new ArrayList<>();
+            User user = new User();
+            bedTimeNotifications.forEach(n -> {
+                user.setUserIndex(n.getUserIndex());
+                notificationList.add(
+                        Notification.builder()
+                                .notificationIndex(null)
+                                .notificationTime(LocalDateTime.now())
+                                .notificationContent(n.getGroupMemberName() + "님 취침약 알림 입니다.")
+                                .user(user)
+                                .notificationCheck(false)
+                                .build()
+                );
+            });
 
-        // 알림 일괄 전송
-        List<Message> messages = new ArrayList<>();
-        bedTimeNotifications.forEach(n -> {
-            messages.add(
-                    Message.builder()
-                    .setNotification(FirebaseNotification.builder()
-                            .setTitle("알림")
-                            .setBody(n.getGroupMemberName() + "님 취침약 알림 입니다.")
-                            .build())
-                    .setToken(n.getUserFcmToken())
-                    .build()
-            );
-        });
+            // 알림 일괄 전송
+            List<Message> messages = new ArrayList<>();
+            bedTimeNotifications.forEach(n -> {
+                messages.add(
+                        Message.builder()
+                                .setNotification(FirebaseNotification.builder()
+                                        .setTitle("알림")
+                                        .setBody(n.getGroupMemberName() + "님 취침약 알림 입니다.")
+                                        .build())
+                                .setToken(n.getUserFcmToken())
+                                .build()
+                );
+            });
 
-        BatchResponse response;
-        try {
-            response = FirebaseMessaging.getInstance().sendAll(messages);
-            LOGGER.info(".sendBedTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
-        } catch (FirebaseMessagingException e) {
-            LOGGER.info(".sendBedTimeNotification [err] fail firebase send notification {}", e.getMessage());
-            throw new EtcFirebaseException();
+            BatchResponse response;
+            try {
+                response = FirebaseMessaging.getInstance().sendAll(messages);
+                LOGGER.info(".sendBedTimeNotification BedTime 알림 전송 완료 success{}, fail{} :{}", response.getSuccessCount(), response.getFailureCount(), response.getResponses());
+            } catch (FirebaseMessagingException e) {
+                LOGGER.info(".sendBedTimeNotification [err] fail firebase send notification {}", e.getMessage());
+                throw new EtcFirebaseException();
+            }
+
+            // notificationDTOList의 정보로 알림 전송 후 notification 생성
+            notificationRepository.saveAll(notificationList);
+            LOGGER.info(".sendBedTimeNotification  BedTime 알림 생성 완료{} ", notificationList);
         }
-
-        // notificationDTOList의 정보로 알림 전송 후 notification 생성
-        notificationRepository.saveAll(notificationList);
-        LOGGER.info(".sendBedTimeNotification  BedTime 알림 생성 완료{} ", notificationList );
+        else {
+            LOGGER.info(".sendBedTimeNotification  전송할 알림이 없습니다.");
+        }
     }
 }
