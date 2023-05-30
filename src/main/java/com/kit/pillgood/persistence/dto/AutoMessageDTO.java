@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AutoMessageDTO {
     private String diseaseName;
     private LocalDateTime takeDate;

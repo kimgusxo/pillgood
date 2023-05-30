@@ -7,6 +7,8 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PillDTO {
 
     @NotNull(message = "pillIndex 누락")

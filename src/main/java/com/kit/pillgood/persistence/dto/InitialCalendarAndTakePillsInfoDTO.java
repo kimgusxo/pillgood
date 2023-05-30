@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class InitialCalendarAndTakePillsInfoDTO {
     private Long userIndex;
     private LocalDate dateStart;
