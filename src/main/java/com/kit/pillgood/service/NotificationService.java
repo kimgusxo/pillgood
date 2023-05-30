@@ -204,7 +204,6 @@ public class NotificationService {
      * @param: 파라미터 설명
      * @return: 리턴 값 설명
     **/
-
     @Scheduled(cron="1 0 0 * * *")
     public void settingTodayNotification() {
         LOGGER.info(".settingTodayNotification 알림 내역 조회 실행");
@@ -214,7 +213,6 @@ public class NotificationService {
         lunchTimeNotification = searchTodayNotification(LocalDate.now(),3);
         dinnerTimeNotifications = searchTodayNotification(LocalDate.now(),4);
         bedTimeNotifications = searchTodayNotification(LocalDate.now(),5);
-
 
         // 3일 이전 알림 내역 삭제
         deleteNotification();
@@ -292,9 +290,6 @@ public class NotificationService {
         // notificationDTOList의 정보로 알림 전송 후 notification 생성
         notificationRepository.saveAll(notificationList);
         LOGGER.info(".sendWakeUpTimeNotification  WakeUpTime 알림 생성 완료{} ", notificationList);
-
-
-
     }
 
     /**

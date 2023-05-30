@@ -35,19 +35,9 @@ public class LoginController {
      * @param: userDTO
      * @return: userDTO
      **/
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<ResponseFormat> login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), loginService.login(loginDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
-
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
-    public void handleLoginFailure() {
-        // 로그인 실패 작업
-    }
-
 }

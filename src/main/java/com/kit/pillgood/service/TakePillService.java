@@ -5,10 +5,7 @@ import com.kit.pillgood.domain.Pill;
 import com.kit.pillgood.domain.Prescription;
 import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
-import com.kit.pillgood.persistence.dto.EditOcrDTO;
-import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
-import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
-import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
+import com.kit.pillgood.persistence.dto.*;
 import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionIndexSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
@@ -41,26 +38,40 @@ public class TakePillService {
         this.pillRepository = pillRepository;
     }
 
-    public Long createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) {
+    public List<Long> createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) {
+
+        List<TakePill> takePillList = new ArrayList<>();
+
         // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
-        Pill pill = pillRepository.findByPillName(editOcrDTO.getPillList().get(0).getPillName());
+        for(PillScheduleDTO list : editOcrDTO.getPillList()) {
+            Pill pill = pillRepository.findByPillName(list.getPillName());
 
-        // TakePill
-        TakePill takePill = TakePill.builder()
-                .takePillIndex(null)
-                .prescription(Prescription.builder()
-                        .prescriptionIndex(prescriptionIndex)
-                        .build())
-                .pill(Pill.builder()
-                        .pillIndex(pill.getPillIndex())
-                        .build())
-                .takePillCheck(null)
-                .takeDay(editOcrDTO.getPillList().get(0).getTakeDay())
-                .takeCount(editOcrDTO.getPillList().get(0).getTakeCount())
-                .build();
+            // TakePill
+            TakePill takePill = TakePill.builder()
+                    .takePillIndex(null)
+                    .prescription(Prescription.builder()
+                            .prescriptionIndex(prescriptionIndex)
+                            .build())
+                    .pill(Pill.builder()
+                            .pillIndex(pill.getPillIndex())
+                            .build())
+                    .takePillCheck(null)
+                    .takeDay(list.getTakeDay())
+                    .takeCount(list.getTakeCount())
+                    .build();
 
-        takePill = takePillRepository.save(takePill);
-        return takePill.getTakePillIndex();
+            takePillList.add(takePill);
+        }
+
+        takePillList = takePillRepository.saveAll(takePillList);
+
+        List<Long> takePillIndexList = new ArrayList<>();
+
+        for(TakePill takePill : takePillList) {
+            takePillIndexList.add(takePill.getTakePillIndex());
+        }
+
+        return takePillIndexList;
     }
 
 //    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {
