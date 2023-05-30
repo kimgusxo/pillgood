@@ -1,12 +1,15 @@
 package com.kit.pillgood.controller;
 
 import com.google.gson.JsonObject;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 
@@ -48,6 +51,9 @@ public class ModelController {
             if (response.getStatusCode() == HttpStatus.OK) {
                 // 응답 성공 시 처리 로직 작성
                 String OCRResult = response.getBody();
+
+                OCRResult = StringEscapeUtils.unescapeJava(OCRResult);
+                System.out.println(OCRResult);
 
             } else {
                 // 응답 실패 시 처리 로직 작성

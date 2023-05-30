@@ -46,6 +46,8 @@ dependencies {
     implementation 'org.openpnp:opencv:4.6.0-0'
 
     implementation 'net.sourceforge.tess4j:tess4j:4.5.1'
+
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 }
 
 tasks.named('test') {

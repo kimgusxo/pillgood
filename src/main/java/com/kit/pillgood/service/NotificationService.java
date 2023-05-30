@@ -38,11 +38,11 @@ public class NotificationService {
     private final Logger LOGGER = LoggerFactory.getLogger(NotificationService.class);
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
-    private List<NotificationContentDTO> wakeUpTimeNotifications;
-    private List<NotificationContentDTO> morningTimeNotifications;
-    private List<NotificationContentDTO> lunchTimeNotification;
-    private List<NotificationContentDTO> dinnerTimeNotifications;
-    private List<NotificationContentDTO> bedTimeNotifications;
+    private List<NotificationContentDTO> wakeUpTimeNotifications = new ArrayList<>();
+    private List<NotificationContentDTO> morningTimeNotifications = new ArrayList<>();
+    private List<NotificationContentDTO> lunchTimeNotification = new ArrayList<>();
+    private List<NotificationContentDTO> dinnerTimeNotifications = new ArrayList<>();
+    private List<NotificationContentDTO> bedTimeNotifications = new ArrayList<>();
 
     @Autowired
     public NotificationService(NotificationRepository notificationRepository, UserRepository userRepository) {
