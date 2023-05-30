@@ -34,11 +34,11 @@ public class PillService {
     public PillDTO searchPillByPillIndex(Long pillIndex) throws NonExistsPillIndexException {
         Pill pill = pillRepository.findByPillIndex(pillIndex);
         if(pill == null){
-            LOGGER.info("[err] pillIndex={}를 찾을 수 없음", pillIndex);
+            LOGGER.info(".searchPillByPillIndex [err] pillIndex={}를 찾을 수 없음", pillIndex);
             throw new NonExistsPillIndexException();
         }
         PillDTO pillDTO = EntityConverter.toPillDTO(pill);
-        LOGGER.info("pillIndex={} 조회 성공", pillIndex);
+        LOGGER.info(".searchPillByPillIndex pillIndex={} 조회 성공", pillIndex);
         return pillDTO;
     }
 
@@ -50,11 +50,11 @@ public class PillService {
     public PillDTO searchPillByPillName(String pillName) throws NonExistsPillNameException {
         Pill pill = pillRepository.findByPillName(pillName);
         if(pill == null){
-            LOGGER.info("[err] pillName={}을 찾을 수 없음", pillName);
+            LOGGER.info(".searchPillByPillName [err] pillName={}을 찾을 수 없음", pillName);
             throw new NonExistsPillNameException();
         }
         PillDTO pillDTO = EntityConverter.toPillDTO(pill);
-        LOGGER.info("pillIndex={} 조회 성공", pillName);
+        LOGGER.info(".searchPillByPillName pillIndex={} 조회 성공", pillName);
         return pillDTO;
     }
 
@@ -79,7 +79,7 @@ public class PillService {
             pillDTOs.add(pillDTO);
         }
 
-        LOGGER.info("약 리스트 조회 성공 {}", pillDTOs);
+        LOGGER.info(".searchPillByAttributesOfPill 약 리스트 조회 성공 {}", pillDTOs);
 
         return pillDTOs;
     }
