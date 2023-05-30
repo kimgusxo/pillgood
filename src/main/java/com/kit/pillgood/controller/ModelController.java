@@ -2,11 +2,7 @@ package com.kit.pillgood.controller;
 
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +47,7 @@ public class ModelController {
             // 응답 처리
             if (response.getStatusCode() == HttpStatus.OK) {
                 // 응답 성공 시 처리 로직 작성
-                Map<String, String> OCRResult = response.getBody();
+                String OCRResult = response.getBody();
 
             } else {
                 // 응답 실패 시 처리 로직 작성

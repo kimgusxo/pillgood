@@ -1,6 +1,7 @@
 package com.kit.pillgood.controller;
 
 import com.kit.pillgood.common.ResponseFormat;
+import com.kit.pillgood.exeptions.exeption.NonExistsMedicationInfoException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
@@ -34,7 +35,7 @@ public class TakePillController {
 
     @PostMapping("/search")
     public ResponseEntity<ResponseFormat> getTakePillsByGroupMemberIndexListAndTargetDate(@RequestBody List<Long> groupMemberIndexList,
-                                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDate) {
+                                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDate) throws NonExistsMedicationInfoException {
 
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), takePillService.searchMedicationInfoListByGroupMemberIndexListAndTargetDate(groupMemberIndexList, targetDate));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
