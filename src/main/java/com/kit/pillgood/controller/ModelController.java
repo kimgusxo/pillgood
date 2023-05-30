@@ -39,7 +39,7 @@ public class ModelController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             System.out.println("요청 실패: 3");
- 
+  
             // HTTP 요청 본문 설정
             HttpEntity<String> requestEntity = new HttpEntity<>(json.toString(), headers);
             System.out.println("요청 실패: 4");
