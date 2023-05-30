@@ -3,6 +3,7 @@ package com.kit.pillgood.controller;
 import com.kit.pillgood.common.ResponseFormat;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationNotificationException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.NotificationDTO;
 import com.kit.pillgood.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;

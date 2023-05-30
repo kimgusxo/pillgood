@@ -68,6 +68,11 @@ public class CommonBindingException {
     public ResponseFormat handleNonExistsPrescriptionIndexException(NonExistsPrescriptionIndexException e){
         return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
+    @ExceptionHandler(NonExistsMedicationInfoException.class)
+    @ResponseBody
+    public ResponseFormat handleNonExistsMedicationInfoException(NonExistsMedicationInfoException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
+    }
 
     @ExceptionHandler(BindException.class)
     @ResponseBody
