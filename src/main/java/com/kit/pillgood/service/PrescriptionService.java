@@ -38,7 +38,7 @@ public class PrescriptionService {
         this.diseaseRepository = diseaseRepository;
     }
 
-    public void createPrescriptionByOCRData(EditOcrDTO editOcrDTO) {
+    public Long createPrescriptionByOCRData(EditOcrDTO editOcrDTO) {
         Disease disease = diseaseRepository.findByDiseaseCode(editOcrDTO.getDiseaseCode());
 
         Prescription prescription = Prescription.builder()
@@ -55,7 +55,8 @@ public class PrescriptionService {
                 .hospitalName(editOcrDTO.getHospitalName())
                 .build();
 
-        prescriptionRepository.save(prescription);
+        prescription = prescriptionRepository.save(prescription);
+        return prescription.getPrescriptionIndex();
     }
 
     @Transactional

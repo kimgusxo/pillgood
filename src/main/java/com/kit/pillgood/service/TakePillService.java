@@ -28,18 +28,22 @@ public class TakePillService {
     private final GroupMemberRepository groupMemberRepository;
     private final TakePillRepository takePillRepository;
     private final PrescriptionRepository prescriptionRepository;
+    private final PillRepository pillRepository;
 
     @Autowired
     public TakePillService(GroupMemberRepository groupMemberRepository,
                            TakePillRepository takePillRepository,
-                           PrescriptionRepository prescriptionRepository){
+                           PrescriptionRepository prescriptionRepository,
+                           PillRepository pillRepository){
         this.groupMemberRepository = groupMemberRepository;
         this.takePillRepository = takePillRepository;
         this.prescriptionRepository = prescriptionRepository;
-
+        this.pillRepository = pillRepository;
     }
 
-    public void createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) {
+    public Long createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) {
+        // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
+        Pill pill = pillRepository.findByPillName(editOcrDTO.getPillList().get(0).getPillName());
 
         // TakePill
         TakePill takePill = TakePill.builder()
@@ -48,13 +52,15 @@ public class TakePillService {
                         .prescriptionIndex(prescriptionIndex)
                         .build())
                 .pill(Pill.builder()
+                        .pillIndex(pill.getPillIndex())
                         .build())
                 .takePillCheck(null)
                 .takeDay(editOcrDTO.getPillList().get(0).getTakeDay())
                 .takeCount(editOcrDTO.getPillList().get(0).getTakeCount())
                 .build();
 
-        takePillRepository.save(takePill);
+        takePill = takePillRepository.save(takePill);
+        return takePill.getTakePillIndex();
     }
 
 //    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {

@@ -1,5 +1,6 @@
 package com.kit.pillgood.service;
 import com.kit.pillgood.controller.ModelController;
+import com.kit.pillgood.domain.Prescription;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.persistence.dto.OriginalOcrDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,19 @@ import java.time.LocalDate;
 public class OCRService {
 
     private final ModelController modelController;
+    private final PrescriptionService prescriptionService;
+    private final TakePillService takePillService;
+    private final TakePillCheckService takePillCheckService;
 
     @Autowired
-    public OCRService(ModelController modelController) {
+    public OCRService(ModelController modelController,
+                      PrescriptionService prescriptionService,
+                      TakePillService takePillService,
+                      TakePillCheckService takePillCheckService) {
         this.modelController = modelController;
+        this.prescriptionService = prescriptionService;
+        this.takePillService = takePillService;
+        this.takePillCheckService = takePillCheckService;
     }
 
     public EditOcrDTO sendImage(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, MultipartFile image) {
@@ -32,6 +42,12 @@ public class OCRService {
                 .build();
 
         return editOcrDTO; // FCM활용해서 클라이언트에 알림
+    }
+
+    public void createPrescriptionAndTakePillAndTakePillCheck(EditOcrDTO editOcrDTO) {
+        Long prescriptionIndex = prescriptionService.createPrescriptionByOCRData(editOcrDTO);
+        Long takePillIndex = takePillService.createTakePillByOCRData(prescriptionIndex, editOcrDTO);
+        takePillCheckService.createTakePillCheckByOCRData(takePillIndex, editOcrDTO);
     }
 
 }

@@ -24,6 +24,12 @@ public class OCRController {
                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
                                 @RequestParam MultipartFile image) {
         EditOcrDTO editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image);
-        return; // 이미지 전송에 대한 성공 및 실패만 처리
+        return editOcrDTO; // 이미지 전송에 대한 성공 및 실패만 처리
     }
+
+    @PostMapping("/create")
+    public void createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) {
+        ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);
+    }
+
 }

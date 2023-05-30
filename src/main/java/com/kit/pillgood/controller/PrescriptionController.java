@@ -19,29 +19,15 @@ import java.util.List;
 @RequestMapping("/prescription")
 public class PrescriptionController {
     private final PrescriptionService prescriptionService;
-    private final TakePillService takePillService;
-    private final TakePillCheckService takePillCheckService;
-
     @Autowired
-    public PrescriptionController(PrescriptionService prescriptionService,
-                                  TakePillService takePillService,
-                                  TakePillCheckService takePillCheckService) {
+    public PrescriptionController(PrescriptionService prescriptionService) {
         this.prescriptionService = prescriptionService;
-        this.takePillService = takePillService;
-        this.takePillCheckService = takePillCheckService;
     }
 
     @GetMapping("/search/{group-member-index}")
     public ResponseEntity<ResponseFormat> getPrescriptionsByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) throws NonRegistrationGroupException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
-    }
-
-    @PostMapping("/create")
-    public void createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) {
-        prescriptionService.createPrescriptionByOCRData(editOcrDTO);
-        takePillService.createTakePillByOCRData(editOcrDTO);
-        takePillCheckService.createTakePillCheckByOCRData(editOcrDTO)
     }
 
     @DeleteMapping("/delete/{prescription-index}")
