@@ -17,5 +17,4 @@ public class EditOcrDTO {
     String phoneNumber;
     String diseaseCode;
     List<PillScheduleDTO> pillList = new ArrayList<>();
-
 }
