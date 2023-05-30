@@ -14,6 +14,8 @@ import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PrescriptionDTO {
     @NotNull(message = "prescriptionIndex 누락")
     private Long prescriptionIndex;

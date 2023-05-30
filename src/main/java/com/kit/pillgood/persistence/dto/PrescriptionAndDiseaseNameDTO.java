@@ -1,13 +1,13 @@
 package com.kit.pillgood.persistence.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PrescriptionAndDiseaseNameDTO {
     private Long prescriptionIndex;
     private Long groupMemberIndex;
