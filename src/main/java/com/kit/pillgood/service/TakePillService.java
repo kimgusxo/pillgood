@@ -1,7 +1,11 @@
 package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
+import com.kit.pillgood.domain.Pill;
+import com.kit.pillgood.domain.Prescription;
+import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
@@ -32,11 +36,26 @@ public class TakePillService {
         this.groupMemberRepository = groupMemberRepository;
         this.takePillRepository = takePillRepository;
         this.prescriptionRepository = prescriptionRepository;
+
     }
 
-//    public TakePill createTakePill(Long prescriptionIndex, Long pillIndex, Integer takeDay, Integer takeCount) {
-//        // 복용해야 할 약 생성
-//    }
+    public void createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) {
+
+        // TakePill
+        TakePill takePill = TakePill.builder()
+                .takePillIndex(null)
+                .prescription(Prescription.builder()
+                        .prescriptionIndex(prescriptionIndex)
+                        .build())
+                .pill(Pill.builder()
+                        .build())
+                .takePillCheck(null)
+                .takeDay(editOcrDTO.getPillList().get(0).getTakeDay())
+                .takeCount(editOcrDTO.getPillList().get(0).getTakeCount())
+                .build();
+
+        takePillRepository.save(takePill);
+    }
 
 //    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {
 //        // 복용해야 할 약 리스트 생성

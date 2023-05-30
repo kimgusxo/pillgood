@@ -11,8 +11,6 @@ public class DiseaseDTO {
     @NotEmpty(groups = {ValidationGroups.groupUpdate.class})
     private Long diseaseIndex;
 
-    private String diseaseClassification;
-
     @NotEmpty(groups = {ValidationGroups.groupCreate.class})
     private String diseaseCode;
 

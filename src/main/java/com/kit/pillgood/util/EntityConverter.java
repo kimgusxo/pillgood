@@ -22,7 +22,6 @@ public class EntityConverter {
     public static Disease toDisease(DiseaseDTO diseaseDTO) {
         Disease disease = Disease.builder()
                 .diseaseIndex(diseaseDTO.getDiseaseIndex())
-                .diseaseClassification(diseaseDTO.getDiseaseClassification())
                 .diseaseCode(diseaseDTO.getDiseaseCode())
                 .diseaseName(diseaseDTO.getDiseaseName())
                 .build();
@@ -35,7 +34,6 @@ public class EntityConverter {
                 .diseaseIndex(disease.getDiseaseIndex())
                 .diseaseCode(disease.getDiseaseCode())
                 .diseaseName(disease.getDiseaseName())
-                .diseaseClassification(disease.getDiseaseClassification())
                 .build();
 
         return diseaseDTO;

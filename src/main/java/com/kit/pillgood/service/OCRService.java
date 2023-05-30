@@ -1,24 +1,12 @@
 package com.kit.pillgood.service;
 import com.kit.pillgood.controller.ModelController;
-import io.swagger.annotations.ApiResponse;
-import net.sourceforge.tess4j.ITessAPI;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
-import nu.pattern.OpenCV;
-import org.opencv.core.*;
-import org.opencv.features2d.MSER;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
+import com.kit.pillgood.persistence.dto.EditOcrDTO;
+import com.kit.pillgood.persistence.dto.OriginalOcrDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.time.LocalDate;
 
 @Service
 public class OCRService {
@@ -30,8 +18,20 @@ public class OCRService {
         this.modelController = modelController;
     }
 
-    public void sendImage(MultipartFile image) {
-        modelController.sendImage(image);
+    public EditOcrDTO sendImage(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, MultipartFile image) {
+        OriginalOcrDTO resultOCR = modelController.sendImage(image);
+
+        EditOcrDTO editOcrDTO = EditOcrDTO.builder()
+                .groupMemberIndex(groupMemberIndex)
+                .groupMemberName(groupMemberName)
+                .startDate(dateStart)
+                .hospitalName(resultOCR.getHospitalName())
+                .phoneNumber(resultOCR.getPhoneNumber())
+                .diseaseCode(resultOCR.getDiseaseCode())
+                .pillList(resultOCR.getPillNameList())
+                .build();
+
+        return editOcrDTO; // FCM활용해서 클라이언트에 알림
     }
 
 }

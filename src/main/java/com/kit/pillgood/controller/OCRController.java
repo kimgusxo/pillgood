@@ -1,11 +1,13 @@
 package com.kit.pillgood.controller;
 
+import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.service.OCRService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/ocr")
@@ -16,9 +18,12 @@ public class OCRController {
         this.ocrService = ocrService;
     }
 
-    @PostMapping("/create")
-    public void createOCR(@RequestParam  MultipartFile image) {
-        ocrService.sendImage(image);
+    @PostMapping("/create/original")
+    public EditOcrDTO createOCR(@RequestParam Long groupMemberIndex,
+                                @RequestParam String groupMemberName,
+                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
+                                @RequestParam MultipartFile image) {
+        EditOcrDTO editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image);
+        return; // 이미지 전송에 대한 성공 및 실패만 처리
     }
-
 }

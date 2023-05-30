@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-public class TakePill {
+public class  TakePill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

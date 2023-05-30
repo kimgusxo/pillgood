@@ -16,9 +16,6 @@ public class Disease {
     @Column(name = "DISEASE_INDEX")
     private Long diseaseIndex;
 
-    @Column(name = "DISEASE_CLASSIFICATION")
-    private String diseaseClassification;
-
     @Column(name = "DISEASE_CODE", nullable = false)
     @NotNull
     private String diseaseCode;

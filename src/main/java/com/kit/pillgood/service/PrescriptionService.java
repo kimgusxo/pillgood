@@ -1,9 +1,14 @@
 package com.kit.pillgood.service;
 
+import com.kit.pillgood.domain.Disease;
+import com.kit.pillgood.domain.GroupMember;
+import com.kit.pillgood.domain.Prescription;
 import com.kit.pillgood.exeptions.exeption.NonExistsPrescriptionIndexException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
+import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.persistence.dto.PrescriptionAndDiseaseNameDTO;
 import com.kit.pillgood.persistence.projection.PrescriptionAndDiseaseNameSummary;
+import com.kit.pillgood.repository.DiseaseRepository;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.PrescriptionRepository;
 import com.kit.pillgood.util.EntityConverter;
@@ -13,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,16 +27,36 @@ public class PrescriptionService {
     private final Logger LOGGER = LoggerFactory.getLogger(PrescriptionService.class);
     private final PrescriptionRepository prescriptionRepository;
     private final GroupMemberRepository groupMemberRepository;
+    private final DiseaseRepository diseaseRepository;
 
     @Autowired
-    public PrescriptionService(PrescriptionRepository prescriptionRepository, GroupMemberRepository groupMemberRepository) {
+    public PrescriptionService(PrescriptionRepository prescriptionRepository,
+                               GroupMemberRepository groupMemberRepository,
+                               DiseaseRepository diseaseRepository) {
         this.prescriptionRepository = prescriptionRepository;
         this.groupMemberRepository = groupMemberRepository;
+        this.diseaseRepository = diseaseRepository;
     }
 
-//    public PrescriptionDTO createPrescription(Long userIndex, Long groupMemberIndex, MultipartFile imageFile) {
-//        // 처방전을 생성 OCR 사용부분
-//    }
+    public void createPrescriptionByOCRData(EditOcrDTO editOcrDTO) {
+        Disease disease = diseaseRepository.findByDiseaseCode(editOcrDTO.getDiseaseCode());
+
+        Prescription prescription = Prescription.builder()
+                .prescriptionIndex(null)
+                .groupMember(GroupMember.builder()
+                        .groupMemberIndex(editOcrDTO.getGroupMemberIndex())
+                        .build())
+                .disease(Disease.builder()
+                        .diseaseIndex(disease.getDiseaseIndex())
+                        .build())
+                .prescriptionRegistrationDate(LocalDate.now())
+                .prescriptionDate(editOcrDTO.getStartDate())
+                .hospitalPhone(editOcrDTO.getPhoneNumber())
+                .hospitalName(editOcrDTO.getHospitalName())
+                .build();
+
+        prescriptionRepository.save(prescription);
+    }
 
     @Transactional
     public List<PrescriptionAndDiseaseNameDTO> searchGroupMemberPrescriptionsByGroupMemberIndex(Long groupMemberIndex) throws NonRegistrationGroupException {
