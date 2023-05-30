@@ -2,16 +2,26 @@ package com.kit.pillgood.controller;
 
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringEscapeUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kit.pillgood.persistence.dto.OriginalOcrDTO;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Base64;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/model")
@@ -24,37 +34,43 @@ public class ModelController {
     }
 
     @PostMapping("")
-    public void sendImage(@RequestParam MultipartFile image) {
+    public OriginalOcrDTO sendImage(@RequestParam MultipartFile image) {
 
         try {
-            // 이미지 데이터를 Base64 인코딩하여 문자열로 변환
-            String encodedImage = Base64.getEncoder().encodeToString(image.getBytes());
+            // 이미지를 임시 파일로 저장
+            Path tempFilePath = Files.createTempFile("image", image.getOriginalFilename());
+            Files.copy(image.getInputStream(), tempFilePath, StandardCopyOption.REPLACE_EXISTING);
 
-            // JSON 객체 생성 및 이미지 데이터 추가
-            JsonObject json = new JsonObject ();
-            json.addProperty("image", encodedImage);
+            // Multipart 요청 본문 생성
+            MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
+            requestBody.add("image", new FileSystemResource(tempFilePath.toFile()));
 
             // HTTP 요청 헤더 설정
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-            // HTTP 요청 본문 설정
-            HttpEntity<String> requestEntity = new HttpEntity<>(json.toString(), headers);
+            // HTTP 요청 본문 및 헤더 설정
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
 
             // 파이썬 모델 서버 URL
             String url = "http://127.0.0.1:5000/ocr";
 
             // POST 요청 보내기
+            RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+
+            // 임시 파일 삭제
+            Files.delete(tempFilePath);
 
             // 응답 처리
             if (response.getStatusCode() == HttpStatus.OK) {
                 // 응답 성공 시 처리 로직 작성
-                String OCRResult = response.getBody();
+                String responseBody = response.getBody();
 
-                OCRResult = StringEscapeUtils.unescapeJava(OCRResult);
-                System.out.println(OCRResult);
-
+                // JSON 문자열을 Map으로 변환
+                ObjectMapper objectMapper = new ObjectMapper();
+                OriginalOcrDTO resultOCR = objectMapper.readValue(responseBody, new TypeReference<OriginalOcrDTO>() {});
+                return resultOCR;
             } else {
                 // 응답 실패 시 처리 로직 작성
                 System.out.println("요청 실패: " + response.getStatusCode());

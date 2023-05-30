@@ -2,7 +2,11 @@ package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.exeptions.exeption.NonExistsMedicationInfoException;
+import com.kit.pillgood.domain.Pill;
+import com.kit.pillgood.domain.Prescription;
+import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
@@ -25,19 +29,40 @@ public class TakePillService {
     private final GroupMemberRepository groupMemberRepository;
     private final TakePillRepository takePillRepository;
     private final PrescriptionRepository prescriptionRepository;
+    private final PillRepository pillRepository;
 
     @Autowired
     public TakePillService(GroupMemberRepository groupMemberRepository,
                            TakePillRepository takePillRepository,
-                           PrescriptionRepository prescriptionRepository){
+                           PrescriptionRepository prescriptionRepository,
+                           PillRepository pillRepository){
         this.groupMemberRepository = groupMemberRepository;
         this.takePillRepository = takePillRepository;
         this.prescriptionRepository = prescriptionRepository;
+        this.pillRepository = pillRepository;
     }
 
-//    public TakePill createTakePill(Long prescriptionIndex, Long pillIndex, Integer takeDay, Integer takeCount) {
-//        // 복용해야 할 약 생성
-//    }
+    public Long createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) {
+        // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
+        Pill pill = pillRepository.findByPillName(editOcrDTO.getPillList().get(0).getPillName());
+
+        // TakePill
+        TakePill takePill = TakePill.builder()
+                .takePillIndex(null)
+                .prescription(Prescription.builder()
+                        .prescriptionIndex(prescriptionIndex)
+                        .build())
+                .pill(Pill.builder()
+                        .pillIndex(pill.getPillIndex())
+                        .build())
+                .takePillCheck(null)
+                .takeDay(editOcrDTO.getPillList().get(0).getTakeDay())
+                .takeCount(editOcrDTO.getPillList().get(0).getTakeCount())
+                .build();
+
+        takePill = takePillRepository.save(takePill);
+        return takePill.getTakePillIndex();
+    }
 
 //    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {
 //        // 복용해야 할 약 리스트 생성

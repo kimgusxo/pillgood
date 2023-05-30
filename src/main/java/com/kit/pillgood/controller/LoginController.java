@@ -30,7 +30,6 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-
     /**
      * 로그인 기능
      * @param: userDTO
@@ -41,7 +40,6 @@ public class LoginController {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), loginService.login(loginDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
-
 
     /**
      * 메소드의 간략한 설명

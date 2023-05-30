@@ -38,15 +38,15 @@ public class GroupMemberService {
     @Transactional
     public GroupMemberAndUserIndexDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, AlreadyExistGroupException {
         Long userIndex = groupMemberAndUserIndexDTO.getUserIndex();
-        String groupMemberPhonNumber = groupMemberAndUserIndexDTO.getGroupMemberPhone();
+        String groupMemberPhoneNumber = groupMemberAndUserIndexDTO.getGroupMemberPhone();
 
         if(!userRepository.existsByUserIndex(userIndex)){
             LOGGER.info("[err] 존재하지 않은 userIndex={} 검색", userIndex);
             throw new NonRegistrationUserException();
         }
 
-        if(groupMemberRepository.existsByGroupMemberPhone(groupMemberPhonNumber)){
-            LOGGER.info("[err] 이미 등록된 전화번호={} 등록 시도", groupMemberPhonNumber);
+        if(groupMemberRepository.existsByGroupMemberPhone(groupMemberPhoneNumber)){
+            LOGGER.info("[err] 이미 등록된 전화번호={} 등록 시도", groupMemberPhoneNumber);
             throw new AlreadyExistGroupException();
         }
 
