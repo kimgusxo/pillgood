@@ -41,12 +41,4 @@ public class TakePillController {
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
-//    @GetMapping("/initial-data")
-//    public List<InitialCalendarAndTakePillsInfoDTO> getInitialCalenderAndTakePillsBuUserIndexBetweenDate(@RequestParam Long userIndex,
-//                                                                                                         @RequestParam LocalDate dateStart,
-//                                                                                                         @RequestParam LocalDate dateCur,
-//                                                                                                         @RequestParam LocalDate dateEnd) {
-//
-//    }
-
 }

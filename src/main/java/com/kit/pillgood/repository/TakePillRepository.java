@@ -14,7 +14,6 @@ import java.util.List;
 
 @Repository
 public interface TakePillRepository  extends JpaRepository<TakePill, Long> {
-//    List<TakePill> findTakePillsByPrescriptionIndex(Long prescriptionIndex, String takePillTime);
 
     @Query("select tp.takePillIndex as takePillIndex, p.prescriptionIndex as prescriptionIndex, tp.pill.pillIndex as pillIndex, " +
             "tp.takeDay as takeDay, tp.takeCount as takeCount, tpc.takePillCheckIndex as takePillCheckIndex, " +

@@ -27,39 +27,10 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @PostMapping("")
-//    public UserDTO createUser(@ModelAttribute @Validated UserDTO userDTO) {
-//        return userService.createUser(userDTO);
-//    }
-
     @DeleteMapping("/delete/{user-index}")
     public boolean deleteUser(@PathVariable(name="user-index") Long userIndex) throws EtcFirebaseException, NonRegistrationUserException {
         return userService.deleteFirebaseUser(userIndex);
    }
-
-//    @GetMapping("/users")
-//    public List<String> getFirebaseUsers() {
-//        List<String> list = null;
-//        try {
-//            list = userService.getFirebaseUsers();
-//        } catch (FirebaseAuthException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return list;
-//    }
-//
-//    @PostMapping("/authUser")
-//    public boolean isFirebaseUsers(@RequestParam String email) {
-//        boolean isUser = userService.isFirebaseUser(email);
-//
-//        return isUser;
-//    }
-//
-//    @PostMapping("/delete")
-//    public boolean deleteFirebaseUser(@RequestParam String email){
-//        boolean deleteResponse = userService.deleteFirevaseUser(email);
-//        return deleteResponse;
-//    }
 
     /**
      * 토큰 갱신 기능

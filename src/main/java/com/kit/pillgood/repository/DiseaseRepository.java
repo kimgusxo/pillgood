@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DiseaseRepository extends JpaRepository<Disease, Long> {
         Disease findByDiseaseCode(String diseaseCode);
-//        String findDiseaseNameByDiseaseIndex(Long diseaseIndex);
 }
