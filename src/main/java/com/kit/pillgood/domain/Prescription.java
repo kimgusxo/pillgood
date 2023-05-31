@@ -35,7 +35,6 @@ public class Prescription {
 
     @Builder.Default
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)
-
     @JsonIgnore
     private List<TakePill> takePills = new ArrayList<>();
 

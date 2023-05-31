@@ -23,17 +23,23 @@ public class TakePillCheckService {
 
         List<TakePillCheck> takePillCheckList = new ArrayList<>();
 
+        int count = 0;
+
+        // takePillCheck 만들기
         for(Long takePillIndex : takePillIndexList) {
-            TakePillCheck takePillCheck = TakePillCheck.builder()
-                    .takePillCheckIndex(null)
-                    .takePill(TakePill.builder()
-                            .takePillIndex(takePillIndex)
-                            .build())
-                    .takeDate(editOcrDTO.getStartDate())
-                    .takePillTime(editOcrDTO.getPillList().get(0).getTakeCount())
-                    .takeCheck(false)
-                    .build();
-            takePillCheckList.add(takePillCheck);
+            for(Integer takePillTime : editOcrDTO.getPillList().get(count).getTakePillTimeList()) {
+                TakePillCheck takePillCheck = TakePillCheck.builder()
+                        .takePillCheckIndex(null)
+                        .takePill(TakePill.builder()
+                                .takePillIndex(takePillIndex)
+                                .build())
+                        .takeDate(editOcrDTO.getStartDate())
+                        .takePillTime(takePillTime)
+                        .takeCheck(false)
+                        .build();
+                takePillCheckList.add(takePillCheck);
+            }
+            count++;
         }
 
         takePillCheckRepository.saveAll(takePillCheckList);
