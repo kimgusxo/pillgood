@@ -68,9 +68,8 @@ public class OCRService {
                 .putData("병원 전화번호", editOcrDTO.getPhoneNumber())
                 .putData("질병 코드", editOcrDTO.getDiseaseCode())
                 .putData("약 정보", pillListJson)
+                .setTopic("ocr")
                 .build();
-
-        System.out.println(message);
 
         // FCM 메시지 전송
         try {

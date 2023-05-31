@@ -30,10 +30,10 @@ public class OCRController {
         if (image != null) {
             CompletableFuture.supplyAsync(() -> {
                 EditOcrDTO editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image);
+                System.out.println("실행중");
                 try {
                     ocrService.sendOcrData(editOcrDTO);
                     return ResponseEntity.ok("OCR 정보 전송 성공.");
-
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
