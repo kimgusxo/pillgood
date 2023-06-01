@@ -3,7 +3,6 @@ package com.kit.pillgood.controller;
 import com.kit.pillgood.common.ResponseFormat;
 import com.kit.pillgood.exeptions.exeption.NonExistsPillIndexException;
 import com.kit.pillgood.exeptions.exeption.NonExistsPillNameException;
-import com.kit.pillgood.persistence.dto.PillDTO;
 import com.kit.pillgood.persistence.dto.SearchingConditionDTO;
 import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.PillService;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/pill")

@@ -3,8 +3,6 @@ package com.kit.pillgood.controller;
 import com.kit.pillgood.common.ResponseFormat;
 import com.kit.pillgood.exeptions.exeption.NonExistsMedicationInfoException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
-import com.kit.pillgood.persistence.dto.MedicationInfoDTO;
-import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckAndGroupMemberIndexDTO;
 import com.kit.pillgood.service.TakePillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

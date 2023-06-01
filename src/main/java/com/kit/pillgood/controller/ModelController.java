@@ -1,9 +1,6 @@
 package com.kit.pillgood.controller;
 
 import com.google.gson.JsonObject;
-import org.apache.commons.lang3.StringEscapeUtils;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kit.pillgood.persistence.dto.OriginalOcrDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;

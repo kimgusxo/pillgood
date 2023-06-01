@@ -285,7 +285,6 @@ public class NotificationService {
                 throw new EtcFirebaseException();
             }
 
-
             // notificationDTOList의 정보로 알림 전송 후 notification 생성
             notificationRepository.saveAll(notificationList);
             LOGGER.info(".sendWakeUpTimeNotification  WakeUpTime 알림 생성 완료{} ", notificationList);

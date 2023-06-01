@@ -1,8 +1,6 @@
 package com.kit.pillgood.controller;
 
 import com.kit.pillgood.persistence.dto.AutoMessageDTO;
-//import com.kit.pillgood.service.SendAutoMessageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -51,7 +51,7 @@ public class OCRService {
         return editOcrDTO; // FCM활용해서 클라이언트에 알림
     }
 
-    public void sendOcrData(EditOcrDTO editOcrDTO) throws JsonProcessingException {
+    public void sendOcrData(String userFCMToken, EditOcrDTO editOcrDTO) throws JsonProcessingException {
 
         List<PillScheduleDTO> pillList = editOcrDTO.getPillList();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -68,7 +68,7 @@ public class OCRService {
                 .putData("병원 전화번호", editOcrDTO.getPhoneNumber())
                 .putData("질병 코드", editOcrDTO.getDiseaseCode())
                 .putData("약 정보", pillListJson)
-                .setTopic("ocr")
+                .setToken(userFCMToken)
                 .build();
 
         // FCM 메시지 전송

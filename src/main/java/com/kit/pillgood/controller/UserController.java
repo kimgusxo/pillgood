@@ -1,11 +1,8 @@
 package com.kit.pillgood.controller;
 
-import com.google.firebase.auth.FirebaseAuthException;
 import com.kit.pillgood.common.ResponseFormat;
-import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
-import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
 import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.UserService;
@@ -14,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
