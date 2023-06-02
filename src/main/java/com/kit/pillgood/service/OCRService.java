@@ -6,9 +6,13 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.kit.pillgood.controller.ModelController;
+import com.kit.pillgood.exeptions.exeption.NonExistsPrescriptionIndexException;
+import com.kit.pillgood.exeptions.exeption.NonExistsTakePillException;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.persistence.dto.OriginalOcrDTO;
 import com.kit.pillgood.persistence.dto.PillScheduleDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +22,7 @@ import java.util.List;
 
 @Service
 public class OCRService {
-
+    private final Logger LOGGER = LoggerFactory.getLogger(OCRService.class);
     private final ModelController modelController;
     private final PrescriptionService prescriptionService;
     private final TakePillService takePillService;
@@ -80,10 +84,20 @@ public class OCRService {
         }
     }
 
-    public void createPrescriptionAndTakePillAndTakePillCheck(EditOcrDTO editOcrDTO) {
+    public void createPrescriptionAndTakePillAndTakePillCheck(EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException {
         Long prescriptionIndex = prescriptionService.createPrescriptionByOCRData(editOcrDTO);
+        if(prescriptionIndex == null){
+            LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 Prescription이 없습니다.");
+            throw new NonExistsPrescriptionIndexException();
+        }
         List<Long> takePillIndexList = takePillService.createTakePillByOCRData(prescriptionIndex, editOcrDTO);
+        if(takePillIndexList.size() == 0){
+            LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 TakePill이 없습니다.");
+            throw new NonExistsTakePillException();
+        }
         takePillCheckService.createTakePillCheckByOCRData(takePillIndexList, editOcrDTO);
+        LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck 수행 완료");
+
     }
 
 }

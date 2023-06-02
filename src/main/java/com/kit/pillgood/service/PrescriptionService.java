@@ -56,6 +56,9 @@ public class PrescriptionService {
                 .build();
 
         prescription = prescriptionRepository.save(prescription);
+
+        LOGGER.info(".createPrescriptionByOCRData Prescription 생성 성공 prescription={}", prescription);
+
         return prescription.getPrescriptionIndex();
     }
 
