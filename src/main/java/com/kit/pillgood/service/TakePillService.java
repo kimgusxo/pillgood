@@ -89,24 +89,12 @@ public class TakePillService {
                 List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOs = new ArrayList<>();
                 for(TakePillAndTakePillCheckSummary takePillAndTakePillCheckSummary : takePillAndTakePillCheckSummaries) {
                     TakePillAndTakePillCheckDTO takePillAndTakePillCheckDTO
-                        = TakePillAndTakePillCheckDTO.builder()
-                            .takePillIndex(takePillAndTakePillCheckSummary.getTakePillIndex())
-                            .prescriptionIndex(takePillAndTakePillCheckSummary.getPrescriptionIndex())
-                            .pillIndex(takePillAndTakePillCheckSummary.getPillIndex())
-                            .takeDay(takePillAndTakePillCheckSummary.getTakeDay())
-                            .takeCount(takePillAndTakePillCheckSummary.getTakeCount())
-                            .takePillCheckIndex(takePillAndTakePillCheckSummary.getTakePillCheckIndex())
-                            .takeDate(takePillAndTakePillCheckSummary.getTakeDate())
-                            .takePillTime(takePillAndTakePillCheckSummary.getTakePillTime())
-                            .takeCheck(takePillAndTakePillCheckSummary.getTakeCheck())
-                            .build();
+                            = EntityConverter.toTakePillAndTakePillCheckDTO(takePillAndTakePillCheckSummary);
                     takePillAndTakePillCheckDTOs.add(takePillAndTakePillCheckDTO);
                 }
-                TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO =
-                        TakePillAndTakePillCheckAndGroupMemberIndexDTO.builder()
-                                .groupMemberIndex(groupMember.getGroupMemberIndex())
-                                .takePillAndTakePillCheckDTOs(takePillAndTakePillCheckDTOs)
-                                .build();
+                TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO
+                        = EntityConverter.toTakePillAndTakePillCheckAndGroupMemberIndexDTO(groupMember, takePillAndTakePillCheckDTOs);
+
                 takePillAndTakePillCheckAndGroupMemberIndexDTOList.add(takePillAndTakePillCheckAndGroupMemberIndexDTO);
             }
         }
