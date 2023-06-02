@@ -4,7 +4,9 @@ import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.Pill;
 import com.kit.pillgood.exeptions.exeption.NonExistsPillIndexException;
 import com.kit.pillgood.exeptions.exeption.NonExistsPillNameException;
+import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.persistence.dto.PillDTO;
+import com.kit.pillgood.persistence.dto.PillScheduleDTO;
 import com.kit.pillgood.persistence.dto.SearchingConditionDTO;
 import com.kit.pillgood.repository.PillRepository;
 import com.kit.pillgood.util.EntityConverter;
@@ -56,6 +58,14 @@ public class PillService {
         PillDTO pillDTO = EntityConverter.toPillDTO(pill);
         LOGGER.info(".searchPillByPillName pillIndex={} 조회 성공", pillName);
         return pillDTO;
+    }
+
+    public EditOcrDTO searchPillNameByPartiallyPillName(EditOcrDTO editOcrDTO) {
+        for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
+            String pillName = pillRepository.findPillNameByPartiallyPillName(pillScheduleDTO.getPillName());
+            pillScheduleDTO.setPillName(pillName);
+        }
+        return editOcrDTO;
     }
 
     /**

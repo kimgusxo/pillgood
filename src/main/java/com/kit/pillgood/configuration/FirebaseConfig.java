@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 
 @Configuration
 public class FirebaseConfig {
-
     @PostConstruct
     public void init(){
         try{

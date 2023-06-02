@@ -3,6 +3,7 @@ package com.kit.pillgood.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.service.OCRService;
+import com.kit.pillgood.service.PillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,13 @@ import java.time.LocalDate;
 @RequestMapping("/ocr")
 public class OCRController {
     private final OCRService ocrService;
+    private final PillService pillService;
+
     @Autowired
-    public OCRController(OCRService ocrService) {
+    public OCRController(OCRService ocrService,
+                         PillService pillService) {
         this.ocrService = ocrService;
+        this.pillService = pillService;
     }
 
     @PostMapping("/create/original")
@@ -47,6 +52,7 @@ public class OCRController {
 
     @PostMapping("/create")
     public void createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) {
+        editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);
         ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);
     }
 
