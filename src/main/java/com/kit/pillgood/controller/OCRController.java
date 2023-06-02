@@ -1,6 +1,9 @@
 package com.kit.pillgood.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.kit.pillgood.common.ResponseFormat;
+import com.kit.pillgood.exeptions.exeption.NonExistsPrescriptionIndexException;
+import com.kit.pillgood.exeptions.exeption.NonExistsTakePillException;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.service.OCRService;
 import com.kit.pillgood.service.PillService;
@@ -29,10 +32,10 @@ public class OCRController {
 
     @PostMapping("/create/original")
     public ResponseEntity<ResponseFormat> createOCR(@RequestParam Long groupMemberIndex,
-                                            @RequestParam String groupMemberName,
-                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
-                                            @RequestParam String userFCMToken,
-                                            @RequestParam MultipartFile image) {
+                                                    @RequestParam String groupMemberName,
+                                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
+                                                    @RequestParam String userFCMToken,
+                                                    @RequestParam MultipartFile image) {
         if (image != null) {
             CompletableFuture.supplyAsync(() -> {
                 EditOcrDTO editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image);
@@ -59,7 +62,7 @@ public class OCRController {
 
     // ocr data로 테이블 데이터 생성
     @PostMapping("/create")
-    public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException {
+    public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, NonExistsPrescriptionIndexException, NonExistsTakePillException {
         editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);
         ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);
 
