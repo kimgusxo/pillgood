@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class NonExistsPillNameException extends NotExistsException {
     public NonExistsPillNameException(){
-        super("존재하지 않은 pillNmae 검색", HttpStatus.NOT_FOUND);
+        super("PillName이 존재하지 않습니다. ", HttpStatus.NOT_FOUND);
     }
 }

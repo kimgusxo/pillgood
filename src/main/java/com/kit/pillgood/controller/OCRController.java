@@ -1,6 +1,9 @@
 package com.kit.pillgood.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.kit.pillgood.common.ResponseFormat;
+import com.kit.pillgood.exeptions.exeption.NonExistsPrescriptionIndexException;
+import com.kit.pillgood.exeptions.exeption.NonExistsTakePillException;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.service.OCRService;
 import com.kit.pillgood.service.PillService;
@@ -28,31 +31,42 @@ public class OCRController {
     }
 
     @PostMapping("/create/original")
-    public ResponseEntity<String> createOCR(@RequestParam Long groupMemberIndex,
-                                            @RequestParam String groupMemberName,
-                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
-                                            @RequestParam String userFCMToken,
-                                            @RequestParam MultipartFile image) {
+    public ResponseEntity<ResponseFormat> createOCR(@RequestParam Long groupMemberIndex,
+                                                    @RequestParam String groupMemberName,
+                                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
+                                                    @RequestParam String userFCMToken,
+                                                    @RequestParam MultipartFile image) {
         if (image != null) {
             CompletableFuture.supplyAsync(() -> {
                 EditOcrDTO editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image);
                 System.out.println("실행중");
                 try {
                     ocrService.sendOcrData(userFCMToken, editOcrDTO);
-                    return ResponseEntity.ok("OCR 정보 전송 성공.");
+
+                    ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
+                    return new ResponseEntity<>(responseFormat, HttpStatus.OK);
+
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
             });
-            return ResponseEntity.ok("이미지 전송 성공.");
+
+            ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
+            return new ResponseEntity<>(responseFormat, HttpStatus.OK);
+
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 전송 실패.");
+            ResponseFormat responseFormat = ResponseFormat.of("Image is null", HttpStatus.NOT_FOUND.value());
+            return new ResponseEntity<>(responseFormat, HttpStatus.NOT_FOUND);
         }
     }
 
+    // ocr data로 테이블 데이터 생성
     @PostMapping("/create")
-    public void createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) {
+    public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, NonExistsPrescriptionIndexException, NonExistsTakePillException {
         editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);
         ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);
+
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 }

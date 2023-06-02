@@ -4,6 +4,8 @@ import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.domain.TakePillCheck;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.repository.TakePillCheckRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Service
 public class TakePillCheckService {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(OCRService.class);
     private final TakePillCheckRepository takePillCheckRepository;
 
     @Autowired
@@ -20,7 +24,6 @@ public class TakePillCheckService {
     }
 
     public void createTakePillCheckByOCRData(List<Long> takePillIndexList, EditOcrDTO editOcrDTO) {
-
         List<TakePillCheck> takePillCheckList = new ArrayList<>();
 
         int count = 0;
@@ -42,7 +45,10 @@ public class TakePillCheckService {
             count++;
         }
 
-        takePillCheckRepository.saveAll(takePillCheckList);
+        List<TakePillCheck> takePillCheckLists = takePillCheckRepository.saveAll(takePillCheckList);
+
+        LOGGER.info(".createTakePillCheckByOCRData TakePillCheck 생성 완료 takePillCheckLists={}", takePillCheckLists);
+
 
     }
 }

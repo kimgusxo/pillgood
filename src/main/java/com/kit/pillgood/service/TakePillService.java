@@ -5,6 +5,7 @@ import com.kit.pillgood.exeptions.exeption.NonExistsMedicationInfoException;
 import com.kit.pillgood.domain.Pill;
 import com.kit.pillgood.domain.Prescription;
 import com.kit.pillgood.domain.TakePill;
+import com.kit.pillgood.exeptions.exeption.NonExistsTakePillException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.persistence.dto.*;
 import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
@@ -40,9 +41,14 @@ public class TakePillService {
         this.pillRepository = pillRepository;
     }
 
-    public List<Long> createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) {
+    public List<Long> createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) throws NonExistsTakePillException {
 
         List<TakePill> takePillList = new ArrayList<>();
+
+        if(takePillList.isEmpty()){
+            LOGGER.info(".createTakePillByOCRData [ERR] TakePill이 존재하지 않습니다.");
+            throw new NonExistsTakePillException();
+        }
 
         // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
         for(PillScheduleDTO list : editOcrDTO.getPillList()) {
@@ -66,6 +72,8 @@ public class TakePillService {
         }
 
         takePillList = takePillRepository.saveAll(takePillList);
+
+        LOGGER.info(".createTakePillByOCRData TakePill 생성 완료 takePillList={}",takePillList);
 
         List<Long> takePillIndexList = new ArrayList<>();
 

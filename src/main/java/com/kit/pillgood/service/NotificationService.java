@@ -264,7 +264,7 @@ public class NotificationService {
 
             // 알림 일괄 전송
             List<Message> messages = new ArrayList<>();
-            bedTimeNotifications.forEach(n -> {
+            wakeUpTimeNotifications.forEach(n -> {
                 messages.add(
                         Message.builder()
                                 .setNotification(FirebaseNotification.builder()
@@ -319,7 +319,7 @@ public class NotificationService {
 
             // 알림 일괄 전송
             List<Message> messages = new ArrayList<>();
-            bedTimeNotifications.forEach(n -> {
+            morningTimeNotifications.forEach(n -> {
                 messages.add(
                         Message.builder()
                                 .setNotification(FirebaseNotification.builder()
@@ -375,7 +375,7 @@ public class NotificationService {
 
             // 알림 일괄 전송
             List<Message> messages = new ArrayList<>();
-            bedTimeNotifications.forEach(n -> {
+            lunchTimeNotification.forEach(n -> {
                 messages.add(
                         Message.builder()
                                 .setNotification(FirebaseNotification.builder()
@@ -431,7 +431,7 @@ public class NotificationService {
 
             // 알림 일괄 전송
             List<Message> messages = new ArrayList<>();
-            bedTimeNotifications.forEach(n -> {
+            dinnerTimeNotifications.forEach(n -> {
                 messages.add(
                         Message.builder()
                                 .setNotification(FirebaseNotification.builder()
