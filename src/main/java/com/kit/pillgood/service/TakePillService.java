@@ -11,6 +11,7 @@ import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionIndexSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 import com.kit.pillgood.repository.*;
+import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,10 +76,6 @@ public class TakePillService {
         return takePillIndexList;
     }
 
-//    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {
-//        // 복용해야 할 약 리스트 생성
-//    }
-
     @Transactional
     public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) throws NonRegistrationUserException {
 
@@ -123,17 +120,7 @@ public class TakePillService {
            MedicationInfoSummary medicationInfoSummary = takePillRepository.findMedicationInfoByGroupMemberIndexAndTargetDate(groupMemberIndex, targetDate);
 
            if(medicationInfoSummary != null){
-               MedicationInfoDTO medicationInfoDTO = MedicationInfoDTO.builder()
-                       .groupMemberIndex(medicationInfoSummary.getGroupMemberIndex())
-                       .groupMemberName(medicationInfoSummary.getGroupMemberName())
-                       .pillIndex(medicationInfoSummary.getPillIndex())
-                       .diseaseIndex(medicationInfoSummary.getDiseaseIndex())
-                       .pillName(medicationInfoSummary.getPillName())
-                       .diseaseName(medicationInfoSummary.getDiseaseName())
-                       .takePillCheckIndex(medicationInfoSummary.getTakePillCheckIndex())
-                       .takeCheck(medicationInfoSummary.getTakeCheck())
-                       .takePillTime(medicationInfoSummary.getTakePillTime())
-                       .build();
+               MedicationInfoDTO medicationInfoDTO = EntityConverter.toMedicationInfo(medicationInfoSummary);
                medicationInfoDTOs.add(medicationInfoDTO);
            }
 

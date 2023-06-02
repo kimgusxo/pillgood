@@ -37,30 +37,17 @@ public class GroupMemberService {
     **/
     @Transactional
     public GroupMemberAndUserIndexDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, AlreadyExistGroupException {
-        Long userIndex = groupMemberAndUserIndexDTO.getUserIndex();
-        String groupMemberPhoneNumber = groupMemberAndUserIndexDTO.getGroupMemberPhone();
-
-        if(!userRepository.existsByUserIndex(userIndex)){
-            LOGGER.info("[err] 존재하지 않은 userIndex={} 검색", userIndex);
+        if(!userRepository.existsByUserIndex(groupMemberAndUserIndexDTO.getUserIndex())){
+            LOGGER.info("[err] 존재하지 않은 userIndex={} 검색", groupMemberAndUserIndexDTO.getUserIndex());
             throw new NonRegistrationUserException();
         }
 
-        if(groupMemberRepository.existsByGroupMemberPhone(groupMemberPhoneNumber)){
-            LOGGER.info("[err] 이미 등록된 전화번호={} 등록 시도", groupMemberPhoneNumber);
+        if(groupMemberRepository.existsByGroupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone())){
+            LOGGER.info("[err] 이미 등록된 전화번호={} 등록 시도", groupMemberAndUserIndexDTO.getGroupMemberPhone());
             throw new AlreadyExistGroupException();
         }
 
-        User user = new User();
-        user.setUserIndex(groupMemberAndUserIndexDTO.getUserIndex());
-
-        GroupMember groupMember = GroupMember.builder()
-                .groupMemberIndex(null)
-                .user(user)
-                .groupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName())
-                .groupMemberBirth(groupMemberAndUserIndexDTO.getGroupMemberBirth())
-                .groupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone())
-                .messageCheck(groupMemberAndUserIndexDTO.getMessageCheck())
-                .build();
+        GroupMember groupMember = EntityConverter.toGroupMember(groupMemberAndUserIndexDTO);
 
         groupMember = groupMemberRepository.save(groupMember);
 

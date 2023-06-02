@@ -2,9 +2,35 @@ package com.kit.pillgood.util;
 
 import com.kit.pillgood.domain.*;
 import com.kit.pillgood.persistence.dto.*;
+import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionAndDiseaseNameSummary;
 
 public class EntityConverter {
+
+    public static UserDTO toUserDTO(LoginDTO loginDTO) {
+       UserDTO userDTO = UserDTO.builder()
+               .userIndex(null)
+               .userFcmToken(loginDTO.getUserToken())
+               .userEmail(loginDTO.getUserEmail())
+               .build();
+
+        return userDTO;
+    }
+
+    public static GroupMember toGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
+        GroupMember groupMember = GroupMember.builder()
+                .groupMemberIndex(null)
+                .user(User.builder()
+                        .userIndex(groupMemberAndUserIndexDTO.getUserIndex())
+                        .build())
+                .groupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName())
+                .groupMemberBirth(groupMemberAndUserIndexDTO.getGroupMemberBirth())
+                .groupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone())
+                .messageCheck(groupMemberAndUserIndexDTO.getMessageCheck())
+                .build();
+
+        return groupMember;
+    }
 
     public static GroupMemberAndUserIndexDTO toGroupMemberAndUserIndexDTO(GroupMember groupMember) {
         GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = GroupMemberAndUserIndexDTO.builder()
@@ -207,6 +233,21 @@ public class EntityConverter {
                 .build();
 
         return prescriptionAndDiseaseNameDTO;
+    }
+
+    public static MedicationInfoDTO toMedicationInfo(MedicationInfoSummary medicationInfoSummary) {
+        MedicationInfoDTO medicationInfoDTO = MedicationInfoDTO.builder()
+                .groupMemberIndex(medicationInfoSummary.getGroupMemberIndex())
+                .groupMemberName(medicationInfoSummary.getGroupMemberName())
+                .pillIndex(medicationInfoSummary.getPillIndex())
+                .diseaseIndex(medicationInfoSummary.getDiseaseIndex())
+                .pillName(medicationInfoSummary.getPillName())
+                .diseaseName(medicationInfoSummary.getDiseaseName())
+                .takePillCheckIndex(medicationInfoSummary.getTakePillCheckIndex())
+                .takeCheck(medicationInfoSummary.getTakeCheck())
+                .takePillTime(medicationInfoSummary.getTakePillTime())
+                .build();
+        return medicationInfoDTO;
     }
 
     public static TakePillAndTakePillCheckDTO toTakePillAndTakePillCheckDTO() {
