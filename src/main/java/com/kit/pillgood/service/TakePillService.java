@@ -128,9 +128,4 @@ public class TakePillService {
         }
         return medicationInfoDTOs;
     }
-
-//    public List<TakePillCheckAndGroupMemberIndexDTO> updateTakePillCheck(Long takePillCheckIndex, TakePillCheckDTO takePillCheckDTO) {
-//        // 복용 현황 갱신
-//    }
-
 }
