@@ -145,13 +145,13 @@ public class UserService {
     }
 
     @Transactional
-    public boolean deleteFirebaseUser(Long userIndex) throws EtcFirebaseException, NonRegistrationUserException {
+    public boolean deleteFirebaseUser(Long userIndex) throws EtcFirebaseException {
         try{
 
             User user = userRepository.findByUserIndex(userIndex);
 
             if(user == null){
-                LOGGER.info("[err] 등록된 유저 없음, !firebase에 등록 되어있을 가능성 존재 {}", userIndex);
+                LOGGER.info(".deleteFirebaseUser [err] 등록된 유저 없음, !firebase에 등록 되어있을 가능성 존재 {}", userIndex);
                 throw new NonRegistrationUserException();
             }
 
@@ -160,7 +160,7 @@ public class UserService {
             try {
                 page = FirebaseAuth.getInstance().listUsers(null);
             } catch (FirebaseAuthException e) {
-                LOGGER.info("[err] deleteFirebaseUser; firebase api 오류 {}", e.getMessage());
+                LOGGER.info(".deleteFirebaseUser [err] deleteFirebaseUser; firebase api 오류 {}", e.getMessage());
                 throw new EtcFirebaseException();
             }
 
@@ -176,9 +176,9 @@ public class UserService {
 
             try {
                 FirebaseAuth.getInstance().deleteUser(firebaseUserUid);
-                LOGGER.info("[info] firebase유저 삭제 완료 email:{}", firebaseUserEmail );
+                LOGGER.info(".deleteFirebaseUser [info] firebase유저 삭제 완료 email:{}", firebaseUserEmail );
             } catch (IllegalArgumentException e) {
-                LOGGER.info("[err] firebase에 등록되지 않음 userEmail:{}", user.getUserEmail());
+                LOGGER.info(".deleteFirebaseUser [err] firebase에 등록되지 않음 userEmail:{}", user.getUserEmail());
                 throw new EtcFirebaseException();
             } catch (FirebaseAuthException e) {
                 throw new RuntimeException(e);
@@ -186,17 +186,18 @@ public class UserService {
 
             deleteUser(userIndex);
 
-            LOGGER.info("[info] {} 삭제 완료",  user.getUserEmail());
+            LOGGER.info(".deleteFirebaseUser [info] {} 삭제 완료",  user.getUserEmail());
             return true;
         }
         catch(EtcFirebaseException ignore){
             throw new EtcFirebaseException();
         }
         catch(NonRegistrationUserException ignore){
-            throw new NonRegistrationUserException();
+            LOGGER.info(".deleteFirebaseUser [err] 존재하지 않은 유저 검색");
         }
         catch (Exception ignore){
             throw new TransactionFailedException();
         }
+        return false;
     }
 }
