@@ -36,7 +36,7 @@ public class PillController {
     }
 
     @GetMapping("/search/pills")
-    public ResponseEntity<ResponseFormat> getSearchingPills(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) SearchingConditionDTO searchingConditionDTO) {
+    public ResponseEntity<ResponseFormat> getSearchingPills(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) SearchingConditionDTO searchingConditionDTO) throws NonExistsPillIndexException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), pillService.searchPillByAttributesOfPill(searchingConditionDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }

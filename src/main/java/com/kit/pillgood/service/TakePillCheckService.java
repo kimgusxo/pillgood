@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class TakePillCheckService {
         this.takePillCheckRepository = takePillCheckRepository;
     }
 
-    public void createTakePillCheckByOCRData(List<Long> takePillIndexList, EditOcrDTO editOcrDTO) {
+    public void createTakePillCheckByOCRData(List<Long> takePillIndexList, EditOcrDTO editOcrDTO) throws SQLException {
         List<TakePillCheck> takePillCheckList = new ArrayList<>();
 
         int count = 0;
@@ -46,9 +47,15 @@ public class TakePillCheckService {
             count++;
         }
 
-        List<TakePillCheck> takePillCheckLists = takePillCheckRepository.saveAll(takePillCheckList);
+        try{
+            List<TakePillCheck> takePillCheckLists = takePillCheckRepository.saveAll(takePillCheckList);
+            LOGGER.info(".createTakePillCheckByOCRData TakePillCheck 생성 완료 takePillCheckLists={}", takePillCheckLists);
+        }
+        catch (Exception ignore){
+            LOGGER.info(".createTakePillCheckByOCRData [err] takePillCheckList 저장 실패 takePillCheckList={}", takePillCheckList);
+            throw new SQLException();
+        }
 
-        LOGGER.info(".createTakePillCheckByOCRData TakePillCheck 생성 완료 takePillCheckLists={}", takePillCheckLists);
 
 
     }

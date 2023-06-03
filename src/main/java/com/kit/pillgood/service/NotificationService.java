@@ -8,6 +8,7 @@ import com.kit.pillgood.domain.User;
 import com.kit.pillgood.domain.Notification;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationNotificationException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
+import com.kit.pillgood.exeptions.exeption.TransactionFailedException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.NotificationContentDTO;
 import com.kit.pillgood.persistence.dto.NotificationDTO;
@@ -63,27 +64,34 @@ public class NotificationService {
     **/
     @Transactional
     public List<NotificationDTO> searchNotificationByUserIndex(Long userIndex) throws NonRegistrationUserException {
+        try{
+            if(!userRepository.existsByUserIndex(userIndex)){
+                LOGGER.info(".searchNotificationByUserIndex [err] 존재하지 않은 userIndex={} 조회", userIndex);
+                throw new NonRegistrationUserException();
+            }
 
-        if(!userRepository.existsByUserIndex(userIndex)){
-            LOGGER.info(".searchNotificationByUserIndex [err] 존재하지 않은 userIndex={} 조회", userIndex);
+            LocalDate nowTime = LocalDate.now();
+            LocalDateTime threeDayAgo = nowTime.minusDays(3).atStartOfDay();
+            List<Notification> notifications = notificationRepository.findNotificationByUser_UserIndexAndNotificationTimeAfterAndNotificationCheckFalse(userIndex, threeDayAgo);
+
+            List<NotificationDTO> notificationDTOs = new ArrayList<>();
+
+
+            for(Notification notification : notifications) {
+                NotificationDTO notificationDTO = EntityConverter.toNotificationDTO(notification);
+                notificationDTOs.add(notificationDTO);
+            }
+
+            LOGGER.info(".searchNotificationByUserIndex 유저{} 알림 조회 완료 {}", userIndex, notificationDTOs);
+
+            return notificationDTOs;
+        }
+        catch (NonRegistrationUserException ignore){
             throw new NonRegistrationUserException();
         }
-
-        LocalDate nowTime = LocalDate.now();
-        LocalDateTime threeDayAgo = nowTime.minusDays(3).atStartOfDay();
-        List<Notification> notifications = notificationRepository.findNotificationByUser_UserIndexAndNotificationTimeAfterAndNotificationCheckFalse(userIndex, threeDayAgo);
-
-        List<NotificationDTO> notificationDTOs = new ArrayList<>();
-
-
-        for(Notification notification : notifications) {
-            NotificationDTO notificationDTO = EntityConverter.toNotificationDTO(notification);
-            notificationDTOs.add(notificationDTO);
+        catch (Exception ignore){
+            throw new TransactionFailedException();
         }
-
-        LOGGER.info(".searchNotificationByUserIndex 유저{} 알림 조회 완료 {}", userIndex, notificationDTOs);
-
-        return notificationDTOs;
     }
 
     /**
@@ -93,20 +101,31 @@ public class NotificationService {
      **/
     @Transactional
     public NotificationDTO updateNotificationCheck(Long notificationIndex) throws NonRegistrationNotificationException, NonRegistrationUserException {
-        Notification notification = notificationRepository.findByNotificationIndex(notificationIndex);
+        try{
+            Notification notification = notificationRepository.findByNotificationIndex(notificationIndex);
 
-        if(notification == null) {
-            LOGGER.info(".updateNotificationCheck [err] 존재하지 않는 알림={} 조회", notificationIndex);
+            if(notification == null) {
+                LOGGER.info(".updateNotificationCheck [err] 존재하지 않는 알림={} 조회", notificationIndex);
+                throw new NonRegistrationNotificationException();
+            }
+
+            NotificationDTO updateNotificationDTO = settingUpdateNotificationData(notification);
+
+            NotificationDTO newNotificationDTO = createUpdateNotification(updateNotificationDTO);
+            deleteUpdateNotification(notificationIndex);
+
+            LOGGER.info(".updateNotificationCheck 알림 수정 완료 {}", newNotificationDTO);
+            return newNotificationDTO;
+        }
+        catch(NonRegistrationNotificationException ignore){
             throw new NonRegistrationNotificationException();
         }
-
-        NotificationDTO updateNotificationDTO = settingUpdateNotificationData(notification);
-
-        NotificationDTO newNotificationDTO = createUpdateNotification(updateNotificationDTO);
-        deleteUpdateNotification(notificationIndex);
-
-        LOGGER.info(".updateNotificationCheck 알림 수정 완료 {}", newNotificationDTO);
-        return newNotificationDTO;
+        catch (NonRegistrationUserException ignore){
+            throw new NonRegistrationUserException();
+        }
+        catch (Exception ignore){
+            throw new TransactionFailedException();
+        }
 
     }
 
