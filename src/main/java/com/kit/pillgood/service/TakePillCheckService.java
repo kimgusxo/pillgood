@@ -3,6 +3,7 @@ package com.kit.pillgood.service;
 import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.domain.TakePillCheck;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
+import com.kit.pillgood.persistence.dto.TakePillCheckDTO;
 import com.kit.pillgood.repository.TakePillCheckRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,5 +58,9 @@ public class TakePillCheckService {
 
 
 
+    }
+
+    public void updateTakeCheck(Long takePillCheckIndex, Boolean takeCheck) {
+        takePillCheckRepository.updateTakeCheck(takePillCheckIndex, takeCheck);
     }
 }

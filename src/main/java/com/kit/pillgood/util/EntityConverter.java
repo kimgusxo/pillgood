@@ -2,9 +2,38 @@ package com.kit.pillgood.util;
 
 import com.kit.pillgood.domain.*;
 import com.kit.pillgood.persistence.dto.*;
+import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionAndDiseaseNameSummary;
+import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
+
+import java.util.List;
 
 public class EntityConverter {
+
+    public static UserDTO toUserDTO(LoginDTO loginDTO) {
+       UserDTO userDTO = UserDTO.builder()
+               .userIndex(null)
+               .userFcmToken(loginDTO.getUserToken())
+               .userEmail(loginDTO.getUserEmail())
+               .build();
+
+        return userDTO;
+    }
+
+    public static GroupMember toGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
+        GroupMember groupMember = GroupMember.builder()
+                .groupMemberIndex(null)
+                .user(User.builder()
+                        .userIndex(groupMemberAndUserIndexDTO.getUserIndex())
+                        .build())
+                .groupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName())
+                .groupMemberBirth(groupMemberAndUserIndexDTO.getGroupMemberBirth())
+                .groupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone())
+                .messageCheck(groupMemberAndUserIndexDTO.getMessageCheck())
+                .build();
+
+        return groupMember;
+    }
 
     public static GroupMemberAndUserIndexDTO toGroupMemberAndUserIndexDTO(GroupMember groupMember) {
         GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = GroupMemberAndUserIndexDTO.builder()
@@ -209,12 +238,44 @@ public class EntityConverter {
         return prescriptionAndDiseaseNameDTO;
     }
 
-    public static TakePillAndTakePillCheckDTO toTakePillAndTakePillCheckDTO() {
-        return null;
+    public static MedicationInfoDTO toMedicationInfo(MedicationInfoSummary medicationInfoSummary) {
+        MedicationInfoDTO medicationInfoDTO = MedicationInfoDTO.builder()
+                .groupMemberIndex(medicationInfoSummary.getGroupMemberIndex())
+                .groupMemberName(medicationInfoSummary.getGroupMemberName())
+                .pillIndex(medicationInfoSummary.getPillIndex())
+                .diseaseIndex(medicationInfoSummary.getDiseaseIndex())
+                .pillName(medicationInfoSummary.getPillName())
+                .diseaseName(medicationInfoSummary.getDiseaseName())
+                .takePillCheckIndex(medicationInfoSummary.getTakePillCheckIndex())
+                .takeCheck(medicationInfoSummary.getTakeCheck())
+                .takePillTime(medicationInfoSummary.getTakePillTime())
+                .build();
+        return medicationInfoDTO;
     }
 
-    public static TakePillAndTakePillCheckAndGroupMemberIndexDTO toTakePillAndTakePillCheckAndGroupMemberIndexDTO() {
-        return null;
+    public static TakePillAndTakePillCheckDTO toTakePillAndTakePillCheckDTO(TakePillAndTakePillCheckSummary takePillAndTakePillCheckSummary) {
+        TakePillAndTakePillCheckDTO takePillAndTakePillCheckDTO
+                = TakePillAndTakePillCheckDTO.builder()
+                .takePillIndex(takePillAndTakePillCheckSummary.getTakePillIndex())
+                .prescriptionIndex(takePillAndTakePillCheckSummary.getPrescriptionIndex())
+                .pillIndex(takePillAndTakePillCheckSummary.getPillIndex())
+                .takeDay(takePillAndTakePillCheckSummary.getTakeDay())
+                .takeCount(takePillAndTakePillCheckSummary.getTakeCount())
+                .takePillCheckIndex(takePillAndTakePillCheckSummary.getTakePillCheckIndex())
+                .takeDate(takePillAndTakePillCheckSummary.getTakeDate())
+                .takePillTime(takePillAndTakePillCheckSummary.getTakePillTime())
+                .takeCheck(takePillAndTakePillCheckSummary.getTakeCheck())
+                .build();
+        return takePillAndTakePillCheckDTO;
+    }
+
+    public static TakePillAndTakePillCheckAndGroupMemberIndexDTO toTakePillAndTakePillCheckAndGroupMemberIndexDTO(GroupMember groupMember, List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOs) {
+        TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO =
+                TakePillAndTakePillCheckAndGroupMemberIndexDTO.builder()
+                        .groupMemberIndex(groupMember.getGroupMemberIndex())
+                        .takePillAndTakePillCheckDTOs(takePillAndTakePillCheckDTOs)
+                        .build();
+        return takePillAndTakePillCheckAndGroupMemberIndexDTO;
     }
 
 }
