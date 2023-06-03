@@ -223,6 +223,7 @@ public class NotificationService {
     @Scheduled(cron="1 0 0 * * *")
     public void settingTodayNotification() {
         LOGGER.info(".settingTodayNotification 알림 일괄 생성 실행");
+
         // 00시 알림 당일 알림 일괄 생성
         wakeUpTimeNotifications = searchTodayNotification(LocalDate.now(),1);
         morningTimeNotifications = searchTodayNotification(LocalDate.now(),2);
@@ -244,15 +245,23 @@ public class NotificationService {
         List<NotificationContentDTO> notificationContentDTOS = new ArrayList<>();
         NotificationContentDTO tempNotificationContentDTO;
 
+        List<String> groupMemberName = new ArrayList<>();
         for(NotificationContentSummary n : notificationContentSummaryList){
+
+            if(groupMemberName.contains(n.getGroupMemberName())){
+                continue;
+            }
+
             tempNotificationContentDTO = NotificationContentDTO.builder()
                     .userIndex(n.getUserIndex())
                     .groupMemberName(n.getGroupMemberName())
                     .takePillTime(n.getTakePillTime())
                     .userFcmToken(n.getUserFcmToken())
                     .build();
+            groupMemberName.add(n.getGroupMemberName());
             notificationContentDTOS.add(tempNotificationContentDTO);
         }
+
         LOGGER.info(".settingTodayNotification  takePillTIme={} 3일 이내 알림내역 조회 완료",takePillTime);
         return notificationContentDTOS;
     }
@@ -266,6 +275,7 @@ public class NotificationService {
     public void sendWakeUpTimeNotification() throws EtcFirebaseException {
         if(!wakeUpTimeNotifications.isEmpty()){
 
+            //  DB 저장용도 notificationList
             List<Notification> notificationList = new ArrayList<>();
             User user = new User();
             wakeUpTimeNotifications.forEach(n -> {
@@ -304,7 +314,7 @@ public class NotificationService {
                 throw new EtcFirebaseException();
             }
 
-            // notificationDTOList의 정보로 알림 전송 후 notification 생성
+            // notificationDTOList 정보로 알림 전송 후 notification 생성
             notificationRepository.saveAll(notificationList);
             LOGGER.info(".sendWakeUpTimeNotification  WakeUpTime 알림 생성 완료{} ", notificationList);
         }
