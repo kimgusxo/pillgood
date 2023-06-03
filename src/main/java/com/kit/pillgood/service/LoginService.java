@@ -31,14 +31,14 @@ public class LoginService {
      * @return: 생성 된 userDTO
      **/
     @Transactional
-    public UserDTO login(LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException {
+    public UserDTO login(LoginDTO loginDTO) throws NonRegistrationFirebaseException, EtcFirebaseException {
         try {
             String userEmail = loginDTO.getUserEmail();
             String userToken = loginDTO.getUserToken();
 
             // firebase에 등록 여부 확인
             if (!userService.isFirebaseUser(userEmail)) {
-                LOGGER.info("[err] 존재하지 않는 FirebaseUser={} 조회", userEmail);
+                LOGGER.info(".login [err] 존재하지 않는 FirebaseUser={} 조회", userEmail);
                 throw new NonRegistrationFirebaseException();
             }
 
@@ -54,16 +54,17 @@ public class LoginService {
 
                 userService.createUser(userDTO);
             }
-            LOGGER.info("사용자 로그인 {}", userEmail);
+            LOGGER.info(".login 사용자 로그인 {}", userEmail);
             return userDTO;
         } catch (NonRegistrationFirebaseException ignore) {
             throw new NonRegistrationFirebaseException();
         } catch (NonRegistrationUserException ignore) {
-            throw new NonRegistrationUserException();
+            LOGGER.info(".login [err] 등록되지 않은 유저 검색");
         } catch (EtcFirebaseException ignore) {
             throw new EtcFirebaseException();
         } catch (Exception ignore) {
             throw new TransactionFailedException();
         }
+        return null;
     }
 }
