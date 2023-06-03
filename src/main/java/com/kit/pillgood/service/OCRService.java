@@ -11,6 +11,7 @@ import com.kit.pillgood.exeptions.exeption.NonExistsTakePillException;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.persistence.dto.OriginalOcrDTO;
 import com.kit.pillgood.persistence.dto.PillScheduleDTO;
+import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -42,18 +44,9 @@ public class OCRService {
 
     @Transactional
     public EditOcrDTO sendImage(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, MultipartFile image) {
-        OriginalOcrDTO resultOCR = modelController.sendImage(image);
+        OriginalOcrDTO originalOcrDTO = modelController.sendImage(image);
 
-        EditOcrDTO editOcrDTO = EditOcrDTO.builder()
-                .groupMemberIndex(groupMemberIndex)
-                .groupMemberName(groupMemberName)
-                .startDate(dateStart)
-                .hospitalName(resultOCR.getHospitalName())
-                .phoneNumber(resultOCR.getPhoneNumber())
-                .diseaseCode(resultOCR.getDiseaseCode())
-                .pillList(resultOCR.getPillNameList())
-                .build();
-
+        EditOcrDTO editOcrDTO = EntityConverter.toEditOcrDTO(groupMemberIndex, groupMemberName, dateStart, originalOcrDTO);
         return editOcrDTO; // FCM활용해서 클라이언트에 알림
     }
 
@@ -88,7 +81,7 @@ public class OCRService {
     }
 
     @Transactional
-    public void createPrescriptionAndTakePillAndTakePillCheck(EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException {
+    public void createPrescriptionAndTakePillAndTakePillCheck(EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
         Long prescriptionIndex = prescriptionService.createPrescriptionByOCRData(editOcrDTO);
         if(prescriptionIndex == null){
             LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 Prescription이 없습니다.");

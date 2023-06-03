@@ -51,23 +51,10 @@ public class TakePillService {
         }
 
         // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
-        for(PillScheduleDTO list : editOcrDTO.getPillList()) {
-            Pill pill = pillRepository.findByPillName(list.getPillName());
+        for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
+            Pill pill = pillRepository.findByPillName(pillScheduleDTO.getPillName());
 
-            // TakePill
-            TakePill takePill = TakePill.builder()
-                    .takePillIndex(null)
-                    .prescription(Prescription.builder()
-                            .prescriptionIndex(prescriptionIndex)
-                            .build())
-                    .pill(Pill.builder()
-                            .pillIndex(pill.getPillIndex())
-                            .build())
-                    .takePillCheck(null)
-                    .takeDay(list.getTakeDay())
-                    .takeCount(list.getTakeCount())
-                    .build();
-
+            TakePill takePill = EntityConverter.toTakePill(prescriptionIndex, pill, pillScheduleDTO);
             takePillList.add(takePill);
         }
 

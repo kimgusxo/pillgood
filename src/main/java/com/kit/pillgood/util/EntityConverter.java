@@ -6,6 +6,7 @@ import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionAndDiseaseNameSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class EntityConverter {
@@ -278,4 +279,50 @@ public class EntityConverter {
         return takePillAndTakePillCheckAndGroupMemberIndexDTO;
     }
 
+    public static EditOcrDTO toEditOcrDTO(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, OriginalOcrDTO originalOcrDTO) {
+        EditOcrDTO editOcrDTO = EditOcrDTO.builder()
+                .groupMemberIndex(groupMemberIndex)
+                .groupMemberName(groupMemberName)
+                .startDate(dateStart)
+                .hospitalName(originalOcrDTO.getHospitalName())
+                .phoneNumber(originalOcrDTO.getPhoneNumber())
+                .diseaseCode(originalOcrDTO.getDiseaseCode())
+                .pillList(originalOcrDTO.getPillNameList())
+                .build();
+        return editOcrDTO;
+    }
+
+    public static Prescription toPrescription(Disease disease, EditOcrDTO editOcrDTO) {
+        Prescription prescription = Prescription.builder()
+                .prescriptionIndex(null)
+                .groupMember(GroupMember.builder()
+                        .groupMemberIndex(editOcrDTO.getGroupMemberIndex())
+                        .build())
+                .disease(Disease.builder()
+                        .diseaseIndex(disease.getDiseaseIndex())
+                        .build())
+                .prescriptionRegistrationDate(LocalDate.now())
+                .prescriptionDate(editOcrDTO.getStartDate())
+                .hospitalPhone(editOcrDTO.getPhoneNumber())
+                .hospitalName(editOcrDTO.getHospitalName())
+                .build();
+        return prescription;
+    }
+
+    public static TakePill toTakePill(Long prescriptionIndex, Pill pill, PillScheduleDTO pillScheduleDTO) {
+        TakePill takePill = TakePill.builder()
+                .takePillIndex(null)
+                .prescription(Prescription.builder()
+                        .prescriptionIndex(prescriptionIndex)
+                        .build())
+                .pill(Pill.builder()
+                        .pillIndex(pill.getPillIndex())
+                        .build())
+                .takePillCheck(null)
+                .takeDay(pillScheduleDTO.getTakeDay())
+                .takeCount(pillScheduleDTO.getTakeCount())
+                .build();
+
+        return takePill;
+    }
 }

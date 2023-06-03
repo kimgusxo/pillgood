@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 
 import java.time.LocalDate;
@@ -62,7 +64,7 @@ public class OCRController {
 
     // ocr data로 테이블 데이터 생성
     @PostMapping("/create")
-    public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, NonExistsPrescriptionIndexException, NonExistsTakePillException {
+    public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
         editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);
         ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);
 

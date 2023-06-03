@@ -41,20 +41,7 @@ public class PrescriptionService {
     public Long createPrescriptionByOCRData(EditOcrDTO editOcrDTO) {
         Disease disease = diseaseRepository.findByDiseaseCode(editOcrDTO.getDiseaseCode());
 
-        Prescription prescription = Prescription.builder()
-                .prescriptionIndex(null)
-                .groupMember(GroupMember.builder()
-                        .groupMemberIndex(editOcrDTO.getGroupMemberIndex())
-                        .build())
-                .disease(Disease.builder()
-                        .diseaseIndex(disease.getDiseaseIndex())
-                        .build())
-                .prescriptionRegistrationDate(LocalDate.now())
-                .prescriptionDate(editOcrDTO.getStartDate())
-                .hospitalPhone(editOcrDTO.getPhoneNumber())
-                .hospitalName(editOcrDTO.getHospitalName())
-                .build();
-
+        Prescription prescription = EntityConverter.toPrescription(disease, editOcrDTO);
         prescription = prescriptionRepository.save(prescription);
 
         LOGGER.info(".createPrescriptionByOCRData Prescription 생성 성공 prescription={}", prescription);
