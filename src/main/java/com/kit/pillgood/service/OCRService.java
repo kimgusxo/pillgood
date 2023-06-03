@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class OCRService {
         this.takePillCheckService = takePillCheckService;
     }
 
+    @Transactional
     public EditOcrDTO sendImage(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, MultipartFile image) {
         OriginalOcrDTO resultOCR = modelController.sendImage(image);
 
@@ -55,6 +57,7 @@ public class OCRService {
         return editOcrDTO; // FCM활용해서 클라이언트에 알림
     }
 
+    @Transactional
     public void sendOcrData(String userFCMToken, EditOcrDTO editOcrDTO) throws JsonProcessingException {
 
         List<PillScheduleDTO> pillList = editOcrDTO.getPillList();
@@ -84,6 +87,7 @@ public class OCRService {
         }
     }
 
+    @Transactional
     public void createPrescriptionAndTakePillAndTakePillCheck(EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException {
         Long prescriptionIndex = prescriptionService.createPrescriptionByOCRData(editOcrDTO);
         if(prescriptionIndex == null){

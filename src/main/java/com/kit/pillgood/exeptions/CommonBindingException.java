@@ -17,19 +17,19 @@ import java.util.Objects;
 public class CommonBindingException {
     @ExceptionHandler(NonRegistrationFirebaseException.class)
     @ResponseBody
-    public ResponseFormat handleNonRegistrationFirebaseExeption(NonRegistrationFirebaseException e){
+    public ResponseFormat handleNonRegistrationFirebaseException(NonRegistrationFirebaseException e){
         return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(NonRegistrationUserException.class)
     @ResponseBody
-    public ResponseFormat handleNonRegistrationUserExeption(NonRegistrationUserException e){
+    public ResponseFormat handleNonRegistrationUserException(NonRegistrationUserException e){
         return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(NonRegistrationGroupException.class)
     @ResponseBody
-    public ResponseFormat handleNonRegistrationGroupExeption(NonRegistrationGroupException e){
+    public ResponseFormat handleNonRegistrationGroupException(NonRegistrationGroupException e){
         return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
@@ -41,13 +41,13 @@ public class CommonBindingException {
 
     @ExceptionHandler(AlreadyExistUserException.class)
     @ResponseBody
-    public ResponseFormat hadleAlreadyExistUserException(AlreadyExistUserException e){
+    public ResponseFormat handleAlreadyExistUserException(AlreadyExistUserException e){
         return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
     @ExceptionHandler(AlreadyExistGroupException.class)
     @ResponseBody
-    public ResponseFormat hadleAlreadyExistGroupException(AlreadyExistGroupException e){
+    public ResponseFormat handleAlreadyExistGroupException(AlreadyExistGroupException e){
         return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
@@ -68,9 +68,19 @@ public class CommonBindingException {
     public ResponseFormat handleNonExistsPrescriptionIndexException(NonExistsPrescriptionIndexException e){
         return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
+    @ExceptionHandler(NonExistsTakePillException.class)
+    @ResponseBody
+    public ResponseFormat handleTakePillException(NonExistsTakePillException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
+    }
     @ExceptionHandler(NonExistsMedicationInfoException.class)
     @ResponseBody
     public ResponseFormat handleNonExistsMedicationInfoException(NonExistsMedicationInfoException e){
+        return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
+    }
+    @ExceptionHandler(TransactionFailedException.class)
+    @ResponseBody
+    public ResponseFormat handleTransactionFailedException(TransactionFailedException e){
         return ResponseFormat.of(e.getMessage(), e.getHttpStatus().value());
     }
 
@@ -79,7 +89,6 @@ public class CommonBindingException {
     public ResponseFormat handleBindException(BindException e){
         return ResponseFormat.of(Objects.requireNonNull(e.getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST.value());
     }
-
 
     @ExceptionHandler(SQLException.class)
     @ResponseBody
