@@ -9,8 +9,6 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchingConditionDTO {
-
-    @NotEmpty(groups = {ValidationGroups.groupSearch.class}, message = "약 이름은 필수 값입니다.")
     private String pillName;
     private String pillShape;
     private String pillColor;

@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class NotificationContentDTO {
     private Long userIndex;
     private String groupMemberName;
-    private int takePillTime;
+    private Integer takePillTime;
     private String userFcmToken;
 }
