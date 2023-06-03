@@ -57,14 +57,7 @@ public class GroupMemberService {
             User user = new User();
             user.setUserIndex(groupMemberAndUserIndexDTO.getUserIndex());
 
-            GroupMember groupMember = GroupMember.builder()
-                    .groupMemberIndex(null)
-                    .user(user)
-                    .groupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName())
-                    .groupMemberBirth(groupMemberAndUserIndexDTO.getGroupMemberBirth())
-                    .groupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone())
-                    .messageCheck(groupMemberAndUserIndexDTO.getMessageCheck())
-                    .build();
+            GroupMember groupMember = EntityConverter.toGroupMember(groupMemberAndUserIndexDTO);
 
             groupMember = groupMemberRepository.save(groupMember);
 
@@ -76,33 +69,12 @@ public class GroupMemberService {
         catch (NonRegistrationUserException e){
             throw new NonRegistrationUserException();
         }
-        catch (AlreadyExistGroupException e){
-
-        if(!userRepository.existsByUserIndex(groupMemberAndUserIndexDTO.getUserIndex())){
-            LOGGER.info("[err] 존재하지 않은 userIndex={} 검색", groupMemberAndUserIndexDTO.getUserIndex());
-            throw new NonRegistrationUserException();
-        }
-
-        if(groupMemberRepository.existsByGroupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone())){
-            LOGGER.info("[err] 이미 등록된 전화번호={} 등록 시도", groupMemberAndUserIndexDTO.getGroupMemberPhone());
-
+        catch (AlreadyExistGroupException e) {
             throw new AlreadyExistGroupException();
         }
         catch (Exception e){
             throw new TransactionFailedException();
         }
-
-
-
-        GroupMember groupMember = EntityConverter.toGroupMember(groupMemberAndUserIndexDTO);
-
-        groupMember = groupMemberRepository.save(groupMember);
-
-        groupMemberAndUserIndexDTO = EntityConverter.toGroupMemberAndUserIndexDTO(groupMember);
-        LOGGER.info("그룹원 생성 완료{}", groupMemberAndUserIndexDTO);
-
-        return groupMemberAndUserIndexDTO;
-
     }
 
     /**
