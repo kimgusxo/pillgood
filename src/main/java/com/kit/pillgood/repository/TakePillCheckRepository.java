@@ -5,6 +5,7 @@ import com.kit.pillgood.persistence.dto.NotificationContentDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface TakePillCheckRepository  extends JpaRepository<TakePillCheck, Long> {
 
     @Modifying
-    @Query("UPDATE TakePillCheck tpc SET tpc.takeCheck = :takeCheck WHERE tpc.takePillCheckIndex = :takePillCheckIndex")
-    void updateTakeCheck(Long TakePillIndex, Boolean takeCheck);
+    @Query("update TakePillCheck tpc set tpc.takeCheck = :takeCheck where tpc.takePillCheckIndex = :takePillCheckIndex")
+    void updateTakeCheck(@Param("takePillCheckIndex") Long takePillCheckIndex, @Param("takeCheck") Boolean takeCheck);
 
 }
