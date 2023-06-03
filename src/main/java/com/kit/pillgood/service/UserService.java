@@ -75,7 +75,6 @@ public class UserService {
             }
 
             UserDTO updateUserDTO = settingUpdateUserData(userDTO, user);
-
             UserDTO newUserDTO = createUser(updateUserDTO);
             deleteUser(userIndex);
             LOGGER.info("[info] 유저 변경 완료 user={}", updateUserDTO );

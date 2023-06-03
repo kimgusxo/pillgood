@@ -41,6 +41,7 @@ public class TakePillService {
         this.pillRepository = pillRepository;
     }
 
+    @Transactional
     public List<Long> createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) throws NonExistsTakePillException {
 
         List<TakePill> takePillList = new ArrayList<>();

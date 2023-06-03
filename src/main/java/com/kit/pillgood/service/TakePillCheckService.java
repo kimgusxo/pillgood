@@ -1,14 +1,14 @@
 package com.kit.pillgood.service;
 
-import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.domain.TakePillCheck;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
-import com.kit.pillgood.persistence.dto.TakePillCheckDTO;
 import com.kit.pillgood.repository.TakePillCheckRepository;
+import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ public class TakePillCheckService {
         this.takePillCheckRepository = takePillCheckRepository;
     }
 
+    @Transactional
     public void createTakePillCheckByOCRData(List<Long> takePillIndexList, EditOcrDTO editOcrDTO) throws SQLException {
         List<TakePillCheck> takePillCheckList = new ArrayList<>();
 
@@ -33,15 +34,7 @@ public class TakePillCheckService {
         // takePillCheck 만들기
         for(Long takePillIndex : takePillIndexList) {
             for(Integer takePillTime : editOcrDTO.getPillList().get(count).getTakePillTimeList()) {
-                TakePillCheck takePillCheck = TakePillCheck.builder()
-                        .takePillCheckIndex(null)
-                        .takePill(TakePill.builder()
-                                .takePillIndex(takePillIndex)
-                                .build())
-                        .takeDate(editOcrDTO.getStartDate())
-                        .takePillTime(takePillTime)
-                        .takeCheck(false)
-                        .build();
+                TakePillCheck takePillCheck = EntityConverter.toTakePillCheck(takePillIndex, takePillTime, editOcrDTO);
                 takePillCheckList.add(takePillCheck);
             }
             count++;
@@ -60,6 +53,7 @@ public class TakePillCheckService {
 
     }
 
+    @Transactional
     public void updateTakeCheck(Long takePillCheckIndex, Boolean takeCheck) {
         takePillCheckRepository.updateTakeCheck(takePillCheckIndex, takeCheck);
     }
