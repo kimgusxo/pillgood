@@ -14,9 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import javax.transaction.TransactionalException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +31,6 @@ public class GroupMemberService {
         this.groupMemberRepository = groupMemberRepository;
     }
 
-    /**
-     * 그룹원을 생성하는 메소드
-     * @param: 생성할 정보가 담긴 GroupMemberDTO
-     * @return: DB에 저장된 그룹원 리턴
-    **/
     @Transactional
     public GroupMemberAndUserIndexDTO createGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, AlreadyExistGroupException {
 
@@ -77,11 +71,6 @@ public class GroupMemberService {
         }
     }
 
-    /**
-     * 그룹원을 수정하는 메소드
-     * @param: 수정할 groupMemberIndex, 수정할 정보가 담긴 GroupMemberDTO
-     * @return: DB에 저장된 그룹원 리턴
-    **/
     @Transactional
     public GroupMemberAndUserIndexDTO updateGroupMember(Long groupMemberIndex, GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, NonRegistrationGroupException, AlreadyExistGroupException {
         try{
@@ -114,12 +103,6 @@ public class GroupMemberService {
         }
     }
 
-
-    /**
-     * updateGroupMember() 파라미터 groupMemberAndUserIndexDTO에 없는 값을 기존 그룹원의 값으로 채우는 함수
-     * @param: 수정할 정보가 담긴 GroupMemberAndUserIndexDTO, 수정 전 GroupMember
-     * @return: DB에 저장될 GroupMemberAndUserIndexDTO 리턴
-     **/
     private GroupMemberAndUserIndexDTO settingUpdateGroupMemberData(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, GroupMember groupMember){
 
         if(groupMemberAndUserIndexDTO.getGroupMemberBirth() == null){
@@ -141,11 +124,6 @@ public class GroupMemberService {
         return groupMemberAndUserIndexDTO;
     }
 
-    /**
-    * 그룹원 한명을 찾는 메소드
-    * @param: 찾을 groupMemberIndex
-    * @return: DB에서 찾은 그룹원 리턴
-    **/
     @Transactional
     public GroupMemberAndUserIndexDTO searchOneGroupMember(Long groupMemberIndex) throws NonRegistrationGroupException {
         try{
@@ -166,11 +144,6 @@ public class GroupMemberService {
         }
     }
 
-    /**
-     * 모든 그룹원을 찾는 메소드
-     * @param: 찾을 userIndex
-     * @return: DB에서 찾은 모든 그룹원 리턴
-    **/
     @Transactional
     public List<GroupMemberAndUserIndexDTO> searchGroupMembersByUserIndex(Long userIndex) throws NonRegistrationUserException {
         try{
@@ -202,11 +175,6 @@ public class GroupMemberService {
         }
     }
 
-    /**
-     * 그룹원을 삭제하는 메소드
-     * @param: 삭제할 groupMemberIndex
-     * @return: void
-    **/
     @Transactional
     public void deleteGroupMember(Long groupMemberIndex) throws NonRegistrationGroupException {
         try{

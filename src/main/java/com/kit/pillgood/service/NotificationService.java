@@ -22,11 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @EnableScheduling
@@ -48,20 +48,6 @@ public class NotificationService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
-    public void createAllNotification() {
-        // 모든 알림 생성
-    }
-
-    /**
-     * 현재 날짜 기준 3일 이후의 유저 알림 내역 반환 메소드
-     * @param: Long userIndex
-     * @return: List<NotificationDTO>
-    **/
     @Transactional
     public List<NotificationDTO> searchNotificationByUserIndex(Long userIndex) throws NonRegistrationUserException {
         try{
@@ -94,11 +80,6 @@ public class NotificationService {
         }
     }
 
-    /**
-     * notification_check를 True로 변경하는 메소드
-     * @param: Long notificationIndex
-     * @return: boolean
-     **/
     @Transactional
     public NotificationDTO updateNotificationCheck(Long notificationIndex) throws NonRegistrationNotificationException, NonRegistrationUserException {
         try{
@@ -129,12 +110,6 @@ public class NotificationService {
 
     }
 
-
-    /**
-     * updateNotificationCheck에서 변경될 값을 생성하는 메소드
-     * @param: Notification
-     * @return: NotificationDTO
-     **/
     private NotificationDTO settingUpdateNotificationData(Notification notification){
         return NotificationDTO.builder()
                 .notificationIndex(null)
@@ -145,11 +120,6 @@ public class NotificationService {
                 .build();
     }
 
-    /**
-     * 알림 update를 위한 알림 삭제 메소드
-     * @param: 삭제할 groupMemberIndex
-     * @return: 리턴 없음
-     **/
     private void deleteUpdateNotification(Long notificationIndex) throws NonRegistrationNotificationException {
         if(!notificationRepository.existsByNotificationIndex(notificationIndex)){
             LOGGER.info(".deleteNotification [err] 존재하지 않는 notificationIndex={} 조회", notificationIndex);
@@ -159,11 +129,6 @@ public class NotificationService {
         LOGGER.info(".deleteNotification 그룹원 삭제 완료 groupMemberIndex={}", notificationIndex);
     }
 
-    /**
-     * 3일 이전의 알림을 삭제하는 메소드
-     * @param: 삭제할 groupMemberIndex
-     * @return: 리턴 없음
-     **/
     private void deleteNotification() {
         LocalDate nowTime = LocalDate.now();
         LocalDateTime threeDayAgo = nowTime.minusDays(3).atStartOfDay();
@@ -172,11 +137,6 @@ public class NotificationService {
 
     }
 
-    /**
-     * 알림 update를 위한 알림 생성 메소드
-     * @param: 생성할 NotificationDTO
-     * @return: 생성된 NotificationDTO
-     **/
     private NotificationDTO createUpdateNotification(NotificationDTO notificationDTO) throws NonRegistrationUserException {
         Long userIndex = notificationDTO.getUserIndex();
 
@@ -206,20 +166,10 @@ public class NotificationService {
         return newNotificationDTO;
     }
 
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
     public void sendAutoPushMessageNotification() {
         // 자동 메세지 전송
     }
 
-    /**
-     * 00시 당일 알림 일괄 생성 및 3일 이전 알림내역 삭제 메소드
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
     @Scheduled(cron="1 0 0 * * *")
     public void settingTodayNotification() {
         LOGGER.info(".settingTodayNotification 알림 일괄 생성 실행");
@@ -235,11 +185,6 @@ public class NotificationService {
         deleteNotification();
     }
 
-    /**
-     * 당일 takePillTime에 해당하는 그룹원 리스트 찾는 메소드
-     * @param: LocalDate, int takePillTime
-     * @return: List<NotificationContentDTO>
-     **/
     private List<NotificationContentDTO> searchTodayNotification(LocalDate localDate, int takePillTime){
         List<NotificationContentSummary> notificationContentSummaryList = notificationRepository.findNotificationContentsData(localDate, takePillTime);
         List<NotificationContentDTO> notificationContentDTOS = new ArrayList<>();
@@ -266,11 +211,6 @@ public class NotificationService {
         return notificationContentDTOS;
     }
 
-    /**
-     * 06시 30분 기상 시간 알림 전송
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-     **/
     @Scheduled(cron="0 30 6 * * *")
     public void sendWakeUpTimeNotification() throws EtcFirebaseException {
         if(!wakeUpTimeNotifications.isEmpty()){
@@ -323,11 +263,6 @@ public class NotificationService {
         }
     }
 
-    /**
-     * 8시 30분 아침 시간 알림 전송
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-     **/
     @Scheduled(cron="0 30 8 * * *")
     public void sendMorningTimeNotification () throws EtcFirebaseException {
         if(!morningTimeNotifications.isEmpty()) {
@@ -379,11 +314,6 @@ public class NotificationService {
         }
     }
 
-    /**
-     * 12시 30분 점심 시간 알림 전송
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-     **/
     @Scheduled(cron="0 30 12 * * *")
     public void sendLunchTimeNotification() throws EtcFirebaseException {
         if(!lunchTimeNotification.isEmpty()) {
@@ -435,11 +365,6 @@ public class NotificationService {
         }
     }
 
-    /**
-     * 17시 30분 저녁 시간 알림 전송
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-     **/
     @Scheduled(cron="0 30 17 * * *")
     public void sendDinnerTimeNotification() throws EtcFirebaseException {
         if(!dinnerTimeNotifications.isEmpty()) {
@@ -490,11 +415,6 @@ public class NotificationService {
         }
     }
 
-    /**
-     * 21시 30분 취침 시간 알림 전송
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-     **/
     @Scheduled(cron="0 30 21 * * *")
     public void sendBedTimeNotification() throws EtcFirebaseException {
         if(!bedTimeNotifications.isEmpty()) {

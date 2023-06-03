@@ -1,19 +1,15 @@
 package com.kit.pillgood.service;
 
-import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.exeptions.exeption.TransactionFailedException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
-import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import javax.transaction.TransactionalException;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LoginService {
@@ -25,11 +21,6 @@ public class LoginService {
         this.userService = userService;
     }
 
-    /**
-     * 로그인 기능
-     * @param: 생성 될 userDTO
-     * @return: 생성 된 userDTO
-     **/
     @Transactional
     public UserDTO login(LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException {
         try {

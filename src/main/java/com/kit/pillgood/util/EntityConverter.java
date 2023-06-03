@@ -32,6 +32,7 @@ public class EntityConverter {
         return userDTO;
     }
 
+    // GroupMember
     public static GroupMember toGroupMember(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) {
         GroupMember groupMember = GroupMember.builder()
                 .groupMemberIndex(null)
@@ -59,6 +60,7 @@ public class EntityConverter {
         return groupMemberAndUserIndexDTO;
     }
 
+    // Notification
     public static NotificationDTO toNotificationDTO(Notification notification) {
         NotificationDTO notificationDTO = NotificationDTO.builder()
                 .notificationIndex(notification.getNotificationIndex())
@@ -70,6 +72,7 @@ public class EntityConverter {
         return notificationDTO;
     }
 
+    // Prescription
     public static Prescription toPrescription(Disease disease, EditOcrDTO editOcrDTO) {
         Prescription prescription = Prescription.builder()
                 .prescriptionIndex(null)
@@ -87,64 +90,6 @@ public class EntityConverter {
         return prescription;
     }
 
-    public static TakePill toTakePill(Long prescriptionIndex, Pill pill, PillScheduleDTO pillScheduleDTO) {
-        TakePill takePill = TakePill.builder()
-                .takePillIndex(null)
-                .prescription(Prescription.builder()
-                        .prescriptionIndex(prescriptionIndex)
-                        .build())
-                .pill(Pill.builder()
-                        .pillIndex(pill.getPillIndex())
-                        .build())
-                .takePillCheck(null)
-                .takeDay(pillScheduleDTO.getTakeDay())
-                .takeCount(pillScheduleDTO.getTakeCount())
-                .build();
-
-        return takePill;
-    }
-
-    public static TakePillCheck toTakePillCheck(Long takePillIndex, Integer takePillTime, EditOcrDTO editOcrDTO) {
-        TakePillCheck takePillCheck = TakePillCheck.builder()
-                .takePillCheckIndex(null)
-                .takePill(TakePill.builder()
-                        .takePillIndex(takePillIndex)
-                        .build())
-                .takeDate(editOcrDTO.getStartDate())
-                .takePillTime(takePillTime)
-                .takeCheck(false)
-                .build();
-        return takePillCheck;
-    }
-
-    public static DiseaseDTO toDiseaseDTO(Disease disease) {
-        DiseaseDTO diseaseDTO = DiseaseDTO.builder()
-                .diseaseIndex(disease.getDiseaseIndex())
-                .diseaseCode(disease.getDiseaseCode())
-                .diseaseName(disease.getDiseaseName())
-                .build();
-
-        return diseaseDTO;
-    }
-
-    public static PillDTO toPillDTO(Pill pill) {
-        PillDTO pillDTO = PillDTO.builder()
-                .pillIndex(pill.getPillIndex())
-                .pillBackWord(pill.getPillBackWord())
-                .pillNum(pill.getPillNum())
-                .pillEffect(pill.getPillEffect())
-                .pillFormulation(pill.getPillFormulation())
-                .pillShape(pill.getPillShape())
-                .pillColor(pill.getPillColor())
-                .pillName(pill.getPillName())
-                .pillPrecaution(pill.getPillPrecaution())
-                .pillCategoryName(pill.getPillCategoryName())
-                .pillFrontWord(pill.getPillFrontWord())
-                .build();
-
-        return pillDTO;
-    }
-
     public static PrescriptionAndDiseaseNameDTO toPrescriptionAndDiseaseNameDTO(PrescriptionAndDiseaseNameSummary prescriptionAndDiseaseNameSummary) {
         PrescriptionAndDiseaseNameDTO prescriptionAndDiseaseNameDTO = PrescriptionAndDiseaseNameDTO.builder()
                 .prescriptionIndex(prescriptionAndDiseaseNameSummary.getPrescriptionIndex())
@@ -160,19 +105,22 @@ public class EntityConverter {
         return prescriptionAndDiseaseNameDTO;
     }
 
-    public static MedicationInfoDTO toMedicationInfo(MedicationInfoSummary medicationInfoSummary) {
-        MedicationInfoDTO medicationInfoDTO = MedicationInfoDTO.builder()
-                .groupMemberIndex(medicationInfoSummary.getGroupMemberIndex())
-                .groupMemberName(medicationInfoSummary.getGroupMemberName())
-                .pillIndex(medicationInfoSummary.getPillIndex())
-                .diseaseIndex(medicationInfoSummary.getDiseaseIndex())
-                .pillName(medicationInfoSummary.getPillName())
-                .diseaseName(medicationInfoSummary.getDiseaseName())
-                .takePillCheckIndex(medicationInfoSummary.getTakePillCheckIndex())
-                .takeCheck(medicationInfoSummary.getTakeCheck())
-                .takePillTime(medicationInfoSummary.getTakePillTime())
+    // TakePill
+    public static TakePill toTakePill(Long prescriptionIndex, Pill pill, PillScheduleDTO pillScheduleDTO) {
+        TakePill takePill = TakePill.builder()
+                .takePillIndex(null)
+                .prescription(Prescription.builder()
+                        .prescriptionIndex(prescriptionIndex)
+                        .build())
+                .pill(Pill.builder()
+                        .pillIndex(pill.getPillIndex())
+                        .build())
+                .takePillCheck(null)
+                .takeDay(pillScheduleDTO.getTakeDay())
+                .takeCount(pillScheduleDTO.getTakeCount())
                 .build();
-        return medicationInfoDTO;
+
+        return takePill;
     }
 
     public static TakePillAndTakePillCheckDTO toTakePillAndTakePillCheckDTO(TakePillAndTakePillCheckSummary takePillAndTakePillCheckSummary) {
@@ -200,6 +148,67 @@ public class EntityConverter {
         return takePillAndTakePillCheckAndGroupMemberIndexDTO;
     }
 
+    // TakePillCheck
+    public static TakePillCheck toTakePillCheck(Long takePillIndex, Integer takePillTime, EditOcrDTO editOcrDTO) {
+        TakePillCheck takePillCheck = TakePillCheck.builder()
+                .takePillCheckIndex(null)
+                .takePill(TakePill.builder()
+                        .takePillIndex(takePillIndex)
+                        .build())
+                .takeDate(editOcrDTO.getStartDate())
+                .takePillTime(takePillTime)
+                .takeCheck(false)
+                .build();
+        return takePillCheck;
+    }
+
+    // Disease
+    public static DiseaseDTO toDiseaseDTO(Disease disease) {
+        DiseaseDTO diseaseDTO = DiseaseDTO.builder()
+                .diseaseIndex(disease.getDiseaseIndex())
+                .diseaseCode(disease.getDiseaseCode())
+                .diseaseName(disease.getDiseaseName())
+                .build();
+
+        return diseaseDTO;
+    }
+
+    // Pill
+    public static PillDTO toPillDTO(Pill pill) {
+        PillDTO pillDTO = PillDTO.builder()
+                .pillIndex(pill.getPillIndex())
+                .pillBackWord(pill.getPillBackWord())
+                .pillNum(pill.getPillNum())
+                .pillEffect(pill.getPillEffect())
+                .pillFormulation(pill.getPillFormulation())
+                .pillShape(pill.getPillShape())
+                .pillColor(pill.getPillColor())
+                .pillName(pill.getPillName())
+                .pillPrecaution(pill.getPillPrecaution())
+                .pillCategoryName(pill.getPillCategoryName())
+                .pillFrontWord(pill.getPillFrontWord())
+                .build();
+
+        return pillDTO;
+    }
+
+    // MedicationInfo
+    public static MedicationInfoDTO toMedicationInfo(MedicationInfoSummary medicationInfoSummary) {
+        MedicationInfoDTO medicationInfoDTO = MedicationInfoDTO.builder()
+                .groupMemberIndex(medicationInfoSummary.getGroupMemberIndex())
+                .groupMemberName(medicationInfoSummary.getGroupMemberName())
+                .pillIndex(medicationInfoSummary.getPillIndex())
+                .diseaseIndex(medicationInfoSummary.getDiseaseIndex())
+                .pillName(medicationInfoSummary.getPillName())
+                .diseaseName(medicationInfoSummary.getDiseaseName())
+                .takePillCheckIndex(medicationInfoSummary.getTakePillCheckIndex())
+                .takeCheck(medicationInfoSummary.getTakeCheck())
+                .takePillTime(medicationInfoSummary.getTakePillTime())
+                .build();
+        return medicationInfoDTO;
+    }
+
+    // EditOcr
     public static EditOcrDTO toEditOcrDTO(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, OriginalOcrDTO originalOcrDTO) {
         EditOcrDTO editOcrDTO = EditOcrDTO.builder()
                 .groupMemberIndex(groupMemberIndex)

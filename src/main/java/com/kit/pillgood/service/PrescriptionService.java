@@ -1,7 +1,6 @@
 package com.kit.pillgood.service;
 
 import com.kit.pillgood.domain.Disease;
-import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.Prescription;
 import com.kit.pillgood.exeptions.exeption.NonExistsPrescriptionIndexException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
@@ -38,6 +37,7 @@ public class PrescriptionService {
         this.diseaseRepository = diseaseRepository;
     }
 
+    @Transactional
     public Long createPrescriptionByOCRData(EditOcrDTO editOcrDTO) {
         Disease disease = diseaseRepository.findByDiseaseCode(editOcrDTO.getDiseaseCode());
 
@@ -68,6 +68,7 @@ public class PrescriptionService {
         return prescriptionAndDiseaseNameDTOs;
     }
 
+    @Transactional
     public void deletePrescription(Long prescriptionIndex) throws NonExistsPrescriptionIndexException {
         if(!prescriptionRepository.existsByPrescriptionIndex(prescriptionIndex)){
             LOGGER.info("[err] prescriptionIndex={}을 찾을 수 없음", prescriptionIndex);

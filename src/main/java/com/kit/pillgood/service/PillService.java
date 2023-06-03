@@ -1,6 +1,5 @@
 package com.kit.pillgood.service;
 
-import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.domain.Pill;
 import com.kit.pillgood.exeptions.exeption.NonExistsPillIndexException;
 import com.kit.pillgood.exeptions.exeption.NonExistsPillNameException;
@@ -15,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +29,6 @@ public class PillService {
         this.pillRepository = pillRepository;
     }
 
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
     @Transactional
     public PillDTO searchPillByPillIndex(Long pillIndex) throws NonExistsPillIndexException {
         try{
@@ -55,11 +49,6 @@ public class PillService {
         }
     }
 
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
     @Transactional
     public PillDTO searchPillByPillName(String pillName) throws NonExistsPillNameException {
         try{
@@ -94,11 +83,6 @@ public class PillService {
         }
     }
 
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
     @Transactional
     public List<PillDTO> searchPillByAttributesOfPill(SearchingConditionDTO searchingConditionDTO) throws NonExistsPillIndexException {
         try{

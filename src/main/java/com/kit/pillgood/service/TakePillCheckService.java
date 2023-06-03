@@ -48,9 +48,6 @@ public class TakePillCheckService {
             LOGGER.info(".createTakePillCheckByOCRData [err] takePillCheckList 저장 실패 takePillCheckList={}", takePillCheckList);
             throw new SQLException();
         }
-
-
-
     }
 
     @Transactional

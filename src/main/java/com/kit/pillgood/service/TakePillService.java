@@ -3,7 +3,6 @@ package com.kit.pillgood.service;
 import com.kit.pillgood.domain.GroupMember;
 import com.kit.pillgood.exeptions.exeption.NonExistsMedicationInfoException;
 import com.kit.pillgood.domain.Pill;
-import com.kit.pillgood.domain.Prescription;
 import com.kit.pillgood.domain.TakePill;
 import com.kit.pillgood.exeptions.exeption.NonExistsTakePillException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
@@ -17,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 

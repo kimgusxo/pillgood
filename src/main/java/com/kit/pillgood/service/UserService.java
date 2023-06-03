@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +26,8 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    /**
-     * 특정 유저 조회 메소드
-     * @param: 이메일
-     * @return: userDTO
-     **/
+
+    @Transactional
     public UserDTO searchUser(String email) throws NonRegistrationUserException {
         User user = userRepository.findByUserEmail(email);
 
@@ -42,11 +39,7 @@ public class UserService {
         }
     }
 
-    /**
-     * 유저를 생성하는 메소드
-     * @param: 생성할 UserDTO
-     * @return: DB에서 생성할 UserDTO
-    **/
+    @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         if(userRepository.existsByUserEmail(userDTO.getUserEmail())){
             try {
@@ -60,11 +53,6 @@ public class UserService {
         return userDTO;
     }
 
-    /**
-     * 유저 업데이트 메소드
-     * @param: 변경된 UserDTO
-     * @return: DB에서 변경된 UserDTO
-     **/
     @Transactional
     public UserDTO updateUserToken(Long userIndex, UserDTO userDTO) throws NonRegistrationUserException {
         try{
@@ -89,11 +77,6 @@ public class UserService {
         }
     }
 
-    /**
-     * updateUserToken() 파라미터 userDTO에 없는 값을 기존 그룹원의 값으로 채우는 함수
-     * @param: 수정할 정보가 담긴 userDTO, 수정 전 user
-     * @return: DB에 저장될 UserDTO 리턴
-     **/
     private UserDTO settingUpdateUserData(UserDTO userDTO, User user){
         UserDTO updateUserDTO = userDTO;
         if(updateUserDTO.getUserEmail() == null){
@@ -102,11 +85,6 @@ public class UserService {
         return updateUserDTO;
     }
 
-    /**
-     * 유저 삭제 메소드
-     * @param: 유저 인덱스
-     * @return: void
-     **/
     private void deleteUser(Long userIndex) throws NonRegistrationUserException {
         try{
             userRepository.deleteById(userIndex);
@@ -117,11 +95,7 @@ public class UserService {
         }
     }
 
-    /**
-     * Firebase의 전체 유저의 이메일을 가져오는 메소드
-     * @param: null
-     * @return: 전체 유저 이메일 리스트
-     **/
+    @Transactional
     public List<String> getFirebaseUsers() throws FirebaseAuthException {
 
         ListUsersPage page = FirebaseAuth.getInstance().listUsers(null);
@@ -146,11 +120,7 @@ public class UserService {
         return uidList;
     }
 
-    /**
-     * Firevase에 유저 등록 여부를 확인하는 메소드
-     * @param: String email
-     * @return: boolean
-     **/
+    @Transactional
     public boolean isFirebaseUser(String email) throws EtcFirebaseException {
 
         ListUsersPage page = null;
@@ -174,11 +144,6 @@ public class UserService {
         return false;
     }
 
-    /**
-     * Firebase 유저를 삭제하는 메소드
-     * @param: String email
-     * @return: boolean
-     **/
     @Transactional
     public boolean deleteFirebaseUser(Long userIndex) throws EtcFirebaseException, NonRegistrationUserException {
         try{
@@ -234,6 +199,4 @@ public class UserService {
             throw new TransactionFailedException();
         }
     }
-
-
 }

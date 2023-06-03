@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DiseaseService {
@@ -18,11 +19,7 @@ public class DiseaseService {
         this.diseaseRepository = diseaseRepository;
     }
 
-    /**
-     * 메소드의 간략한 설명
-     * @param: 파라미터 설명
-     * @return: 리턴 값 설명
-    **/
+    @Transactional
     public DiseaseDTO searchDiseaseByDiseaseCode(String diseaseCode) {
         return EntityConverter.toDiseaseDTO(diseaseRepository.findByDiseaseCode(diseaseCode));
     }
