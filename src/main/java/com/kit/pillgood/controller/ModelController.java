@@ -26,6 +26,11 @@ public class ModelController {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * OCR 결과를 얻기 위해 파이썬 모델 서버로 이미지 전송
+     * @param: MultipartFile image, 모델서버로 전송할 이미지
+     * @return: ResponseEntity<ResponseFormat>, OCR 결과가 담긴 응답 객체
+     **/
     @PostMapping("")
     public OriginalOcrDTO sendImage(@RequestParam MultipartFile image) {
 

@@ -32,6 +32,15 @@ public class OCRController {
         this.pillService = pillService;
     }
 
+    /**
+     * 사용자의 처방전으로 OCR 정보 생성
+     * @param: Long groupMemberIndex, 처방전을 생성할 그룹원 인덱스
+     * @param: String groupMemberName, 처방전을 생성할 그룹원 이름
+     * @param: LocalDate dateStart, 그룹원의 약 복용 시작 일자
+     * @param: String userFCMToken, FCM을 보내기 위한 사용자 토큰
+     * @param: MultipartFile image, 모델서버로 전송할 이미지
+     * @return: ResponseEntity<ResponseFormat>, OCR 결과가 담긴 응답 객체
+     **/
     @PostMapping("/create/original")
     public ResponseEntity<ResponseFormat> createOCR(@RequestParam Long groupMemberIndex,
                                                     @RequestParam String groupMemberName,
@@ -62,7 +71,11 @@ public class OCRController {
         }
     }
 
-    // ocr data로 테이블 데이터 생성
+    /**
+     * 생성된 OCR 정보로 처방전, 복용 현황, 복용 현황 확인 생성
+     * @param: EditOcrDTO editOcrDTO, OCR 결과와 사용자가 설정한 값을 합친 정보
+     * @return: ResponseEntity<ResponseFormat>, 처방전, 복용현황, 복용현황 확인 결과가 담긴 응답 객체
+     **/
     @PostMapping("/create")
     public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
         editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);

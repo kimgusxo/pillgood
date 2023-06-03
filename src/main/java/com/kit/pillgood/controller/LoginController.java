@@ -29,9 +29,9 @@ public class LoginController {
     }
 
     /**
-     * 로그인 기능
-     * @param: userDTO
-     * @return: userDTO
+     * 사용자의 로그인
+     * @param: LoginDTO loginDTO, 로그인할 사용자 정보
+     * @return: ResponseEntity<ResponseFormat>, 로그인 결과가 담긴 응답 객체
      **/
     @PostMapping("")
     public ResponseEntity<ResponseFormat> login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {

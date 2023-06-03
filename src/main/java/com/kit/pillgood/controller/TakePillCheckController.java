@@ -19,9 +19,14 @@ public class TakePillCheckController {
         this.takePillCheckService = takePillCheckService;
     }
 
+    /**
+     * 약의 복용 현황 수정
+     * @param: Long takePillCheckIndex, 복용 현황을 수정할 복용 현황 확인 인덱스
+     * @param: Boolean takeCheck, 수정할 복용 현황 확인 값
+     * @return: ResponseEntity<ResponseFormat>, 복용 현황 확인 결과가 담긴 응답 객체
+     **/
     @GetMapping("/update/take-check")
     public void updateTakeCheck(@RequestParam Long takePillCheckIndex, @RequestParam Boolean takeCheck) {
         takePillCheckService.updateTakeCheck(takePillCheckIndex, takeCheck);
     }
-
 }

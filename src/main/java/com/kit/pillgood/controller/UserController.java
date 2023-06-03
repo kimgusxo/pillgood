@@ -22,15 +22,21 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * 해당 사용자 삭제
+     * @param: Long userIndex, 삭제할 사용자 인덱스
+     * @return: ResponseEntity<ResponseFormat>, 사용자 삭제 결과가 담긴 응답 객체
+     **/
     @DeleteMapping("/delete/{user-index}")
     public boolean deleteUser(@PathVariable(name="user-index") Long userIndex) throws EtcFirebaseException, NonRegistrationUserException {
         return userService.deleteFirebaseUser(userIndex);
    }
 
     /**
-     * 토큰 갱신 기능
-     * @param: userDTO
-     * @return: userDTO
+     * 사용자의 토큰 갱신
+     * @param: Long userIndex, 토큰정보를 갱신할 사용자 인덱스
+     * @param: UserDTO userDTO, 토큰정보를 갱신할 사용자 정보
+     * @return: ResponseEntity<ResponseFormat>, 토큰 수정 결과가 담긴 응답 객체
      **/
     @PutMapping("/update-token/{user-index}")
     public ResponseEntity<ResponseFormat> updateUserToken(@PathVariable("user-index") Long userIndex,
