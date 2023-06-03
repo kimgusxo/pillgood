@@ -12,6 +12,7 @@ import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionIndexSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 import com.kit.pillgood.repository.*;
+import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,10 +84,6 @@ public class TakePillService {
         return takePillIndexList;
     }
 
-//    public List<TakePill> createTakePillCheckList(TakePill takePill, LocalDate takeDateStart, Integer takePillTimeStart) {
-//        // 복용해야 할 약 리스트 생성
-//    }
-
     @Transactional
     public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) throws NonRegistrationUserException {
 
@@ -100,24 +97,12 @@ public class TakePillService {
                 List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOs = new ArrayList<>();
                 for(TakePillAndTakePillCheckSummary takePillAndTakePillCheckSummary : takePillAndTakePillCheckSummaries) {
                     TakePillAndTakePillCheckDTO takePillAndTakePillCheckDTO
-                        = TakePillAndTakePillCheckDTO.builder()
-                            .takePillIndex(takePillAndTakePillCheckSummary.getTakePillIndex())
-                            .prescriptionIndex(takePillAndTakePillCheckSummary.getPrescriptionIndex())
-                            .pillIndex(takePillAndTakePillCheckSummary.getPillIndex())
-                            .takeDay(takePillAndTakePillCheckSummary.getTakeDay())
-                            .takeCount(takePillAndTakePillCheckSummary.getTakeCount())
-                            .takePillCheckIndex(takePillAndTakePillCheckSummary.getTakePillCheckIndex())
-                            .takeDate(takePillAndTakePillCheckSummary.getTakeDate())
-                            .takePillTime(takePillAndTakePillCheckSummary.getTakePillTime())
-                            .takeCheck(takePillAndTakePillCheckSummary.getTakeCheck())
-                            .build();
+                            = EntityConverter.toTakePillAndTakePillCheckDTO(takePillAndTakePillCheckSummary);
                     takePillAndTakePillCheckDTOs.add(takePillAndTakePillCheckDTO);
                 }
-                TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO =
-                        TakePillAndTakePillCheckAndGroupMemberIndexDTO.builder()
-                                .groupMemberIndex(groupMember.getGroupMemberIndex())
-                                .takePillAndTakePillCheckDTOs(takePillAndTakePillCheckDTOs)
-                                .build();
+                TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO
+                        = EntityConverter.toTakePillAndTakePillCheckAndGroupMemberIndexDTO(groupMember, takePillAndTakePillCheckDTOs);
+
                 takePillAndTakePillCheckAndGroupMemberIndexDTOList.add(takePillAndTakePillCheckAndGroupMemberIndexDTO);
             }
         }
@@ -131,17 +116,7 @@ public class TakePillService {
            MedicationInfoSummary medicationInfoSummary = takePillRepository.findMedicationInfoByGroupMemberIndexAndTargetDate(groupMemberIndex, targetDate);
 
            if(medicationInfoSummary != null){
-               MedicationInfoDTO medicationInfoDTO = MedicationInfoDTO.builder()
-                       .groupMemberIndex(medicationInfoSummary.getGroupMemberIndex())
-                       .groupMemberName(medicationInfoSummary.getGroupMemberName())
-                       .pillIndex(medicationInfoSummary.getPillIndex())
-                       .diseaseIndex(medicationInfoSummary.getDiseaseIndex())
-                       .pillName(medicationInfoSummary.getPillName())
-                       .diseaseName(medicationInfoSummary.getDiseaseName())
-                       .takePillCheckIndex(medicationInfoSummary.getTakePillCheckIndex())
-                       .takeCheck(medicationInfoSummary.getTakeCheck())
-                       .takePillTime(medicationInfoSummary.getTakePillTime())
-                       .build();
+               MedicationInfoDTO medicationInfoDTO = EntityConverter.toMedicationInfo(medicationInfoSummary);
                medicationInfoDTOs.add(medicationInfoDTO);
            }
 
@@ -153,9 +128,4 @@ public class TakePillService {
         }
         return medicationInfoDTOs;
     }
-
-//    public List<TakePillCheckAndGroupMemberIndexDTO> updateTakePillCheck(Long takePillCheckIndex, TakePillCheckDTO takePillCheckDTO) {
-//        // 복용 현황 갱신
-//    }
-
 }

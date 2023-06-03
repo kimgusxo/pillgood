@@ -69,5 +69,4 @@ public class OCRController {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
-
 }
