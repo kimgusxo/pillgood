@@ -12,7 +12,11 @@ import java.util.List;
 public interface PillRepository  extends JpaRepository<Pill, Long> {
     List<Pill> findPillsByPillNameAndPillShapeOrPillColorOrPillFrontWordOrPillBackWord(
             String pillName, String pillShape, String pillColor, String pillFrontWord, String pillBackWord);
+
     Pill findByPillIndex(Long pillIndex);
+
+//    @Query("select p from Pill p where p.pillName like concat('%', :searchKeyword, '%') " +
+//            "order by function('LEVENSHTEIN', p.pillName, :searchKeyword) asc")
     Pill findByPillName(String pillName);
 
     // EditOcrData를 받을 때 사용자가 정의한 약이름이랑 DB에 정의된 약이름이랑 다를 경우가 생기기 때문에 유사도로 약을 검색해야 함

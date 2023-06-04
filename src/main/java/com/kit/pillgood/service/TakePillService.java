@@ -97,11 +97,10 @@ public class TakePillService {
     }
 
     @Transactional
-    public List<MedicationInfoAndGroupMemberIndexDTO> searchMedicationInfoListByGroupMemberIndexListAndTargetDate(List<Long> groupMemberIndexList, LocalDate targetDate) throws NonExistsMedicationInfoException {
-        List<MedicationInfoAndGroupMemberIndexDTO> medicationInfoAndGroupMemberIndexDTOList = new ArrayList<>();
+    public List<MedicationInfoDTO> searchMedicationInfoListByGroupMemberIndexListAndTargetDate(List<Long> groupMemberIndexList, LocalDate targetDate) throws NonExistsMedicationInfoException {
+        List<MedicationInfoDTO> medicationInfoDTOs = new ArrayList<>();
         for(Long groupMemberIndex : groupMemberIndexList) {
             List<MedicationInfoSummary> medicationInfoSummaries = takePillRepository.findMedicationInfoByGroupMemberIndexAndTargetDate(groupMemberIndex, targetDate);
-            List<MedicationInfoDTO> medicationInfoDTOs = new ArrayList<>();
             for(MedicationInfoSummary medicationInfoSummary : medicationInfoSummaries) {
                 MedicationInfoDTO medicationInfoDTO = EntityConverter.toMedicationInfo(medicationInfoSummary);
                 medicationInfoDTOs.add(medicationInfoDTO);
@@ -110,18 +109,12 @@ public class TakePillService {
                     medicationInfoDTOs.add(medicationInfoDTO);
                 }
             }
-            MedicationInfoAndGroupMemberIndexDTO medicationInfoAndGroupMemberIndexDTO
-                    = MedicationInfoAndGroupMemberIndexDTO.builder()
-                    .groupMemberIndex(groupMemberIndex)
-                    .medicationInfoDTOList(medicationInfoDTOs)
-                    .build();
-            medicationInfoAndGroupMemberIndexDTOList.add(medicationInfoAndGroupMemberIndexDTO);
         }
 
-        if(medicationInfoAndGroupMemberIndexDTOList.size() == 0){
+        if(medicationInfoDTOs.size() == 0){
             LOGGER.info(".searchMedicationInfoListByGroupMemberIndexListAndTargetDate [err] medicationInfoSummary is null");
             throw new NonExistsMedicationInfoException();
         }
-        return medicationInfoAndGroupMemberIndexDTOList;
+        return medicationInfoDTOs;
     }
 }
