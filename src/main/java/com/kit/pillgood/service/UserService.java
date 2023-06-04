@@ -31,7 +31,7 @@ public class UserService {
     public UserDTO searchUser(String email) throws NonRegistrationUserException {
         User user = userRepository.findByUserEmail(email);
 
-        if(user.getUserIndex() != null){
+        if(user != null){
             UserDTO userDTO = EntityConverter.toUserDTO(userRepository.findByUserEmail(email));
             return userDTO;
         } else{
@@ -44,8 +44,8 @@ public class UserService {
         if(userRepository.existsByUserEmail(userDTO.getUserEmail())){
             try {
                 deleteUser(userDTO.getUserIndex());
-            } catch (NonRegistrationUserException ignore) {
             }
+            catch (NonRegistrationUserException ignore) {}
         }
         User user = EntityConverter.toUser(userDTO);
         userDTO = EntityConverter.toUserDTO(userRepository.save(user));
