@@ -29,7 +29,7 @@ public class GroupMemberController {
      * @return: ResponseEntity<ResponseFormat>, 생성된 그룹원 결과가 담긴 응답 객체
     **/
     @PostMapping("/create")
-    public ResponseEntity<ResponseFormat> createGroupMember(@ModelAttribute @Validated(ValidationGroups.groupCreate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, AlreadyExistGroupException {
+    public ResponseEntity<ResponseFormat> createGroupMember(@RequestBody @Validated(ValidationGroups.groupCreate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, AlreadyExistGroupException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.createGroupMember(groupMemberAndUserIndexDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class GroupMemberController {
      * @return: ResponseEntity<ResponseFormat>, 조회된 그룹원 리스트 결과가 담긴 응답 객체
      **/
     @GetMapping("/search/group-members")
-    public ResponseEntity<ResponseFormat> getGroupMembersByUserIndex(@RequestParam Long userIndex) throws NonRegistrationUserException {
+    public ResponseEntity<ResponseFormat> getGroupMembersByUserIndex(@RequestBody Long userIndex) throws NonRegistrationUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.searchGroupMembersByUserIndex(userIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class GroupMemberController {
      **/
     @PutMapping("/update/{group-member-index}")
     public ResponseEntity<ResponseFormat> updateGroupMember(@PathVariable (name="group-member-index") Long groupMemberIndex,
-                                                           @ModelAttribute @Validated(ValidationGroups.groupUpdate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, NonRegistrationGroupException, AlreadyExistGroupException {
+                                                           @RequestBody @Validated(ValidationGroups.groupUpdate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, NonRegistrationGroupException, AlreadyExistGroupException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(),  groupMemberService.updateGroupMember(groupMemberIndex, groupMemberAndUserIndexDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
