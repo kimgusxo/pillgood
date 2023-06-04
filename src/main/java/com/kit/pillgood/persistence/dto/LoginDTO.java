@@ -15,7 +15,6 @@ import javax.validation.constraints.NotEmpty;
 public class LoginDTO {
 
     @NotEmpty(groups = {ValidationGroups.groupSearch.class}, message = "정확한 형식의 이메일 값을 입력하세요")
-    @Email(groups = {ValidationGroups.groupSearch.class})
     private String userEmail;
 
     @NotEmpty(groups = {ValidationGroups.groupSearch.class}, message = "토큰 값은 필수 입니다.")
