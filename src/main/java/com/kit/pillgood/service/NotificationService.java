@@ -166,10 +166,6 @@ public class NotificationService {
         return newNotificationDTO;
     }
 
-    public void sendAutoPushMessageNotification() {
-        // 자동 메세지 전송
-    }
-
     @Scheduled(cron="1 0 0 * * *")
     public void settingTodayNotification() {
         LOGGER.info(".settingTodayNotification 알림 일괄 생성 실행");
@@ -240,6 +236,7 @@ public class NotificationService {
                                         .setTitle("알림")
                                         .setBody(n.getGroupMemberName() + "님 기상약 알림 입니다.")
                                         .build())
+                                .putData("그룹원 전화번호", n.getGroupMemberPhone())
                                 .setToken(n.getUserFcmToken())
                                 .build()
                 );
@@ -290,6 +287,7 @@ public class NotificationService {
                                         .setTitle("알림")
                                         .setBody(n.getGroupMemberName() + "님 아침약 알림 입니다.")
                                         .build())
+                                .putData("그룹원 전화번호", n.getGroupMemberPhone())
                                 .setToken(n.getUserFcmToken())
                                 .build()
                 );
@@ -341,6 +339,7 @@ public class NotificationService {
                                         .setTitle("알림")
                                         .setBody(n.getGroupMemberName() + "님 점심약 알림 입니다.")
                                         .build())
+                                .putData("그룹원 전화번호", n.getGroupMemberPhone())
                                 .setToken(n.getUserFcmToken())
                                 .build()
                 );
@@ -392,6 +391,7 @@ public class NotificationService {
                                         .setTitle("알림")
                                         .setBody(n.getGroupMemberName() + "님 저녁약 알림 입니다.")
                                         .build())
+                                .putData("그룹원 전화번호", n.getGroupMemberPhone())
                                 .setToken(n.getUserFcmToken())
                                 .build()
                 );
@@ -442,6 +442,7 @@ public class NotificationService {
                                         .setTitle("알림")
                                         .setBody(n.getGroupMemberName() + "님 취침약 알림 입니다.")
                                         .build())
+                                .putData("그룹원 전화번호", n.getGroupMemberPhone())
                                 .setToken(n.getUserFcmToken())
                                 .build()
                 );

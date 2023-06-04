@@ -62,6 +62,7 @@ public class OCRService {
                         .setTitle("알림")
                         .setBody("OCR 등록 완료")
                         .build())
+                .putData("그룹원 인덱스", editOcrDTO.getGroupMemberIndex().toString())
                 .putData("그룹원 이름", editOcrDTO.getGroupMemberName())
                 .putData("복용 시작 날짜", editOcrDTO.getStartDate().toString())
                 .putData("병원 이름", editOcrDTO.getHospitalName())

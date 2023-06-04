@@ -19,7 +19,8 @@ public interface NotificationRepository  extends JpaRepository<Notification, Lon
     void deleteByNotificationIndex(Long notificationIndex);
     void deleteByNotificationTimeBefore(LocalDateTime localDateTime);
 
-    @Query("select u.userIndex as userIndex, u.userFcmToken as userFcmToken, g.groupMemberName as groupMemberName, t.takePillTime as takePillTime " +
+    @Query("select u.userIndex as userIndex, u.userFcmToken as userFcmToken, g.groupMemberName as groupMemberName" +
+            ", g.groupMemberPhone as groupMemberPhone, t.takePillTime as takePillTime " +
             "from TakePillCheck t " +
             "join t.takePill tp " +
             "join tp.prescription p " +
