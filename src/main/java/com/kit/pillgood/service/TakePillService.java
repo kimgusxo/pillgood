@@ -97,22 +97,31 @@ public class TakePillService {
     }
 
     @Transactional
-    public List<MedicationInfoDTO> searchMedicationInfoListByGroupMemberIndexListAndTargetDate(List<Long> groupMemberIndexList, LocalDate targetDate) throws NonExistsMedicationInfoException {
-        List<MedicationInfoDTO> medicationInfoDTOs = new ArrayList<>();
+    public List<MedicationInfoAndGroupMemberIndexDTO> searchMedicationInfoListByGroupMemberIndexListAndTargetDate(List<Long> groupMemberIndexList, LocalDate targetDate) throws NonExistsMedicationInfoException {
+        List<MedicationInfoAndGroupMemberIndexDTO> medicationInfoAndGroupMemberIndexDTOList = new ArrayList<>();
         for(Long groupMemberIndex : groupMemberIndexList) {
-           MedicationInfoSummary medicationInfoSummary = takePillRepository.findMedicationInfoByGroupMemberIndexAndTargetDate(groupMemberIndex, targetDate);
+            List<MedicationInfoSummary> medicationInfoSummaries = takePillRepository.findMedicationInfoByGroupMemberIndexAndTargetDate(groupMemberIndex, targetDate);
+            List<MedicationInfoDTO> medicationInfoDTOs = new ArrayList<>();
+            for(MedicationInfoSummary medicationInfoSummary : medicationInfoSummaries) {
+                MedicationInfoDTO medicationInfoDTO = EntityConverter.toMedicationInfo(medicationInfoSummary);
+                medicationInfoDTOs.add(medicationInfoDTO);
 
-           if(medicationInfoSummary != null){
-               MedicationInfoDTO medicationInfoDTO = EntityConverter.toMedicationInfo(medicationInfoSummary);
-               medicationInfoDTOs.add(medicationInfoDTO);
-           }
-
+                if (medicationInfoSummary != null) {
+                    medicationInfoDTOs.add(medicationInfoDTO);
+                }
+            }
+            MedicationInfoAndGroupMemberIndexDTO medicationInfoAndGroupMemberIndexDTO
+                    = MedicationInfoAndGroupMemberIndexDTO.builder()
+                    .groupMemberIndex(groupMemberIndex)
+                    .medicationInfoDTOList(medicationInfoDTOs)
+                    .build();
+            medicationInfoAndGroupMemberIndexDTOList.add(medicationInfoAndGroupMemberIndexDTO);
         }
 
-        if(medicationInfoDTOs.size() == 0){
+        if(medicationInfoAndGroupMemberIndexDTOList.size() == 0){
             LOGGER.info(".searchMedicationInfoListByGroupMemberIndexListAndTargetDate [err] medicationInfoSummary is null");
             throw new NonExistsMedicationInfoException();
         }
-        return medicationInfoDTOs;
+        return medicationInfoAndGroupMemberIndexDTOList;
     }
 }

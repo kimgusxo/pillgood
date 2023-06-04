@@ -38,6 +38,6 @@ public interface TakePillRepository  extends JpaRepository<TakePill, Long> {
             "c.takePillCheckIndex as takePillCheckIndex, c.takeCheck as takeCheck, c.takePillTime as takePillTime " +
             "from GroupMember gm join gm.prescriptions pc join pc.takePills t join t.pill p join pc.disease d left join t.takePillCheck c " +
             "where gm.groupMemberIndex = :groupMemberIndex and pc.prescriptionDate = :targetDate")
-    MedicationInfoSummary findMedicationInfoByGroupMemberIndexAndTargetDate(@Param("groupMemberIndex") Long groupMemberIndex,
+    List<MedicationInfoSummary> findMedicationInfoByGroupMemberIndexAndTargetDate(@Param("groupMemberIndex") Long groupMemberIndex,
                                                                             @Param("targetDate") LocalDate targetDate);
 }
