@@ -195,9 +195,10 @@ public class NotificationService {
 
             tempNotificationContentDTO = NotificationContentDTO.builder()
                     .userIndex(n.getUserIndex())
-                    .groupMemberName(n.getGroupMemberName())
-                    .takePillTime(n.getTakePillTime())
                     .userFcmToken(n.getUserFcmToken())
+                    .groupMemberName(n.getGroupMemberName())
+                    .groupMemberPhone(n.getGroupMemberPhone())
+                    .takePillTime(n.getTakePillTime())
                     .build();
             groupMemberName.add(n.getGroupMemberName());
             notificationContentDTOS.add(tempNotificationContentDTO);
