@@ -74,6 +74,11 @@ public class GroupMemberService {
     @Transactional
     public GroupMemberAndUserIndexDTO updateGroupMember(Long groupMemberIndex, GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, NonRegistrationGroupException, AlreadyExistGroupException {
         try{
+            if(!userRepository.existsByUserIndex(groupMemberAndUserIndexDTO.getUserIndex())){
+                LOGGER.info(".updateGroupMember [err] 존재하지 않는 UserIndex={} 조회", groupMemberAndUserIndexDTO.getUserIndex());
+                throw new NonRegistrationUserException();
+            }
+
             GroupMember groupMember = groupMemberRepository.findByGroupMemberIndex(groupMemberIndex);
 
             if(groupMember == null) {
@@ -81,13 +86,28 @@ public class GroupMemberService {
                 throw new NonRegistrationGroupException();
             }
 
+
+//          기존과 다른 전화번호 입력시 중첩된 전화번호 차단
+            String groupMemberPhoneNumber = groupMemberAndUserIndexDTO.getGroupMemberPhone();
+            if(!groupMemberPhoneNumber.equals(groupMember.getGroupMemberPhone())){
+                if(groupMemberRepository.existsByGroupMemberPhone(groupMemberPhoneNumber)){
+                    LOGGER.info(".createGroupMember [err] 이미 등록된 전화번호={} 등록 시도", groupMemberPhoneNumber);
+                    throw new AlreadyExistGroupException();
+                }
+            }
+
+
             GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = settingUpdateGroupMemberData(groupMemberAndUserIndexDTO, groupMember);
-            GroupMemberAndUserIndexDTO newGroupMemberAndUserDTO = createGroupMember(newGroupMemberAndUserIndexDTO);
+
+            groupMember = EntityConverter.toGroupMember(newGroupMemberAndUserIndexDTO);
+
+            groupMember = groupMemberRepository.save(groupMember);
+            newGroupMemberAndUserIndexDTO = EntityConverter.toGroupMemberAndUserIndexDTO(groupMember);
             deleteGroupMember(groupMemberIndex);
 
-            LOGGER.info(".updateGroupMember 그룹맴버 수정 완료 {}", newGroupMemberAndUserDTO);
+            LOGGER.info(".updateGroupMember 그룹맴버 수정 완료 {}", newGroupMemberAndUserIndexDTO);
 
-            return newGroupMemberAndUserDTO;
+            return newGroupMemberAndUserIndexDTO;
         }
         catch (NonRegistrationUserException ignore){
             throw new NonRegistrationUserException();
