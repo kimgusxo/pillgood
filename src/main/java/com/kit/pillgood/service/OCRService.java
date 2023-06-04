@@ -95,7 +95,6 @@ public class OCRService {
         }
         takePillCheckService.createTakePillCheckByOCRData(takePillIndexList, editOcrDTO);
         LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck 수행 완료");
-
     }
 
 }

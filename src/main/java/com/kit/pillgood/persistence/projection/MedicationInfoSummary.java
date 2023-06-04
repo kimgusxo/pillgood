@@ -4,9 +4,7 @@ public interface MedicationInfoSummary {
     Long getGroupMemberIndex();
     String getGroupMemberName();
     Long getPillIndex();
-
     String getPillNum();
-
     String getPillName();
     String getPillFrontWord();
     String getPillBackWord();
