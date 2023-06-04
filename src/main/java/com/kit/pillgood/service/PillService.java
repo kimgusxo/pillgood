@@ -13,6 +13,8 @@ import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +54,7 @@ public class PillService {
     @Transactional
     public PillDTO searchPillByPillName(String pillName) throws NonExistsPillNameException {
         try{
-            Pill pill = pillRepository.findByPillName(pillName);
+            Pill pill = pillRepository.findByPillName(pillName, PageRequest.of(0, 1));
             if(pill == null){
                 LOGGER.info(".searchPillByPillName [err] pillName={}을 찾을 수 없음", pillName);
                 throw new NonExistsPillNameException();
@@ -73,7 +75,7 @@ public class PillService {
     public EditOcrDTO searchPillNameByPartiallyPillName(EditOcrDTO editOcrDTO) {
         try{
             for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
-                String pillName = pillRepository.findPillNameByPartiallyPillName(pillScheduleDTO.getPillName());
+                String pillName = pillRepository.findPillNameByPartiallyPillName(pillScheduleDTO.getPillName(), PageRequest.of(0, 1));
                 pillScheduleDTO.setPillName(pillName);
             }
             return editOcrDTO;

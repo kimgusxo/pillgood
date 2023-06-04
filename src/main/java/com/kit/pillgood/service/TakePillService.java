@@ -15,6 +15,7 @@ import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +53,7 @@ public class TakePillService {
 
         // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
         for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
-            Pill pill = pillRepository.findByPillName(pillScheduleDTO.getPillName());
+            Pill pill = pillRepository.findByPillName(pillScheduleDTO.getPillName(), PageRequest.of(0, 1));
 
             TakePill takePill = EntityConverter.toTakePill(prescriptionIndex, pill, pillScheduleDTO);
             takePillList.add(takePill);
