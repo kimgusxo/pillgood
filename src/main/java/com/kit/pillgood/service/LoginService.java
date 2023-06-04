@@ -23,10 +23,9 @@ public class LoginService {
 
     @Transactional
     public UserDTO login(LoginDTO loginDTO) throws NonRegistrationFirebaseException, EtcFirebaseException {
+        String userEmail = loginDTO.getUserEmail();
+        String userToken = loginDTO.getUserToken();
         try {
-            String userEmail = loginDTO.getUserEmail();
-            String userToken = loginDTO.getUserToken();
-
             // firebase에 등록 여부 확인
             if (!userService.isFirebaseUser(userEmail)) {
                 LOGGER.info(".login [err] 존재하지 않는 FirebaseUser={} 조회", userEmail);
@@ -35,27 +34,35 @@ public class LoginService {
 
             // mysql에 등록되지 않은 유저
             UserDTO userDTO = userService.searchUser(userEmail);
-            if (userDTO == null) {
+            if (!userDTO.getUserFcmToken().equals(userToken)) {
                 // mysql 생성
                 userDTO = UserDTO.builder()
                         .userIndex(null)
                         .userFcmToken(userToken)
                         .userEmail(userEmail)
                         .build();
-
-                userService.createUser(userDTO);
+                userDTO = userService.createUser(userDTO);
             }
             LOGGER.info(".login 사용자 로그인 {}", userEmail);
+
             return userDTO;
         } catch (NonRegistrationFirebaseException ignore) {
             throw new NonRegistrationFirebaseException();
         } catch (NonRegistrationUserException ignore) {
             LOGGER.info(".login [err] 등록되지 않은 유저 검색");
+
+            // mysql 생성
+            UserDTO userDTO = UserDTO.builder()
+                    .userIndex(null)
+                    .userFcmToken(userToken)
+                    .userEmail(userEmail)
+                    .build();
+            userService.createUser(userDTO);
+
+            LOGGER.info(".login 사용자 로그인 {}", userEmail);
+            return userDTO;
         } catch (EtcFirebaseException ignore) {
             throw new EtcFirebaseException();
-        } catch (Exception ignore) {
-            throw new TransactionFailedException();
         }
-        return null;
     }
 }
