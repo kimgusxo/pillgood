@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class NonExistsPillIndexException extends NotExistsException {
     public NonExistsPillIndexException(){
-        super("Pill이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+        super("등록되지 않은 PillIndex 입니다.", HttpStatus.NOT_FOUND);
     }
 }

@@ -57,9 +57,10 @@ public class LoginService {
                     .userFcmToken(userToken)
                     .userEmail(userEmail)
                     .build();
-            userService.createUser(userDTO);
+            userDTO = userService.createUser(userDTO);
 
             LOGGER.info(".login 사용자 로그인 {}", userEmail);
+
             return userDTO;
         } catch (EtcFirebaseException ignore) {
             throw new EtcFirebaseException();

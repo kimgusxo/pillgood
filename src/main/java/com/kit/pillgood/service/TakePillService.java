@@ -29,16 +29,18 @@ public class TakePillService {
     private final TakePillRepository takePillRepository;
     private final PrescriptionRepository prescriptionRepository;
     private final PillRepository pillRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public TakePillService(GroupMemberRepository groupMemberRepository,
                            TakePillRepository takePillRepository,
                            PrescriptionRepository prescriptionRepository,
-                           PillRepository pillRepository){
+                           PillRepository pillRepository, UserRepository userRepository){
         this.groupMemberRepository = groupMemberRepository;
         this.takePillRepository = takePillRepository;
         this.prescriptionRepository = prescriptionRepository;
         this.pillRepository = pillRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -74,27 +76,36 @@ public class TakePillService {
 
     @Transactional
     public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) throws NonRegistrationUserException {
+       try{
 
-        List<GroupMember> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
-        List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> takePillAndTakePillCheckAndGroupMemberIndexDTOList = new ArrayList<>();
-
-        for(GroupMember groupMember : groupMembers) {
-            List<PrescriptionIndexSummary> prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMember_GroupMemberIndexAndPrescriptionDateBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
-            for(PrescriptionIndexSummary prescriptionIndex : prescriptionIndexList) {
-                List<TakePillAndTakePillCheckSummary> takePillAndTakePillCheckSummaries = takePillRepository.findTakePillAndCheckByPrescriptionIndex(prescriptionIndex.getPrescriptionIndex());
-                List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOs = new ArrayList<>();
-                for(TakePillAndTakePillCheckSummary takePillAndTakePillCheckSummary : takePillAndTakePillCheckSummaries) {
-                    TakePillAndTakePillCheckDTO takePillAndTakePillCheckDTO
-                            = EntityConverter.toTakePillAndTakePillCheckDTO(takePillAndTakePillCheckSummary);
-                    takePillAndTakePillCheckDTOs.add(takePillAndTakePillCheckDTO);
-                }
-                TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO
-                        = EntityConverter.toTakePillAndTakePillCheckAndGroupMemberIndexDTO(groupMember, takePillAndTakePillCheckDTOs);
-
-                takePillAndTakePillCheckAndGroupMemberIndexDTOList.add(takePillAndTakePillCheckAndGroupMemberIndexDTO);
+            if(!userRepository.existsByUserIndex(userIndex)){
+                throw new NonRegistrationUserException();
             }
-        }
-        return takePillAndTakePillCheckAndGroupMemberIndexDTOList;
+
+            List<GroupMember> groupMembers = groupMemberRepository.findByUser_UserIndex(userIndex);
+            List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> takePillAndTakePillCheckAndGroupMemberIndexDTOList = new ArrayList<>();
+
+            for(GroupMember groupMember : groupMembers) {
+                List<PrescriptionIndexSummary> prescriptionIndexList = prescriptionRepository.findPrescriptionIndexByGroupMember_GroupMemberIndexAndPrescriptionDateBetween(groupMember.getGroupMemberIndex(), dateStart, dateEnd);
+                for(PrescriptionIndexSummary prescriptionIndex : prescriptionIndexList) {
+                    List<TakePillAndTakePillCheckSummary> takePillAndTakePillCheckSummaries = takePillRepository.findTakePillAndCheckByPrescriptionIndex(prescriptionIndex.getPrescriptionIndex());
+                    List<TakePillAndTakePillCheckDTO> takePillAndTakePillCheckDTOs = new ArrayList<>();
+                    for(TakePillAndTakePillCheckSummary takePillAndTakePillCheckSummary : takePillAndTakePillCheckSummaries) {
+                        TakePillAndTakePillCheckDTO takePillAndTakePillCheckDTO
+                                = EntityConverter.toTakePillAndTakePillCheckDTO(takePillAndTakePillCheckSummary);
+                        takePillAndTakePillCheckDTOs.add(takePillAndTakePillCheckDTO);
+                    }
+                    TakePillAndTakePillCheckAndGroupMemberIndexDTO takePillAndTakePillCheckAndGroupMemberIndexDTO
+                            = EntityConverter.toTakePillAndTakePillCheckAndGroupMemberIndexDTO(groupMember, takePillAndTakePillCheckDTOs);
+
+                    takePillAndTakePillCheckAndGroupMemberIndexDTOList.add(takePillAndTakePillCheckAndGroupMemberIndexDTO);
+                }
+            }
+            return takePillAndTakePillCheckAndGroupMemberIndexDTOList;
+       }
+       catch (NonRegistrationUserException ignore){
+           throw new NonRegistrationUserException();
+       }
     }
 
     @Transactional

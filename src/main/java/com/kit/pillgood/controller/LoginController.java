@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/login")
 public class LoginController {
@@ -34,8 +33,30 @@ public class LoginController {
      * @return: ResponseEntity<ResponseFormat>, 로그인 결과가 담긴 응답 객체
      **/
     @PostMapping("")
-    public ResponseEntity<ResponseFormat> login(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
+    public ResponseEntity<ResponseFormat> login(@RequestBody  @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, NonRegistrationUserException, EtcFirebaseException, AlreadyExistUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), loginService.login(loginDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
+    }
+    @PostMapping("/1")
+    public void test1(@RequestBody @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO){
+        System.out.println(loginDTO);
+    }
+
+    @PostMapping("/2")
+    public String  test2(@RequestBody String name){
+        System.out.println(name);
+        return name;
+    }
+
+    @GetMapping("/3/{test-name}")
+    public String test3(@PathVariable("test-name") String name){
+        System.out.println(name);
+        return name;
+    }
+
+    @PutMapping("/4")
+    public String test4(@RequestBody String name){
+        System.out.println(name);
+        return name;
     }
 }

@@ -50,7 +50,7 @@ public class PillController {
      * @return: ResponseEntity<ResponseFormat>, 약 리스트 결과가 담긴 응답 객체
      **/
     @GetMapping("/search/pills")
-    public ResponseEntity<ResponseFormat> getSearchingPills(@ModelAttribute @Validated(ValidationGroups.groupSearch.class) SearchingConditionDTO searchingConditionDTO) throws NonExistsPillIndexException {
+    public ResponseEntity<ResponseFormat> getSearchingPills(@RequestBody @Validated(ValidationGroups.groupSearch.class) SearchingConditionDTO searchingConditionDTO) throws NonExistsPillIndexException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), pillService.searchPillByAttributesOfPill(searchingConditionDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
