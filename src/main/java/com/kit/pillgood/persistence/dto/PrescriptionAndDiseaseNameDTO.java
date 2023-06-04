@@ -3,6 +3,8 @@ package com.kit.pillgood.persistence.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -17,4 +19,5 @@ public class PrescriptionAndDiseaseNameDTO {
     private String hospitalPhone;
     private String hospitalName;
     private String diseaseName;
+    private List<PartiallyTakePillDTO> partiallyTakePillDTOList = new ArrayList<>();
 }

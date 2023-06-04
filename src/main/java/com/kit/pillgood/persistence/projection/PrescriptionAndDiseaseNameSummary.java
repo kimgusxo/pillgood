@@ -1,6 +1,7 @@
 package com.kit.pillgood.persistence.projection;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface PrescriptionAndDiseaseNameSummary {
     Long getPrescriptionIndex();

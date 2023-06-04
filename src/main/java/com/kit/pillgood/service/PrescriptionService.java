@@ -5,11 +5,14 @@ import com.kit.pillgood.domain.Prescription;
 import com.kit.pillgood.exeptions.exeption.NonExistsPrescriptionIndexException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
+import com.kit.pillgood.persistence.dto.PartiallyTakePillDTO;
 import com.kit.pillgood.persistence.dto.PrescriptionAndDiseaseNameDTO;
+import com.kit.pillgood.persistence.projection.PartiallyTakePillSummary;
 import com.kit.pillgood.persistence.projection.PrescriptionAndDiseaseNameSummary;
 import com.kit.pillgood.repository.DiseaseRepository;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.PrescriptionRepository;
+import com.kit.pillgood.repository.TakePillRepository;
 import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +28,17 @@ import java.util.List;
 public class PrescriptionService {
     private final Logger LOGGER = LoggerFactory.getLogger(PrescriptionService.class);
     private final PrescriptionRepository prescriptionRepository;
+    private final TakePillRepository takePillRepository;
     private final GroupMemberRepository groupMemberRepository;
     private final DiseaseRepository diseaseRepository;
 
     @Autowired
     public PrescriptionService(PrescriptionRepository prescriptionRepository,
+                               TakePillRepository takePillRepository,
                                GroupMemberRepository groupMemberRepository,
                                DiseaseRepository diseaseRepository) {
         this.prescriptionRepository = prescriptionRepository;
+        this.takePillRepository = takePillRepository;
         this.groupMemberRepository = groupMemberRepository;
         this.diseaseRepository = diseaseRepository;
     }
@@ -61,7 +67,17 @@ public class PrescriptionService {
         List<PrescriptionAndDiseaseNameDTO> prescriptionAndDiseaseNameDTOs = new ArrayList<>();
 
         for(PrescriptionAndDiseaseNameSummary prescriptionAndDiseaseNameSummary : prescriptionAndDiseaseNameSummaries) {
-            prescriptionAndDiseaseNameDTOs.add(EntityConverter.toPrescriptionAndDiseaseNameDTO(prescriptionAndDiseaseNameSummary));
+            List<PartiallyTakePillSummary> partiallyTakePillSummaries = takePillRepository.findPartiallyTakePillByPrescriptionIndex(prescriptionAndDiseaseNameSummary.getPrescriptionIndex());
+            List<PartiallyTakePillDTO> partiallyTakePillDTOList = new ArrayList<>();
+            for(PartiallyTakePillSummary partiallyTakePillSummary : partiallyTakePillSummaries) {
+                PartiallyTakePillDTO partiallyTakePillDTO = PartiallyTakePillDTO.builder()
+                        .pillName(partiallyTakePillSummary.getPillName())
+                        .takeDay(partiallyTakePillSummary.getTakeDay())
+                        .takeCount(partiallyTakePillSummary.getTakeCount())
+                        .build();
+                partiallyTakePillDTOList.add(partiallyTakePillDTO);
+            }
+            prescriptionAndDiseaseNameDTOs.add(EntityConverter.toPrescriptionAndDiseaseNameDTO(prescriptionAndDiseaseNameSummary, partiallyTakePillDTOList));
         }
 
         LOGGER.info("처방전 조회 성공 {}", prescriptionAndDiseaseNameDTOs);

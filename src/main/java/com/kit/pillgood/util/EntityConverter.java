@@ -90,7 +90,9 @@ public class EntityConverter {
         return prescription;
     }
 
-    public static PrescriptionAndDiseaseNameDTO toPrescriptionAndDiseaseNameDTO(PrescriptionAndDiseaseNameSummary prescriptionAndDiseaseNameSummary) {
+    public static PrescriptionAndDiseaseNameDTO toPrescriptionAndDiseaseNameDTO(
+            PrescriptionAndDiseaseNameSummary prescriptionAndDiseaseNameSummary,
+            List<PartiallyTakePillDTO> partiallyTakePillDTOList) {
         PrescriptionAndDiseaseNameDTO prescriptionAndDiseaseNameDTO = PrescriptionAndDiseaseNameDTO.builder()
                 .prescriptionIndex(prescriptionAndDiseaseNameSummary.getPrescriptionIndex())
                 .groupMemberIndex(prescriptionAndDiseaseNameSummary.getGroupMemberIndex())
@@ -100,6 +102,7 @@ public class EntityConverter {
                 .hospitalPhone(prescriptionAndDiseaseNameSummary.getHospitalPhone())
                 .hospitalName(prescriptionAndDiseaseNameSummary.getHospitalName())
                 .diseaseName(prescriptionAndDiseaseNameSummary.getDiseaseName())
+                .partiallyTakePillDTOList(partiallyTakePillDTOList)
                 .build();
 
         return prescriptionAndDiseaseNameDTO;
@@ -198,8 +201,17 @@ public class EntityConverter {
                 .groupMemberIndex(medicationInfoSummary.getGroupMemberIndex())
                 .groupMemberName(medicationInfoSummary.getGroupMemberName())
                 .pillIndex(medicationInfoSummary.getPillIndex())
-                .diseaseIndex(medicationInfoSummary.getDiseaseIndex())
+                .pillNum(medicationInfoSummary.getPillNum())
+                .pillFrontWord(medicationInfoSummary.getPillFrontWord())
+                .pillBackWord(medicationInfoSummary.getPillBackWord())
+                .pillShape(medicationInfoSummary.getPillShape())
+                .pillColor(medicationInfoSummary.getPillColor())
+                .pillCategoryName(medicationInfoSummary.getPillCategoryName())
+                .pillFormulation(medicationInfoSummary.getPillFormulation())
+                .pillEffect(medicationInfoSummary.getPillEffect())
+                .pillPrecaution(medicationInfoSummary.getPillPrecaution())
                 .pillName(medicationInfoSummary.getPillName())
+                .diseaseIndex(medicationInfoSummary.getDiseaseIndex())
                 .diseaseName(medicationInfoSummary.getDiseaseName())
                 .takePillCheckIndex(medicationInfoSummary.getTakePillCheckIndex())
                 .takeCheck(medicationInfoSummary.getTakeCheck())
