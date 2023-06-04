@@ -15,7 +15,7 @@ import java.util.List;
 public interface TakePillCheckRepository  extends JpaRepository<TakePillCheck, Long> {
 
     @Modifying
-    @Query("update TakePillCheck tpc set tpc.takeCheck = :takeCheck where tpc.takePillCheckIndex = :takePillCheckIndex")
-    void updateTakeCheck(@Param("takePillCheckIndex") Long takePillCheckIndex, @Param("takeCheck") Boolean takeCheck);
+    @Query("update TakePillCheck tpc set tpc.takeCheck = :takeCheck where tpc.takePillCheckIndex in :takePillCheckIndexes")
+    void updateTakeCheck(@Param("takePillCheckIndexes") List<Long> takePillCheckIndexList, @Param("takeCheck") Boolean takeCheck);
 
 }

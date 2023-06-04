@@ -51,7 +51,7 @@ public class TakePillCheckService {
     }
 
     @Transactional
-    public void updateTakeCheck(Long takePillCheckIndex, Boolean takeCheck) {
-        takePillCheckRepository.updateTakeCheck(takePillCheckIndex, takeCheck);
+    public void updateTakeCheck(List<Long> takePillCheckIndexList, Boolean takeCheck) {
+        takePillCheckRepository.updateTakeCheck(takePillCheckIndexList, takeCheck);
     }
 }
