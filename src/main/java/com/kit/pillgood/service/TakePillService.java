@@ -55,7 +55,7 @@ public class TakePillService {
 
         // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
         for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
-            Pill pill = pillRepository.findByPillName(pillScheduleDTO.getPillName(), PageRequest.of(0, 1));
+            Pill pill = pillRepository.findByPillName(pillScheduleDTO.getPillName());
 
             TakePill takePill = EntityConverter.toTakePill(prescriptionIndex, pill, pillScheduleDTO);
             takePillList.add(takePill);

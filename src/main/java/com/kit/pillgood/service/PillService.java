@@ -54,7 +54,7 @@ public class PillService {
     @Transactional
     public PillDTO searchPillByPillName(String pillName) throws NonExistsPillNameException {
         try{
-            Pill pill = pillRepository.findByPillName(pillName, PageRequest.of(0, 1));
+            Pill pill = pillRepository.findByPillName(pillName);
             if(pill == null){
                 LOGGER.info(".searchPillByPillName [err] pillName={}을 찾을 수 없음", pillName);
                 throw new NonExistsPillNameException();
@@ -75,7 +75,7 @@ public class PillService {
     public EditOcrDTO searchPillNameByPartiallyPillName(EditOcrDTO editOcrDTO) {
         try{
             for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
-                String pillName = pillRepository.findPillNameByPartiallyPillName(pillScheduleDTO.getPillName(), PageRequest.of(0, 1));
+                String pillName = pillRepository.findPillNameByPartiallyPillName(pillScheduleDTO.getPillName());
                 pillScheduleDTO.setPillName(pillName);
             }
             return editOcrDTO;
@@ -88,7 +88,7 @@ public class PillService {
     @Transactional
     public List<PillDTO> searchPillByAttributesOfPill(SearchingConditionDTO searchingConditionDTO) throws NonExistsPillIndexException {
         try{
-            List<Pill> pills = pillRepository.findPillsByPillNameAndPillShapeOrPillColorOrPillFrontWordOrPillBackWord(
+            List<Pill> pills = pillRepository.findByPillNameContainingAndPillShapeContainingAndPillColorContainingAndPillFrontWordContainingAndPillBackWordContaining(
                     searchingConditionDTO.getPillName(),
                     searchingConditionDTO.getPillColor(),
                     searchingConditionDTO.getPillShape(),
