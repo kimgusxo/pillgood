@@ -25,6 +25,6 @@ public class NotificationDTO {
 
     @NotEmpty(message = "notificationCheck 누락")
     @Pattern(regexp = "[0-1]", message = "boolean 값으로 입력하세요")
-    private boolean notificationCheck;
+    private Boolean notificationCheck;
 
 }

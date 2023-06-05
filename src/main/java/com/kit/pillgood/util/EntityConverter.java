@@ -64,7 +64,7 @@ public class EntityConverter {
     public static NotificationDTO toNotificationDTO(Notification notification) {
         NotificationDTO notificationDTO = NotificationDTO.builder()
                 .notificationIndex(notification.getNotificationIndex())
-                .notificationCheck(notification.isNotificationCheck())
+                .notificationCheck(notification.getNotificationCheck())
                 .notificationContent(notification.getNotificationContent())
                 .notificationTime(notification.getNotificationTime())
                 .build();
