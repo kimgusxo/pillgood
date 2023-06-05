@@ -38,11 +38,11 @@ public class PillController {
      * @param: Long pillIndex, 조회할 약 인덱스
      * @return: ResponseEntity<ResponseFormat>, 약 결과가 담긴 응답 객체
      **/
-    @GetMapping("/search/pill-name/{pill-name}")
-    public ResponseEntity<ResponseFormat> getPillByPillName(@PathVariable(name="pill-name") String pillName) throws NonExistsPillNameException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), pillService.searchPillByPillName(pillName));
-        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
-    }
+//    @GetMapping("/search/pill-name/{pill-name}")
+//    public ResponseEntity<ResponseFormat> getPillByPillName(@PathVariable(name="pill-name") String pillName) throws NonExistsPillNameException {
+//        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), pillService.searchPillByPillName(pillName));
+//        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
+//    }
 
     /**
      * 약 특징 정보로 약 리스트 검색
