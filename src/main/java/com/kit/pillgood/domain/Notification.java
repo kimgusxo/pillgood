@@ -33,6 +33,6 @@ public class Notification {
     private LocalDateTime notificationTime;
 
     @Column(name = "NOTIFICATION_CHECK")
-    private boolean notificationCheck;
+    private Boolean notificationCheck;
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 public interface NotificationRepository  extends JpaRepository<Notification, Long> {
     Notification findByNotificationIndex(Long notificationIndex);
     boolean existsByNotificationIndex(Long notificationIndex);
-    List<Notification> findNotificationByUser_UserIndexAndNotificationTimeAfterAndNotificationCheckFalse(Long userIndex, LocalDateTime dateTime);
+    List<Notification> findNotificationByUser_UserIndexAndNotificationTimeAfterAndNotificationCheckFalseOrderByNotificationTimeDesc(Long userIndex, LocalDateTime dateTime);
     void deleteByNotificationIndex(Long notificationIndex);
     void deleteByNotificationTimeBefore(LocalDateTime localDateTime);
 

@@ -58,7 +58,7 @@ public class NotificationService {
 
             LocalDate nowTime = LocalDate.now();
             LocalDateTime threeDayAgo = nowTime.minusDays(3).atStartOfDay();
-            List<Notification> notifications = notificationRepository.findNotificationByUser_UserIndexAndNotificationTimeAfterAndNotificationCheckFalse(userIndex, threeDayAgo);
+            List<Notification> notifications = notificationRepository.findNotificationByUser_UserIndexAndNotificationTimeAfterAndNotificationCheckFalseOrderByNotificationTimeDesc(userIndex, threeDayAgo);
 
             List<NotificationDTO> notificationDTOs = new ArrayList<>();
 
