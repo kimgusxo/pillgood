@@ -26,8 +26,8 @@ public interface NotificationRepository  extends JpaRepository<Notification, Lon
             "join tp.prescription p " +
             "join p.groupMember g " +
             "join g.user u " +
-            "where t.takeCheck = false and t.takeDate = :takeTime and t.takePillTime = :takePillTime")
-    List<NotificationContentSummary> findNotificationContentsData(@Param("takeTime") LocalDate takeTime,
+            "where t.takeCheck = false and t.takeDate = :takeDate and t.takePillTime = :takePillTime")
+    List<NotificationContentSummary> findNotificationContentsData(@Param("takeDate") LocalDate takeDate,
                                                                   @Param("takePillTime") int takePillTime);
 
 
