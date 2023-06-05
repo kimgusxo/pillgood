@@ -43,36 +43,36 @@ public class TakePillService {
         this.userRepository = userRepository;
     }
 
-//    @Transactional
-//    public List<Long> createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) throws NonExistsTakePillException {
-//
-//        List<TakePill> takePillList = new ArrayList<>();
-//
-//        if(takePillList.isEmpty()){
-//            LOGGER.info(".createTakePillByOCRData [ERR] TakePill이 존재하지 않습니다.");
-//            throw new NonExistsTakePillException();
-//        }
-//
-//        // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
-//        for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
-//            Pill pill = pillRepository.findByPillName(pillScheduleDTO.getPillName(), PageRequest.of(0, 1));
-//
-//            TakePill takePill = EntityConverter.toTakePill(prescriptionIndex, pill, pillScheduleDTO);
-//            takePillList.add(takePill);
-//        }
-//
-//        takePillList = takePillRepository.saveAll(takePillList);
-//
-//        LOGGER.info(".createTakePillByOCRData TakePill 생성 완료 takePillList={}",takePillList);
-//
-//        List<Long> takePillIndexList = new ArrayList<>();
-//
-//        for(TakePill takePill : takePillList) {
-//            takePillIndexList.add(takePill.getTakePillIndex());
-//        }
-//
-//        return takePillIndexList;
-//    }
+    @Transactional
+    public List<Long> createTakePillByOCRData(Long prescriptionIndex, EditOcrDTO editOcrDTO) throws NonExistsTakePillException {
+
+        List<TakePill> takePillList = new ArrayList<>();
+
+        if(takePillList.isEmpty()){
+            LOGGER.info(".createTakePillByOCRData [ERR] TakePill이 존재하지 않습니다.");
+            throw new NonExistsTakePillException();
+        }
+
+        // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
+        for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
+            Pill pill = pillRepository.findByPillName(pillScheduleDTO.getPillName());
+
+            TakePill takePill = EntityConverter.toTakePill(prescriptionIndex, pill, pillScheduleDTO);
+            takePillList.add(takePill);
+        }
+
+        takePillList = takePillRepository.saveAll(takePillList);
+
+        LOGGER.info(".createTakePillByOCRData TakePill 생성 완료 takePillList={}",takePillList);
+
+        List<Long> takePillIndexList = new ArrayList<>();
+
+        for(TakePill takePill : takePillList) {
+            takePillIndexList.add(takePill.getTakePillIndex());
+        }
+
+        return takePillIndexList;
+    }
 
     @Transactional
     public List<TakePillAndTakePillCheckAndGroupMemberIndexDTO> searchTakePillCheckListByUserIndexBetweenTakeDate(Long userIndex, LocalDate dateStart, LocalDate dateEnd) throws NonRegistrationUserException {

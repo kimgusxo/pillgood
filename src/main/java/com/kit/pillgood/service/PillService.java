@@ -51,45 +51,45 @@ public class PillService {
         }
     }
 
-//    @Transactional
-//    public PillDTO searchPillByPillName(String pillName) throws NonExistsPillNameException {
-//        try{
-//            Pill pill = pillRepository.findByPillName(pillName, PageRequest.of(0, 1));
-//            if(pill == null){
-//                LOGGER.info(".searchPillByPillName [err] pillName={}을 찾을 수 없음", pillName);
-//                throw new NonExistsPillNameException();
-//            }
-//            PillDTO pillDTO = EntityConverter.toPillDTO(pill);
-//            LOGGER.info(".searchPillByPillName pillIndex={} 조회 성공", pillName);
-//            return pillDTO;
-//        }
-//        catch (NonExistsPillNameException ignore){
-//            throw new NonExistsPillNameException();
-//        }
-//        catch (Exception ignore){
-//            throw new TransactionFailedException();
-//        }
-//    }
+    @Transactional
+    public PillDTO searchPillByPillName(String pillName) throws NonExistsPillNameException {
+        try{
+            Pill pill = pillRepository.findByPillName(pillName);
+            if(pill == null){
+                LOGGER.info(".searchPillByPillName [err] pillName={}을 찾을 수 없음", pillName);
+                throw new NonExistsPillNameException();
+            }
+            PillDTO pillDTO = EntityConverter.toPillDTO(pill);
+            LOGGER.info(".searchPillByPillName pillIndex={} 조회 성공", pillName);
+            return pillDTO;
+        }
+        catch (NonExistsPillNameException ignore){
+            throw new NonExistsPillNameException();
+        }
+        catch (Exception ignore){
+            throw new TransactionFailedException();
+        }
+    }
 
-//    @Transactional
-//    public EditOcrDTO searchPillNameByPartiallyPillName(EditOcrDTO editOcrDTO) {
-//        try{
-//            for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
-//                String pillName = pillRepository.findPillNameByPartiallyPillName(pillScheduleDTO.getPillName(), PageRequest.of(0, 1));
-//                pillScheduleDTO.setPillName(pillName);
-//            }
-//            return editOcrDTO;
-//        }
-//        catch (Exception ignore){
-//            throw new TransactionFailedException();
-//        }
-//    }
+    @Transactional
+    public EditOcrDTO searchPillNameByPartiallyPillName(EditOcrDTO editOcrDTO) {
+        try{
+            for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
+                String pillName = pillRepository.findPillNameByPartiallyPillName(pillScheduleDTO.getPillName());
+                pillScheduleDTO.setPillName(pillName);
+            }
+            return editOcrDTO;
+        }
+        catch (Exception ignore){
+            throw new TransactionFailedException();
+        }
+    }
 
     @Transactional
     public List<PillDTO> searchPillByAttributesOfPill(SearchingConditionDTO searchingConditionDTO) throws NonExistsPillIndexException {
         try{
-            List<Pill> pills = pillRepository.findPillsByPillNameAndPillShapeOrPillColorOrPillFrontWordOrPillBackWord(
-                    searchingConditionDTO.getPillName(),
+            List<Pill> pills = pillRepository.findByPillNameContainingAndPillShapeContainingAndPillColorContainingAndPillFrontWordContainingAndPillBackWordContaining(
+                    "%" + searchingConditionDTO.getPillName() + "%",
                     searchingConditionDTO.getPillColor(),
                     searchingConditionDTO.getPillShape(),
                     searchingConditionDTO.getPillFrontWord(),
