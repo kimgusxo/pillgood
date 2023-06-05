@@ -2,10 +2,10 @@ package com.kit.pillgood.service;
 
 import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
-import com.kit.pillgood.exeptions.exeption.TransactionFailedException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.UserDTO;
+import com.kit.pillgood.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,9 +16,11 @@ public class LoginService {
     private final Logger LOGGER = LoggerFactory.getLogger(LoginService.class);
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public LoginService(UserService userService) {
+    public LoginService(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -33,15 +35,20 @@ public class LoginService {
             }
 
             // mysql에 등록되지 않은 유저
+            if(!userRepository.existsByUserEmail(loginDTO.getUserEmail())){
+                throw new NonRegistrationUserException();
+            }
+
+            // token이 변경된 유저
             UserDTO userDTO = userService.searchUser(userEmail);
             if (!userDTO.getUserFcmToken().equals(userToken)) {
                 // mysql 생성
                 userDTO = UserDTO.builder()
-                        .userIndex(null)
+                        .userIndex(userDTO.getUserIndex())
                         .userFcmToken(userToken)
                         .userEmail(userEmail)
                         .build();
-                userDTO = userService.createUser(userDTO);
+                userDTO = userService.updateUserToken(userDTO.getUserIndex(), userDTO);
             }
             LOGGER.info(".login 사용자 로그인 {}", userEmail);
 
