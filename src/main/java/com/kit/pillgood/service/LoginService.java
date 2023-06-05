@@ -35,7 +35,7 @@ public class LoginService {
             }
 
             // mysql에 등록되지 않은 유저
-            if(userRepository.existsByUserEmail(loginDTO.getUserEmail())){
+            if(!userRepository.existsByUserEmail(loginDTO.getUserEmail())){
                 throw new NonRegistrationUserException();
             }
 
