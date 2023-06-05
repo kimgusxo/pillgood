@@ -2,6 +2,8 @@ package com.kit.pillgood.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kit.pillgood.common.ResponseFormat;
+import com.kit.pillgood.exeptions.exeption.NonExistsPrescriptionIndexException;
+import com.kit.pillgood.exeptions.exeption.NonExistsTakePillException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.repository.GroupMemberRepository;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 
 import java.time.LocalDate;
@@ -92,12 +95,12 @@ public class OCRController {
      * @param: EditOcrDTO editOcrDTO, OCR 결과와 사용자가 설정한 값을 합친 정보
      * @return: ResponseEntity<ResponseFormat>, 처방전, 복용현황, 복용현황 확인 결과가 담긴 응답 객체
      **/
-//    @PostMapping("/create")
-//    public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
-//        editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);
-//        ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);
-//
-//        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
-//        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
-//    }
+    @PostMapping("/create")
+    public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
+        editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);
+        ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);
+
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
+    }
 }

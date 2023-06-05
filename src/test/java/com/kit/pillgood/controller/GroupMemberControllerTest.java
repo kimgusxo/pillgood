@@ -73,4 +73,10 @@ class GroupMemberControllerTest {
                         .param("groupMemberIndex", String.valueOf(groupMemberIndex))
         ).andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("그룹원 삭제")
+    void deleteGroupMember() throws Exception {
+
+    }
 }

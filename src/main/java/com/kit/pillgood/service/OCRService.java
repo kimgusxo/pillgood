@@ -81,20 +81,20 @@ public class OCRService {
         }
     }
 
-//    @Transactional
-//    public void createPrescriptionAndTakePillAndTakePillCheck(EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
-//        Long prescriptionIndex = prescriptionService.createPrescriptionByOCRData(editOcrDTO);
-//        if(prescriptionIndex == null){
-//            LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 Prescription이 없습니다.");
-//            throw new NonExistsPrescriptionIndexException();
-//        }
-//        List<Long> takePillIndexList = takePillService.createTakePillByOCRData(prescriptionIndex, editOcrDTO);
-//        if(takePillIndexList.size() == 0){
-//            LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 TakePill이 없습니다.");
-//            throw new NonExistsTakePillException();
-//        }
-//        takePillCheckService.createTakePillCheckByOCRData(takePillIndexList, editOcrDTO);
-//        LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck 수행 완료");
-//    }
+    @Transactional
+    public void createPrescriptionAndTakePillAndTakePillCheck(EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
+        Long prescriptionIndex = prescriptionService.createPrescriptionByOCRData(editOcrDTO);
+        if(prescriptionIndex == null){
+            LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 Prescription이 없습니다.");
+            throw new NonExistsPrescriptionIndexException();
+        }
+        List<Long> takePillIndexList = takePillService.createTakePillByOCRData(prescriptionIndex, editOcrDTO);
+        if(takePillIndexList.size() == 0){
+            LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 TakePill이 없습니다.");
+            throw new NonExistsTakePillException();
+        }
+        takePillCheckService.createTakePillCheckByOCRData(takePillIndexList, editOcrDTO);
+        LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck 수행 완료");
+    }
 
 }
