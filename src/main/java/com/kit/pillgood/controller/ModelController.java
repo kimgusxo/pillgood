@@ -35,16 +35,12 @@ public class ModelController {
     public OriginalOcrDTO sendImage(@RequestParam MultipartFile image) {
 
         try {
-            // 이미지를 임시 파일로 저장
-            Path tempFilePath = Files.createTempFile("image", image.getOriginalFilename());
-            Files.copy(image.getInputStream(), tempFilePath, StandardCopyOption.REPLACE_EXISTING);
-
             // 이미지 데이터를 Base64 인코딩하여 문자열로 변환
             String encodedImage = Base64.getEncoder().encodeToString(image.getBytes());
 
             // JSON 객체 생성 및 이미지 데이터 추가
-            JsonObject json = new JsonObject ();
-            json.addProperty("image", encodedImage);
+            JsonObject json = new JsonObject();
+            json.addProperty("image",  encodedImage);
 
             // HTTP 요청 헤더 설정
             HttpHeaders headers = new HttpHeaders();
@@ -58,9 +54,6 @@ public class ModelController {
 
             // POST 요청 보내기
             ResponseEntity<OriginalOcrDTO> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, OriginalOcrDTO.class);
-
-            // 임시 파일 삭제
-            Files.delete(tempFilePath);
 
             // 응답 처리
             if (response.getStatusCode() == HttpStatus.OK) {

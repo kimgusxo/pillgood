@@ -134,7 +134,6 @@ public class NotificationService {
         LocalDateTime threeDayAgo = nowTime.minusDays(3).atStartOfDay();
         notificationRepository.deleteByNotificationTimeBefore(threeDayAgo);
         LOGGER.info(".deleteNotification  3일 이전 모든 알림 삭제 완료");
-
     }
 
     private NotificationDTO createUpdateNotification(NotificationDTO notificationDTO) throws NonRegistrationUserException {
