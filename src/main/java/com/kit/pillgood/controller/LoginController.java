@@ -37,4 +37,5 @@ public class LoginController {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), loginService.login(loginDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
+    
 }
