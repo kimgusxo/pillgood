@@ -41,12 +41,6 @@ public class UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
-        if(userRepository.existsByUserEmail(userDTO.getUserEmail())){
-            try {
-                deleteUser(userDTO.getUserIndex());
-            }
-            catch (NonRegistrationUserException ignore) {}
-        }
         User user = EntityConverter.toUser(userDTO);
         userDTO = EntityConverter.toUserDTO(userRepository.save(user));
         LOGGER.info("[info] 유저 생성 완료 user={}", user );

@@ -24,7 +24,6 @@ public class GroupMemberAndUserIndexDTO {
     private String groupMemberName;
 
     @NotNull(groups = {ValidationGroups.groupCreate.class}, message = "생일은 필수 값입니다.")
-    @JsonFormat(pattern = "YYYY-MM-DD")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate groupMemberBirth;
 
