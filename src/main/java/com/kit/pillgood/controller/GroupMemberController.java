@@ -83,5 +83,4 @@ public class GroupMemberController {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
-
 }
