@@ -9,6 +9,7 @@ import com.kit.pillgood.persistence.dto.PillDTO;
 import com.kit.pillgood.persistence.dto.PillScheduleDTO;
 import com.kit.pillgood.persistence.dto.SearchingConditionDTO;
 import com.kit.pillgood.repository.PillRepository;
+import com.kit.pillgood.specification.PillSpecification;
 import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,20 +89,34 @@ public class PillService {
     @Transactional
     public List<PillDTO> searchPillByAttributesOfPill(SearchingConditionDTO searchingConditionDTO) throws NonExistsPillIndexException {
         try{
-            List<Pill> pills = pillRepository.findByPillNameContainingAndPillShapeContainingAndPillColorContainingAndPillFrontWordContainingAndPillBackWordContaining(
-                    "%" + searchingConditionDTO.getPillName() + "%",
-                    searchingConditionDTO.getPillColor(),
-                    searchingConditionDTO.getPillShape(),
-                    searchingConditionDTO.getPillFrontWord(),
-                    searchingConditionDTO.getPillBackWord());
-
-            if(pills.isEmpty()){
+            List<Pill> pillList = new ArrayList<>();
+            if(searchingConditionDTO.getPillName() != null && !searchingConditionDTO.getPillName().isEmpty()) {
+                int count = 0;
+                List<Pill> tempPillList = pillRepository.findPillListByPillName(searchingConditionDTO.getPillName());
+                for(Pill pill : tempPillList) {
+                    if(pill.getPillShape().equals(searchingConditionDTO.getPillShape()) && !searchingConditionDTO.getPillShape().isEmpty()) {
+                        pillList.add(tempPillList.get(count));
+                    } else if(pill.getPillColor().equals(searchingConditionDTO.getPillColor()) && !searchingConditionDTO.getPillColor().isEmpty()) {
+                        pillList.add(tempPillList.get(count));
+                    } else if(pill.getPillFrontWord().equals(searchingConditionDTO.getPillFrontWord()) && !searchingConditionDTO.getPillFrontWord().isEmpty()) {
+                        pillList.add(tempPillList.get(count));
+                    } else if(pill.getPillBackWord().equals(searchingConditionDTO.getPillBackWord()) && !searchingConditionDTO.getPillBackWord().isEmpty()) {
+                        pillList.add(tempPillList.get(count));
+                    }
+                    count++;
+                }
+            } else {
+                PillSpecification pillSpecification = new PillSpecification(searchingConditionDTO);
+                pillList = pillRepository.findAll(pillSpecification);
+            }
+            if(pillList.isEmpty()){
                 LOGGER.info(".searchPillByAttributesOfPill Pill이 존재하지 않습니다");
                 throw new NonExistsPillIndexException();
             }
+
             List<PillDTO> pillDTOs = new ArrayList<>();
 
-            for(Pill pill : pills) {
+            for(Pill pill : pillList) {
                 PillDTO pillDTO = EntityConverter.toPillDTO(pill);
                 pillDTOs.add(pillDTO);
             }

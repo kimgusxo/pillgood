@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -75,8 +77,45 @@ class GroupMemberControllerTest {
     }
 
     @Test
+    @DisplayName("그룹원 수정")
+    void updateGroupMember() throws Exception {
+        //given
+        Long groupMemberIndex = 71L;
+        LocalDate groupMemberBirth = LocalDate.of(1999, 6, 30);
+        String groupMemberName = "김현태";
+        String groupMemberPhone = "010-7104-9906";
+        Long userIndex = 1L;
+        Boolean messageCheck = false;
+
+        //when
+        GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = GroupMemberAndUserIndexDTO.builder()
+                .groupMemberBirth(groupMemberBirth)
+                .groupMemberName(groupMemberName)
+                .groupMemberPhone(groupMemberPhone)
+                .userIndex(userIndex)
+                .messageCheck(messageCheck)
+                .build();
+
+        //then
+        mvc.perform(post(BASE_URL + "/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(groupMemberAndUserIndexDTO))
+        ).andExpect(status().isOk());
+    }
+
+    @Test
     @DisplayName("그룹원 삭제")
     void deleteGroupMember() throws Exception {
+        //given
+        Long groupMemberIndex = 71L;
 
+        //when
+
+        //then
+        mvc.perform(delete(BASE_URL + "/delete/" + groupMemberIndex)
+                .param("groupMemberIndex", String.valueOf(groupMemberIndex))
+        ).andExpect(status().isOk());
     }
+
+
 }
