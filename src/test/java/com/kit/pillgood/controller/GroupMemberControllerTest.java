@@ -3,6 +3,7 @@ package com.kit.pillgood.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
+import org.apache.commons.codec.CharEncoding;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,6 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class GroupMemberControllerTest {
 
     @Autowired
+    ObjectMapper objectMapper;
+
+    @Autowired
     MockMvc mvc;
 
     private static final String BASE_URL = "/group-member";
@@ -30,7 +35,6 @@ class GroupMemberControllerTest {
     @Test
     @DisplayName("그룹원 생성 테스트")
     void create_test() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
         //given
@@ -53,6 +57,20 @@ class GroupMemberControllerTest {
         mvc.perform(post(BASE_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(groupMemberAndUserIndexDTO))
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("그룹원 조회")
+    void searchGroupMember() throws Exception {
+        //given
+        Long groupMemberIndex = 71L;
+
+        //when
+
+        //then
+        mvc.perform(get(BASE_URL + "/search/" + groupMemberIndex)
+                        .param("groupMemberIndex", String.valueOf(groupMemberIndex))
         ).andExpect(status().isOk());
     }
 }
