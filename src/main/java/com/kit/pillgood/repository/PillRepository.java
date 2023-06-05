@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface PillRepository extends JpaRepository<Pill, Long>, JpaSpecificationExecutor<Pill> {
+
     Pill findByPillIndex(Long pillIndex);
 
     @Query(nativeQuery = true, value = "select * from Pill p where p.pill_name like concat('%', :pillName, '%') " +

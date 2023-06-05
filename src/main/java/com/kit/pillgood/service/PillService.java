@@ -14,6 +14,7 @@ import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -106,8 +107,15 @@ public class PillService {
                     count++;
                 }
             } else {
+                int pageNum = 0;
+                int pageSize = 10;
+
+                Pageable pageable = PageRequest.of(pageNum, pageSize);
+
                 PillSpecification pillSpecification = new PillSpecification(searchingConditionDTO);
-                pillList = pillRepository.findAll(pillSpecification);
+
+                Page<Pill> pillPage = pillRepository.findAll(pillSpecification, pageable);
+                pillList = pillPage.getContent();
             }
             if(pillList.isEmpty()){
                 LOGGER.info(".searchPillByAttributesOfPill Pill이 존재하지 않습니다");
