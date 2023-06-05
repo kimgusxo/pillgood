@@ -89,7 +89,7 @@ public class PillService {
     public List<PillDTO> searchPillByAttributesOfPill(SearchingConditionDTO searchingConditionDTO) throws NonExistsPillIndexException {
         try{
             List<Pill> pills = pillRepository.findByPillNameContainingAndPillShapeContainingAndPillColorContainingAndPillFrontWordContainingAndPillBackWordContaining(
-                    searchingConditionDTO.getPillName(),
+                    "%" + searchingConditionDTO.getPillName() + "%",
                     searchingConditionDTO.getPillColor(),
                     searchingConditionDTO.getPillShape(),
                     searchingConditionDTO.getPillFrontWord(),
