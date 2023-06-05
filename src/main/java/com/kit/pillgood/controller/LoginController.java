@@ -37,26 +37,4 @@ public class LoginController {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), loginService.login(loginDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
-    @PostMapping("/1")
-    public void test1(@RequestBody @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO){
-        System.out.println(loginDTO);
-    }
-
-    @PostMapping("/2")
-    public String  test2(@RequestBody String name){
-        System.out.println(name);
-        return name;
-    }
-
-    @GetMapping("/3/{test-name}")
-    public String test3(@PathVariable("test-name") String name){
-        System.out.println(name);
-        return name;
-    }
-
-    @PutMapping("/4")
-    public String test4(@RequestBody String name){
-        System.out.println(name);
-        return name;
-    }
 }
