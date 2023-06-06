@@ -83,7 +83,7 @@ public class GroupMemberService {
                 LOGGER.info(".updateGroupMember [err] 존재하지 않는 그룹맴버={} 조회", groupMemberAndUserIndexDTO);
                 throw new NonRegistrationGroupException();
             }
-            
+
             groupMember = settingUpdateGroupMemberData(groupMemberAndUserIndexDTO, groupMember);
 
             groupMember = groupMemberRepository.save(groupMember);
@@ -99,9 +99,6 @@ public class GroupMemberService {
         }
         catch (NonRegistrationGroupException ignore){
             throw new NonRegistrationGroupException();
-        }
-        catch (AlreadyExistGroupException ignore){
-            throw new AlreadyExistGroupException();
         }
 
     }
