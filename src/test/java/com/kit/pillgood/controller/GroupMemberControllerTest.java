@@ -48,12 +48,12 @@ class GroupMemberControllerTest {
 
         //when
         GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = GroupMemberAndUserIndexDTO.builder()
-                        .groupMemberBirth(groupMemberBirth)
-                        .groupMemberName(groupMemberName)
-                        .groupMemberPhone(groupMemberPhone)
-                        .userIndex(userIndex)
-                        .messageCheck(messageCheck)
-                        .build();
+                .groupMemberBirth(groupMemberBirth)
+                .groupMemberName(groupMemberName)
+                .groupMemberPhone(groupMemberPhone)
+                .userIndex(userIndex)
+                .messageCheck(messageCheck)
+                .build();
 
         //then
         mvc.perform(post(BASE_URL + "/create")
@@ -83,12 +83,13 @@ class GroupMemberControllerTest {
         Long groupMemberIndex = 71L;
         LocalDate groupMemberBirth = LocalDate.of(1999, 6, 30);
         String groupMemberName = "김현태";
-        String groupMemberPhone = "010-7104-9906";
+        String groupMemberPhone = "010-7104-0000";
         Long userIndex = 1L;
         Boolean messageCheck = false;
 
         //when
         GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = GroupMemberAndUserIndexDTO.builder()
+                .groupMemberIndex(groupMemberIndex)
                 .groupMemberBirth(groupMemberBirth)
                 .groupMemberName(groupMemberName)
                 .groupMemberPhone(groupMemberPhone)
@@ -97,7 +98,7 @@ class GroupMemberControllerTest {
                 .build();
 
         //then
-        mvc.perform(post(BASE_URL + "/create")
+        mvc.perform(put(BASE_URL + "/update/" + groupMemberIndex)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(groupMemberAndUserIndexDTO))
         ).andExpect(status().isOk());
