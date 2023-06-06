@@ -56,12 +56,15 @@ public class UserService {
                 throw new NonRegistrationUserException();
             }
 
-            UserDTO updateUserDTO = settingUpdateUserData(userDTO, user);
-            UserDTO newUserDTO = createUser(updateUserDTO);
-            deleteUser(userIndex);
-            LOGGER.info("[info] 유저 변경 완료 user={}", updateUserDTO );
+            if(!user.getUserFcmToken().equals(userDTO.getUserFcmToken())){
+                user.setUserFcmToken(userDTO.getUserFcmToken());
+                user = userRepository.save(user);
+            }
 
-            return newUserDTO;
+            userDTO = EntityConverter.toUserDTO(user);
+            LOGGER.info("[info] 유저 변경 완료 user={}", userDTO );
+            
+            return userDTO;
         }
         catch (NonRegistrationUserException ignore){
             throw new NonRegistrationUserException();
