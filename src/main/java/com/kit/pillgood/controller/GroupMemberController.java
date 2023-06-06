@@ -29,7 +29,7 @@ public class GroupMemberController {
      * @return: ResponseEntity<ResponseFormat>, 생성된 그룹원 결과가 담긴 응답 객체
     **/
     @PostMapping("/create")
-    public ResponseEntity<ResponseFormat> createGroupMember(@RequestBody @Validated(ValidationGroups.groupCreate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, AlreadyExistGroupException {
+    public ResponseEntity<ResponseFormat> createGroupMember(@RequestBody @Validated(ValidationGroups.groupCreate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.createGroupMember(groupMemberAndUserIndexDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
