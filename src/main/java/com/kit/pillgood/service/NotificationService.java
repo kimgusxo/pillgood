@@ -81,7 +81,7 @@ public class NotificationService {
     }
 
     @Transactional
-    public NotificationDTO updateNotificationCheck(Long notificationIndex) throws NonRegistrationNotificationException, NonRegistrationUserException {
+    public NotificationDTO updateNotificationCheck(Long notificationIndex) throws NonRegistrationNotificationException {
         try{
             Notification notification = notificationRepository.findByNotificationIndex(notificationIndex);
 
@@ -89,45 +89,21 @@ public class NotificationService {
                 LOGGER.info(".updateNotificationCheck [err] 존재하지 않는 알림={} 조회", notificationIndex);
                 throw new NonRegistrationNotificationException();
             }
+            notification.setNotificationCheck(false);
+            notification = notificationRepository.save(notification);
+            NotificationDTO updateNotificationDTO = EntityConverter.toNotificationDTO(notification);
 
-            NotificationDTO updateNotificationDTO = settingUpdateNotificationData(notification);
-
-            NotificationDTO newNotificationDTO = createUpdateNotification(updateNotificationDTO);
-            deleteUpdateNotification(notificationIndex);
-
-            LOGGER.info(".updateNotificationCheck 알림 수정 완료 {}", newNotificationDTO);
-            return newNotificationDTO;
+            LOGGER.info(".updateNotificationCheck 알림 수정 완료 {}", updateNotificationDTO);
+            return updateNotificationDTO;
         }
         catch(NonRegistrationNotificationException ignore){
             throw new NonRegistrationNotificationException();
-        }
-        catch (NonRegistrationUserException ignore){
-            throw new NonRegistrationUserException();
-        }
-        catch (Exception ignore){
+        } catch (Exception ignore){
             throw new TransactionFailedException();
         }
 
     }
 
-    private NotificationDTO settingUpdateNotificationData(Notification notification){
-        return NotificationDTO.builder()
-                .notificationIndex(null)
-                .notificationTime(notification.getNotificationTime())
-                .notificationContent(notification.getNotificationContent())
-                .userIndex(notification.getUser().getUserIndex())
-                .notificationCheck(true)
-                .build();
-    }
-
-    private void deleteUpdateNotification(Long notificationIndex) throws NonRegistrationNotificationException {
-        if(!notificationRepository.existsByNotificationIndex(notificationIndex)){
-            LOGGER.info(".deleteNotification [err] 존재하지 않는 notificationIndex={} 조회", notificationIndex);
-            throw new NonRegistrationNotificationException();
-        }
-        notificationRepository.deleteByNotificationIndex(notificationIndex);
-        LOGGER.info(".deleteNotification 그룹원 삭제 완료 groupMemberIndex={}", notificationIndex);
-    }
 
     private void deleteNotification() {
         LocalDate nowTime = LocalDate.now();
@@ -136,34 +112,6 @@ public class NotificationService {
         LOGGER.info(".deleteNotification  3일 이전 모든 알림 삭제 완료");
     }
 
-    private NotificationDTO createUpdateNotification(NotificationDTO notificationDTO) throws NonRegistrationUserException {
-        Long userIndex = notificationDTO.getUserIndex();
-
-        if(!userRepository.existsByUserIndex(userIndex)){
-            LOGGER.info(".createNotification [err] 존재하지 않은 userIndex={} 검색", userIndex);
-            throw new NonRegistrationUserException();
-        }
-
-        User user = User.builder()
-                .userIndex(userIndex)
-                .build();
-
-        Notification notification = Notification.builder()
-                .notificationIndex(null)
-                .notificationTime(LocalDateTime.now())
-                .notificationContent(notificationDTO.getNotificationContent())
-                .user(user)
-                .notificationCheck(true)
-                .build();
-
-
-        Notification newNotification = notificationRepository.save(notification);
-        NotificationDTO newNotificationDTO = EntityConverter.toNotificationDTO(newNotification);
-
-        LOGGER.info(".createNotification 알림 생성 완료{}", newNotificationDTO);
-
-        return newNotificationDTO;
-    }
 
     @Scheduled(cron="1 0 0 * * *")
     public void settingTodayNotification() {
