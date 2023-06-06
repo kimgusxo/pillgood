@@ -36,15 +36,11 @@ public class GroupMemberService {
 
         try{
             Long userIndex = groupMemberAndUserIndexDTO.getUserIndex();
-            String groupMemberPhoneNumber = groupMemberAndUserIndexDTO.getGroupMemberPhone();
 
             if(!userRepository.existsByUserIndex(userIndex)){
                 LOGGER.info(".createGroupMember [err] 존재하지 않은 userIndex={} 검색", userIndex);
                 throw new NonRegistrationUserException();
             }
-
-            User user = new User();
-            user.setUserIndex(groupMemberAndUserIndexDTO.getUserIndex());
 
             GroupMember groupMember = EntityConverter.toGroupMember(groupMemberAndUserIndexDTO);
 
