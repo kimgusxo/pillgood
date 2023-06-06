@@ -66,9 +66,7 @@ public class GroupMemberService {
         catch (AlreadyExistGroupException e) {
             throw new AlreadyExistGroupException();
         }
-        catch (Exception e){
-            throw new TransactionFailedException();
-        }
+
     }
 
     @Transactional
@@ -96,14 +94,11 @@ public class GroupMemberService {
                 }
             }
 
-
-            GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = settingUpdateGroupMemberData(groupMemberAndUserIndexDTO, groupMember);
-
-            groupMember = EntityConverter.toGroupMember(newGroupMemberAndUserIndexDTO);
+            groupMember = settingUpdateGroupMemberData(groupMemberAndUserIndexDTO, groupMember);
 
             groupMember = groupMemberRepository.save(groupMember);
-            newGroupMemberAndUserIndexDTO = EntityConverter.toGroupMemberAndUserIndexDTO(groupMember);
-            deleteGroupMember(groupMemberIndex);
+
+            GroupMemberAndUserIndexDTO newGroupMemberAndUserIndexDTO = EntityConverter.toGroupMemberAndUserIndexDTO(groupMember);
 
             LOGGER.info(".updateGroupMember 그룹맴버 수정 완료 {}", newGroupMemberAndUserIndexDTO);
 
@@ -118,30 +113,30 @@ public class GroupMemberService {
         catch (AlreadyExistGroupException ignore){
             throw new AlreadyExistGroupException();
         }
-        catch (Exception ignore){
-            throw new TransactionFailedException();
-        }
+
     }
 
-    private GroupMemberAndUserIndexDTO settingUpdateGroupMemberData(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, GroupMember groupMember){
+    private GroupMember settingUpdateGroupMemberData(GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, GroupMember groupMember){
 
-        if(groupMemberAndUserIndexDTO.getGroupMemberBirth() == null){
-            groupMemberAndUserIndexDTO.setGroupMemberBirth(groupMember.getGroupMemberBirth());
+        if(groupMemberAndUserIndexDTO.getGroupMemberBirth() != null){
+            groupMember.setGroupMemberBirth(groupMemberAndUserIndexDTO.getGroupMemberBirth());
         }
-        if(groupMemberAndUserIndexDTO.getGroupMemberName() == null){
-            groupMemberAndUserIndexDTO.setGroupMemberName(groupMember.getGroupMemberName());
+        if(groupMemberAndUserIndexDTO.getGroupMemberName() != null){
+            groupMember.setGroupMemberName(groupMemberAndUserIndexDTO.getGroupMemberName());
         }
-        if(groupMemberAndUserIndexDTO.getGroupMemberPhone() == null){
-            groupMemberAndUserIndexDTO.setGroupMemberPhone(groupMember.getGroupMemberPhone());
+        if(groupMemberAndUserIndexDTO.getGroupMemberPhone() != null){
+            groupMember.setGroupMemberPhone(groupMemberAndUserIndexDTO.getGroupMemberPhone());
         }
-        if(groupMemberAndUserIndexDTO.getMessageCheck() == null){
-            groupMemberAndUserIndexDTO.setMessageCheck(groupMember.getMessageCheck());
+        if(groupMemberAndUserIndexDTO.getMessageCheck() != null){
+            groupMember.setMessageCheck(groupMemberAndUserIndexDTO.getMessageCheck());
         }
-        if (groupMemberAndUserIndexDTO.getUserIndex() == null){
-            groupMemberAndUserIndexDTO.setUserIndex(groupMember.getUser().getUserIndex());
+        if (groupMemberAndUserIndexDTO.getUserIndex() != null){
+            User user = User.builder()
+                    .userIndex(groupMemberAndUserIndexDTO.getUserIndex()).build();
+            groupMember.setUser(user);
         }
 
-        return groupMemberAndUserIndexDTO;
+        return groupMember;
     }
 
     @Transactional
@@ -159,9 +154,7 @@ public class GroupMemberService {
         catch (NonRegistrationGroupException ignore){
             throw new NonRegistrationGroupException();
         }
-        catch (Exception ignore){
-            throw new TransactionFailedException();
-        }
+
     }
 
     @Transactional
@@ -190,9 +183,7 @@ public class GroupMemberService {
         catch (NonRegistrationUserException ignore){
             throw new NonRegistrationUserException();
         }
-        catch (Exception ignore){
-            throw new TransactionFailedException();
-        }
+
     }
 
     @Transactional
@@ -208,8 +199,6 @@ public class GroupMemberService {
         catch (NonRegistrationGroupException ignore){
             throw new NonRegistrationGroupException();
         }
-        catch (Exception ignore){
-            throw new NonRegistrationGroupException();
-        }
+
     }
 }
