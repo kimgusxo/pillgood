@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 
@@ -67,7 +68,12 @@ public class OCRController {
 
         if (image != null) {
             CompletableFuture.supplyAsync(() -> {
-                EditOcrDTO editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image);
+                EditOcrDTO editOcrDTO = null;
+                try {
+                    editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image.getBytes());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 try {
                     ocrService.sendOcrData(userFCMToken, editOcrDTO);
 

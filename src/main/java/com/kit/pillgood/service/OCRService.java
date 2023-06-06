@@ -43,7 +43,7 @@ public class OCRService {
     }
 
     @Transactional
-    public EditOcrDTO sendImage(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, MultipartFile image) {
+    public EditOcrDTO sendImage(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, byte[] image) {
         OriginalOcrDTO originalOcrDTO = modelController.sendImage(image);
 
         EditOcrDTO editOcrDTO = EntityConverter.toEditOcrDTO(groupMemberIndex, groupMemberName, dateStart, originalOcrDTO);
