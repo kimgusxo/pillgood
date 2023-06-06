@@ -54,7 +54,7 @@ public class GroupMemberController {
      * @return: ResponseEntity<ResponseFormat>, 조회된 그룹원 리스트 결과가 담긴 응답 객체
      **/
     @GetMapping("/search/group-members")
-    public ResponseEntity<ResponseFormat> getGroupMembersByUserIndex(@RequestBody Long userIndex) throws NonRegistrationUserException {
+    public ResponseEntity<ResponseFormat> getGroupMembersByUserIndex(@RequestParam Long userIndex) throws NonRegistrationUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.searchGroupMembersByUserIndex(userIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
