@@ -94,6 +94,9 @@ public class PillService {
             if(searchingConditionDTO.getPillName() != null && !searchingConditionDTO.getPillName().isEmpty()) {
                 int count = 0;
                 List<Pill> tempPillList = pillRepository.findPillListByPillName(searchingConditionDTO.getPillName());
+                if(tempPillList.isEmpty()){
+                    throw new NonExistsPillNameException();
+                }
                 for(Pill pill : tempPillList) {
                     if(pill.getPillShape().equals(searchingConditionDTO.getPillShape()) && !searchingConditionDTO.getPillShape().isEmpty()) {
                         pillList.add(tempPillList.get(count));
