@@ -16,7 +16,6 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -36,9 +35,7 @@ class GroupMemberControllerTest {
 
     @Test
     @DisplayName("그룹원 생성 테스트")
-    void create_test() throws Exception {
-        objectMapper.registerModule(new JavaTimeModule());
-
+    void createGroupMember() throws Exception {
         //given
         LocalDate groupMemberBirth = LocalDate.of(1999, 6, 30);
         String groupMemberName = "김현태";
