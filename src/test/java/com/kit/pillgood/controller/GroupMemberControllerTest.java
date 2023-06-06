@@ -80,11 +80,11 @@ class GroupMemberControllerTest {
     @DisplayName("그룹원 수정")
     void updateGroupMember() throws Exception {
         //given
-        Long groupMemberIndex = 71L;
+        Long groupMemberIndex = 15L;
         LocalDate groupMemberBirth = LocalDate.of(1999, 6, 30);
         String groupMemberName = "김현태";
         String groupMemberPhone = "010-7104-0000";
-        Long userIndex = 1L;
+        Long userIndex = 3L;
         Boolean messageCheck = false;
 
         //when
@@ -99,6 +99,7 @@ class GroupMemberControllerTest {
 
         //then
         mvc.perform(put(BASE_URL + "/update/" + groupMemberIndex)
+                .param("groupMemberIndex", String.valueOf(groupMemberIndex))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(groupMemberAndUserIndexDTO))
         ).andExpect(status().isOk());
@@ -108,7 +109,7 @@ class GroupMemberControllerTest {
     @DisplayName("그룹원 삭제")
     void deleteGroupMember() throws Exception {
         //given
-        Long groupMemberIndex = 71L;
+        Long groupMemberIndex = 75L;
 
         //when
 
