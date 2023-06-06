@@ -54,7 +54,7 @@ public class OCRController {
                                                     @RequestParam String groupMemberName,
                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
                                                     @RequestParam String userFCMToken,
-                                                    @RequestParam MultipartFile image) throws NonRegistrationGroupException {
+                                                    @RequestPart("image") MultipartFile image) throws NonRegistrationGroupException {
 
         if(!groupMemberRepository.existsByGroupMemberIndex(groupMemberIndex)){
             LOGGER.info("createOCR. [err] 존재하지 않은 GroupMemberIndex GroupMemberIndex={}", groupMemberIndex);
