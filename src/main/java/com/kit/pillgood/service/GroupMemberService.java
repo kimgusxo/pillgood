@@ -83,17 +83,7 @@ public class GroupMemberService {
                 LOGGER.info(".updateGroupMember [err] 존재하지 않는 그룹맴버={} 조회", groupMemberAndUserIndexDTO);
                 throw new NonRegistrationGroupException();
             }
-
-
-//          기존과 다른 전화번호 입력시 중첩된 전화번호 차단
-            String groupMemberPhoneNumber = groupMemberAndUserIndexDTO.getGroupMemberPhone();
-            if(!groupMemberPhoneNumber.equals(groupMember.getGroupMemberPhone())){
-                if(groupMemberRepository.existsByGroupMemberPhone(groupMemberPhoneNumber)){
-                    LOGGER.info(".createGroupMember [err] 이미 등록된 전화번호={} 등록 시도", groupMemberPhoneNumber);
-                    throw new AlreadyExistGroupException();
-                }
-            }
-
+            
             groupMember = settingUpdateGroupMemberData(groupMemberAndUserIndexDTO, groupMember);
 
             groupMember = groupMemberRepository.save(groupMember);
