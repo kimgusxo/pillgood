@@ -42,7 +42,7 @@ public class NotificationController {
      * @return: ResponseEntity<ResponseFormat>, 알림 확인 여부 결과가 담긴 응답 객체
      **/
     @PutMapping("/update/notification-check/{notification-index}")
-    public ResponseEntity<ResponseFormat> updateNotificationCheckToTrue(@PathVariable(name="notification-index") Long notificationIndex) throws NonRegistrationNotificationException, NonRegistrationUserException {
+    public ResponseEntity<ResponseFormat> updateNotificationCheckToTrue(@PathVariable(name="notification-index") Long notificationIndex) throws NonRegistrationNotificationException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), notificationService.updateNotificationCheck(notificationIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
@@ -56,8 +56,9 @@ public class NotificationController {
                             .setTitle("알림")
                             .setBody("test 님 아침약 알림 입니다.")
                             .build())
+                    .putData("유저 인덱스", "87")
                     .putData("그룹원 전화번호", "010-1111-1111")
-                    .setToken("dhUwGlXzRDeAIIZU3r-M0G:APA91bH6BQhTL0wWy32Q6uzOiC7kAYuy4R1wuUMXcPCKTVZyIzV8uQ3kPQUPUVdsMgKBQPYinZnKqkthWktGeLDQ4MB-fBUiDGap2PVBO1Kw9CCrFwN-ftther4Fm5J59drP_bYclAH8")
+                    .setToken("cR4WuUraS7mOe4BoLqbLkV:APA91bHIlJmxMOoE4VShfViSisIImqlC3L4OmPQ74nor9pnD7JSyUQL9FBSQubBr8GDeVr4qyAZg2ELQD_ebzG5GNJ78MqNdKIr3TNl9QBNFJ_RnrZft9Exg2sYGNSJczUmR_K9v5Ogd")
                     .build();
 
             String response;
