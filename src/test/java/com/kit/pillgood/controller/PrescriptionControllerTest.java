@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PrescriptionControllerTest1 {
+class PrescriptionControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
