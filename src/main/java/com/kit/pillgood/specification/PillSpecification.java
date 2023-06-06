@@ -25,7 +25,7 @@ public class PillSpecification implements Specification<Pill> {
         }
 
         if (searchingConditionDTO.getPillColor() != null && !searchingConditionDTO.getPillColor().isEmpty()) {
-            predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("pillColor"), searchingConditionDTO.getPillColor()));
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("pillColor"), "%" +searchingConditionDTO.getPillColor() + "%"));
         }
 
         if (searchingConditionDTO.getPillFrontWord() != null && !searchingConditionDTO.getPillFrontWord().isEmpty()) {
