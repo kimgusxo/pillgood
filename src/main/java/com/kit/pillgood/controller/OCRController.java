@@ -102,7 +102,7 @@ public class OCRController {
      * @return: ResponseEntity<ResponseFormat>, 처방전, 복용현황, 복용현황 확인 결과가 담긴 응답 객체
      **/
     @PostMapping("/create")
-    public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@ModelAttribute EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
+    public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@RequestBody EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
         editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);
         ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);
 

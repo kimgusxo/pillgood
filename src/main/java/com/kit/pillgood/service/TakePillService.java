@@ -48,17 +48,17 @@ public class TakePillService {
 
         List<TakePill> takePillList = new ArrayList<>();
 
-        if(takePillList.isEmpty()){
-            LOGGER.info(".createTakePillByOCRData [ERR] TakePill이 존재하지 않습니다.");
-            throw new NonExistsTakePillException();
-        }
-
         // 약 개수가 여러개니까 리스트로 저장해서 필 인덱스를 추출
         for(PillScheduleDTO pillScheduleDTO : editOcrDTO.getPillList()) {
             Pill pill = pillRepository.findByPillName(pillScheduleDTO.getPillName());
 
             TakePill takePill = EntityConverter.toTakePill(prescriptionIndex, pill, pillScheduleDTO);
             takePillList.add(takePill);
+        }
+
+        if(takePillList.isEmpty()){
+            LOGGER.info(".createTakePillByOCRData [ERR] TakePill이 존재하지 않습니다.");
+            throw new NonExistsTakePillException();
         }
 
         takePillList = takePillRepository.saveAll(takePillList);

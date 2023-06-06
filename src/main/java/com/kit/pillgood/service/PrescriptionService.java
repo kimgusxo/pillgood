@@ -45,7 +45,7 @@ public class PrescriptionService {
 
     @Transactional
     public Long createPrescriptionByOCRData(EditOcrDTO editOcrDTO) {
-        Disease disease = diseaseRepository.findByDiseaseCode(editOcrDTO.getDiseaseCode());
+        Disease disease = diseaseRepository.findByDiseaseCode(editOcrDTO.getDiseaseCode()).get(0);
 
         Prescription prescription = EntityConverter.toPrescription(disease, editOcrDTO);
         prescription = prescriptionRepository.save(prescription);

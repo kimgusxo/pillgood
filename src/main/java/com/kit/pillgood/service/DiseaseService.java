@@ -21,6 +21,6 @@ public class DiseaseService {
 
     @Transactional
     public DiseaseDTO searchDiseaseByDiseaseCode(String diseaseCode) {
-        return EntityConverter.toDiseaseDTO(diseaseRepository.findByDiseaseCode(diseaseCode));
+        return EntityConverter.toDiseaseDTO(diseaseRepository.findByDiseaseCode(diseaseCode).get(0));
     }
 }
