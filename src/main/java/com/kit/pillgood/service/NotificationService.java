@@ -1,5 +1,7 @@
 package com.kit.pillgood.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -10,8 +12,10 @@ import com.kit.pillgood.exeptions.exeption.NonRegistrationNotificationException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.exeptions.exeption.TransactionFailedException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
+import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.persistence.dto.NotificationContentDTO;
 import com.kit.pillgood.persistence.dto.NotificationDTO;
+import com.kit.pillgood.persistence.dto.PillScheduleDTO;
 import com.kit.pillgood.persistence.projection.NotificationContentSummary;
 import com.kit.pillgood.repository.NotificationRepository;
 import com.kit.pillgood.repository.UserRepository;
@@ -113,6 +117,7 @@ public class NotificationService {
     }
 
 
+    @Transactional
     @Scheduled(cron="1 0 0 * * *")
     public void settingTodayNotification() {
         LOGGER.info(".settingTodayNotification 알림 일괄 생성 실행");
@@ -418,4 +423,139 @@ public class NotificationService {
             LOGGER.info(".sendBedTimeNotification  전송할 알림이 없습니다.");
         }
     }
+
+//    @Transactional
+//    @Scheduled(cron = "3 */2 * * * *")
+//    public void testNotificationDelete(){
+//        LocalDateTime nowTime = LocalDateTime.now();
+//        LocalDateTime fiveMinutesAgo = nowTime.minusMinutes(1);
+//        notificationRepository.deleteByNotificationTimeBefore(fiveMinutesAgo);
+//        System.out.println("1분전 알림 삭제 완료");
+//    }
+//
+//    @Transactional
+//    @Scheduled(cron="*/10 * * * * *")
+//    public void testNotification() throws EtcFirebaseException {
+//        try {
+//
+//            // 복용 알림
+//            String phone = "010-1111-1111";
+//            String token = "eHhd-ujGRp-xLuGf2DlXr7:APA91bGVi9XhXLHvz7f702ZPxsZX9_kSGig0SqYJK_ELZ_KPX0Uq22c2G4hlre0Dw5oAixaXOTuirSXM0Q3uIMvmZyskaIB9ShLEBscIPBQnqXNz1Eu8D1EFOLvgg59-6dmHdaTMOfLV";
+//            String contents = "김주호님 아침약 알림 입니다.";
+//            Message message = Message.builder()
+//                    .setNotification(com.google.firebase.messaging.Notification.builder()
+//                            .setTitle("복용 알림")
+//                            .setBody(contents)
+//                            .build())
+//                    .putData("유저 인덱스", "89")
+//                    .putData("그룹원 전화번호", phone)
+//                    .setToken(token)
+//                    .build();
+//
+//            com.kit.pillgood.domain.Notification notification = com.kit.pillgood.domain.Notification.builder()
+//                    .notificationIndex(null)
+//                    .notificationTime(LocalDateTime.now())
+//                    .notificationContent(contents)
+//                    .user(User.builder().userIndex(89L).build())
+//                    .notificationCheck(false)
+//                    .build();
+//
+//            String response;
+//            response = FirebaseMessaging.getInstance().send(message);
+//            System.out.println("send message" + response);
+//
+//            notification = notificationRepository.save(notification);
+//            System.out.println(notification);
+//
+//            // OCR 알림
+//            contents = "김주호님 OCR 알림 입니다.";
+//            List<Integer> timeList = new ArrayList<>();
+//            timeList.add(2);
+//            timeList.add(1);
+//
+//            PillScheduleDTO pillScheduleDTO1 = PillScheduleDTO.builder()
+//                    .pillName("베아세프정250밀리그람(세푸록심악세틸)(수출명:ZenaTab.)")
+//                    .takeDay(2)
+//                    .takeCount(1)
+//                    .takePillTimeList(timeList)
+//                    .build();
+//            PillScheduleDTO pillScheduleDTO2 = PillScheduleDTO.builder()
+//                    .pillName("페니라민정(클로르페니라민말레산염)")
+//                    .takeDay(2)
+//                    .takeCount(1)
+//                    .takePillTimeList(timeList)
+//                    .build();
+//            PillScheduleDTO pillScheduleDTO3 = PillScheduleDTO.builder()
+//                    .pillName("레보투스정(레보드로프로피진)")
+//                    .takeDay(2)
+//                    .takeCount(1)
+//                    .takePillTimeList(timeList)
+//                    .build();
+//            PillScheduleDTO pillScheduleDTO4 = PillScheduleDTO.builder()
+//                    .pillName("설포라제캡슐(아세브로필린)")
+//                    .takeDay(2)
+//                    .takeCount(1)
+//                    .takePillTimeList(timeList)
+//                    .build();
+//
+//            List<PillScheduleDTO> pillList = new ArrayList<>();
+//            pillList.add(pillScheduleDTO1);
+//            pillList.add(pillScheduleDTO2);
+//            pillList.add(pillScheduleDTO3);
+//            pillList.add(pillScheduleDTO4);
+//
+//            EditOcrDTO editOcrDTO = EditOcrDTO.builder()
+//                    .groupMemberIndex(100L)
+//                    .groupMemberName("사용자")
+//                    .diseaseCode("R05")
+//                    .phoneNumber("(054)468-9114")
+//                    .startDate(LocalDate.parse("2023-06-07"))
+//                    .hospitalName("순천향대학교부속구미병원")
+//                    .pillList(pillList)
+//                    .build();
+//
+//
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            String pillListJson = objectMapper.writeValueAsString(pillList);
+//
+//            message = Message.builder()
+//                    .setNotification(
+//                            com.google.firebase.messaging.Notification.builder()
+//                            .setTitle("OCR 알림")
+//                            .setBody("OCR 등록 완료")
+//                            .build()
+//                    )
+//                    .putData("그룹원 인덱스", editOcrDTO.getGroupMemberIndex().toString())
+//                    .putData("그룹원 이름", editOcrDTO.getGroupMemberName())
+//                    .putData("복용 시작 날짜", editOcrDTO.getStartDate().toString())
+//                    .putData("병원 이름", editOcrDTO.getHospitalName())
+//                    .putData("병원 전화번호", editOcrDTO.getPhoneNumber())
+//                    .putData("질병 코드", editOcrDTO.getDiseaseCode())
+//                    .putData("약 정보", pillListJson)
+//                    .setToken(token)
+//                    .build();
+//
+//
+//            notification = com.kit.pillgood.domain.Notification.builder()
+//                    .notificationIndex(null)
+//                    .notificationTime(LocalDateTime.now())
+//                    .notificationContent(contents)
+//                    .user(User.builder().userIndex(102L).build())
+//                    .notificationCheck(false)
+//                    .build();
+//
+//
+//            response = FirebaseMessaging.getInstance().send(message);
+//            System.out.println("send message" + response);
+//
+//            notification = notificationRepository.save(notification);
+//            System.out.println(notification);
+//
+//
+//        } catch (FirebaseMessagingException e) {
+//            throw new EtcFirebaseException();
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
