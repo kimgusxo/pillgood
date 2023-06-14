@@ -116,10 +116,6 @@ public class TakePillService {
             for(MedicationInfoSummary medicationInfoSummary : medicationInfoSummaries) {
                 MedicationInfoDTO medicationInfoDTO = EntityConverter.toMedicationInfo(medicationInfoSummary);
                 medicationInfoDTOs.add(medicationInfoDTO);
-
-                if (medicationInfoSummary != null) {
-                    medicationInfoDTOs.add(medicationInfoDTO);
-                }
             }
         }
 

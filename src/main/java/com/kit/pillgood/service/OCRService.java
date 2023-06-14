@@ -45,7 +45,7 @@ public class OCRService {
     @Transactional
     public EditOcrDTO sendImage(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, byte[] image) {
         OriginalOcrDTO originalOcrDTO = modelController.sendImage(image);
-
+        System.out.println(originalOcrDTO);
         EditOcrDTO editOcrDTO = EntityConverter.toEditOcrDTO(groupMemberIndex, groupMemberName, dateStart, originalOcrDTO);
         return editOcrDTO; // FCM활용해서 클라이언트에 알림
     }
@@ -59,7 +59,7 @@ public class OCRService {
 
         Message message = Message.builder()
                 .setNotification(Notification.builder()
-                        .setTitle("알림")
+                        .setTitle("OCR 알림")
                         .setBody("OCR 등록 완료")
                         .build())
                 .putData("그룹원 인덱스", editOcrDTO.getGroupMemberIndex().toString())

@@ -14,8 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class PillScheduleDTO {
     String pillName;
-    Integer takeDay;
     Integer takeCount;
+    Integer takeDay;
     List<Integer> takePillTimeList = new ArrayList<>();
 
 }
