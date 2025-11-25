@@ -17,11 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
 
 @RestController
-@RequestMapping("/notification")
+@RequestMapping("/notifications")
 public class NotificationController {
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
@@ -36,8 +34,8 @@ public class NotificationController {
      * @param: Long userIndex, 조회할 사용자 인덱스
      * @return: ResponseEntity<ResponseFormat>, 알림 리스트 결과가 담긴 응답 객체
      **/
-    @GetMapping("/search/{user-index}")
-    public ResponseEntity<ResponseFormat> getNotificationsByUserIndex(@PathVariable(name="user-index") Long userIndex) throws NonRegistrationUserException {
+    @GetMapping
+    public ResponseEntity<ResponseFormat> getNotificationsByUserIndex(@RequestParam("userIndex") Long userIndex) throws NonRegistrationUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), notificationService.searchNotificationByUserIndex(userIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
@@ -47,8 +45,8 @@ public class NotificationController {
      * @param: Long notificationIndex, 확인 여부를 수정할 알림 인덱스
      * @return: ResponseEntity<ResponseFormat>, 알림 확인 여부 결과가 담긴 응답 객체
      **/
-    @PutMapping("/update/notification-check/{notification-index}")
-    public ResponseEntity<ResponseFormat> updateNotificationCheckToTrue(@PathVariable(name="notification-index") Long notificationIndex) throws NonRegistrationNotificationException {
+    @PutMapping("/{notificationIndex}/check")
+    public ResponseEntity<ResponseFormat> updateNotificationCheckToTrue(@PathVariable(name="notificationIndex") Long notificationIndex) throws NonRegistrationNotificationException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), notificationService.updateNotificationCheck(notificationIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }

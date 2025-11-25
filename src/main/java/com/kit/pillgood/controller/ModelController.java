@@ -7,6 +7,7 @@ import org.springframework.http.*;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/model")
@@ -23,12 +24,14 @@ public class ModelController {
      * @param: MultipartFile image, 모델서버로 전송할 이미지
      * @return: ResponseEntity<ResponseFormat>, OCR 결과가 담긴 응답 객체
      **/
-    @PostMapping("")
-    public OriginalOcrDTO sendImage(@RequestParam byte[] image) {
+    @PostMapping("/image")
+    public OriginalOcrDTO sendImage(@RequestParam("image") MultipartFile image) {
 
         try {
+            byte[] imageBytes = image.getBytes();
+
             // 이미지 데이터를 Base64 인코딩하여 문자열로 변환
-            String encodedImage = Base64Utils.encodeToString(image);
+            String encodedImage = Base64Utils.encodeToString(imageBytes);
             // JSON 객체 생성 및 이미지 데이터 추가
             JsonObject json = new JsonObject();
             json.addProperty("image",  encodedImage);

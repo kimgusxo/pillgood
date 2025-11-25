@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/take-pill-check")
+@RequestMapping("/takePillChecks")
 public class TakePillCheckController {
     private final TakePillCheckService takePillCheckService;
 
@@ -25,7 +25,7 @@ public class TakePillCheckController {
      * @param: Boolean takeCheck, 수정할 복용 현황 확인 값
      * @return: ResponseEntity<ResponseFormat>, 복용 현황 확인 결과가 담긴 응답 객체
      **/
-    @PutMapping("/update/take-check")
+    @PutMapping
     public ResponseEntity<ResponseFormat> updateTakeCheck(@RequestBody List<Long> takePillCheckIndexList, @RequestParam Boolean takeCheck) {
         takePillCheckService.updateTakeCheck(takePillCheckIndexList, takeCheck);
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());

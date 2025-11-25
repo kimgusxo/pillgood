@@ -30,7 +30,7 @@ public class LoginController {
      * @param: LoginDTO loginDTO, 로그인할 사용자 정보
      * @return: ResponseEntity<ResponseFormat>, 로그인 결과가 담긴 응답 객체
      **/
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<ResponseFormat> login(@RequestBody  @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, EtcFirebaseException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), loginService.login(loginDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);

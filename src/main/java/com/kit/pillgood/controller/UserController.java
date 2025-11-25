@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -27,9 +27,12 @@ public class UserController {
      * @param: Long userIndex, 삭제할 사용자 인덱스
      * @return: ResponseEntity<ResponseFormat>, 사용자 삭제 결과가 담긴 응답 객체
      **/
-    @DeleteMapping("/delete/{user-index}")
-    public boolean deleteUser(@PathVariable(name="user-index") Long userIndex) throws EtcFirebaseException, NonRegistrationUserException {
-        return userService.deleteFirebaseUser(userIndex);
+    @DeleteMapping("/{userIndex}")
+    public ResponseEntity<ResponseFormat> deleteUser(@PathVariable(name="userIndex") Long userIndex) throws EtcFirebaseException {
+        boolean result = userService.deleteFirebaseUser(userIndex);
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), result);
+
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
     /**
@@ -38,8 +41,8 @@ public class UserController {
      * @param: UserDTO userDTO, 토큰정보를 갱신할 사용자 정보
      * @return: ResponseEntity<ResponseFormat>, 토큰 수정 결과가 담긴 응답 객체
      **/
-    @PutMapping("/update-token/{user-index}")
-    public ResponseEntity<ResponseFormat> updateUserToken(@PathVariable("user-index") Long userIndex,
+    @PutMapping("/{userIndex}")
+    public ResponseEntity<ResponseFormat> updateUserToken(@PathVariable("userIndex") Long userIndex,
             @RequestBody @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), userService.updateUserToken(userIndex, userDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);

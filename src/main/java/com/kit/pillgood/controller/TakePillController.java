@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/take-pill")
+@RequestMapping("/takePills")
 public class TakePillController {
     private final TakePillService takePillService;
 
@@ -30,7 +30,7 @@ public class TakePillController {
      * @param: LocalDate dateEnd, 복용 정보의 범위를 설정하기 위한 끝날짜
      * @return: ResponseEntity<ResponseFormat>, 복용 정보 결과가 담긴 응답 객체
      **/
-    @GetMapping("/search/calendar-data")
+    @GetMapping("/calendar")
     public ResponseEntity<ResponseFormat> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
                                                                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
                                                                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd) throws NonRegistrationUserException {
@@ -41,7 +41,7 @@ public class TakePillController {
     /**
      * 해당 날짜의 그룹원들의 복용 정보 상세 조회
      * @param: List<Long> groupMemberIndexList, 복용 상세 정보를 조회할 그룹원 리스트
-     * @param: LocalDate dateStart, 복용 상세 정보를 조회할 해당 날짜
+     * @param: LocalDate targetDate, 복용 상세 정보를 조회할 해당 날짜
      * @return: ResponseEntity<ResponseFormat>, 복용 상세 정보 결과가 담긴 응답 객체
      **/
     @PostMapping("/search")

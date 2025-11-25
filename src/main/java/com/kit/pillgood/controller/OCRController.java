@@ -49,7 +49,7 @@ public class OCRController {
      * @param: MultipartFile image, 모델서버로 전송할 이미지
      * @return: ResponseEntity<ResponseFormat>, OCR 결과가 담긴 응답 객체
      **/
-    @PostMapping("/create/original")
+    @PostMapping("/original")
     public ResponseEntity<ResponseFormat> createOCR(@RequestParam Long groupMemberIndex,
                                                     @RequestParam String groupMemberName,
                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
@@ -101,7 +101,7 @@ public class OCRController {
      * @param: EditOcrDTO editOcrDTO, OCR 결과와 사용자가 설정한 값을 합친 정보
      * @return: ResponseEntity<ResponseFormat>, 처방전, 복용현황, 복용현황 확인 결과가 담긴 응답 객체
      **/
-    @PostMapping("/create")
+    @PostMapping("/prescriptions")
     public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@RequestBody EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
         editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);
         ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);

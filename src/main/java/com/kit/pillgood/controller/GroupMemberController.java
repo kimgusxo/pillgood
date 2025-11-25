@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/group-member")
+@RequestMapping("/groupMembers")
 public class GroupMemberController {
     private final GroupMemberService groupMemberService;
 
@@ -28,7 +28,7 @@ public class GroupMemberController {
      * @param: GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, 생성할 그룹원 정보
      * @return: ResponseEntity<ResponseFormat>, 생성된 그룹원 결과가 담긴 응답 객체
     **/
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ResponseFormat> createGroupMember(@RequestBody @Validated(ValidationGroups.groupCreate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.createGroupMember(groupMemberAndUserIndexDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
@@ -39,8 +39,8 @@ public class GroupMemberController {
      * @param: GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, 조회할 그룹원 인덱스
      * @return: ResponseEntity<ResponseFormat>, 조회된 그룹원 결과가 담긴 응답 객체
      **/
-    @GetMapping("/search/{group-member-index}")
-    public ResponseEntity<ResponseFormat> getGroupMemberByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) throws NonRegistrationGroupException {
+    @GetMapping("/{groupMemberIndex}")
+    public ResponseEntity<ResponseFormat> getGroupMemberByGroupMemberIndex(@PathVariable(name="groupMemberIndex") Long groupMemberIndex) throws NonRegistrationGroupException {
         GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = groupMemberService.searchOneGroupMember(groupMemberIndex);
 
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberAndUserIndexDTO);
@@ -53,7 +53,7 @@ public class GroupMemberController {
      * @param: Long userIndex, 조회할 사용자 인덱스
      * @return: ResponseEntity<ResponseFormat>, 조회된 그룹원 리스트 결과가 담긴 응답 객체
      **/
-    @GetMapping("/search/group-members")
+    @GetMapping
     public ResponseEntity<ResponseFormat> getGroupMembersByUserIndex(@RequestParam Long userIndex) throws NonRegistrationUserException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.searchGroupMembersByUserIndex(userIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
@@ -65,8 +65,8 @@ public class GroupMemberController {
      * @Param: GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO, 수정할 그룹원 정보
      * @return: ResponseEntity<ResponseFormat>, 수정된 결과가 담긴 응답 객체
      **/
-    @PutMapping("/update/{group-member-index}")
-    public ResponseEntity<ResponseFormat> updateGroupMember(@PathVariable (name="group-member-index") Long groupMemberIndex,
+    @PutMapping("/{groupMemberIndex}")
+    public ResponseEntity<ResponseFormat> updateGroupMember(@PathVariable (name="groupMemberIndex") Long groupMemberIndex,
                                                            @RequestBody @Validated(ValidationGroups.groupUpdate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, NonRegistrationGroupException, AlreadyExistGroupException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(),  groupMemberService.updateGroupMember(groupMemberIndex, groupMemberAndUserIndexDTO));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
@@ -77,8 +77,8 @@ public class GroupMemberController {
      * @param: Long groupMemberIndex, 삭제할 그룹원 인덱스
      * @return: ResponseEntity<ResponseFormat>, 삭제된 결과가 담긴 응답 객체
      **/
-    @DeleteMapping("/delete/{group-member-index}")
-    public ResponseEntity<ResponseFormat> deleteGroupMember(@PathVariable(name="group-member-index") Long groupMemberIndex) throws NonRegistrationGroupException {
+    @DeleteMapping("/{groupMemberIndex}")
+    public ResponseEntity<ResponseFormat> deleteGroupMember(@PathVariable(name="groupMemberIndex") Long groupMemberIndex) throws NonRegistrationGroupException {
         groupMemberService.deleteGroupMember(groupMemberIndex);
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);

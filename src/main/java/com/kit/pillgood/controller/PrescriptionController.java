@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/prescription")
+@RequestMapping("/prescriptions")
 public class PrescriptionController {
     private final PrescriptionService prescriptionService;
     @Autowired
@@ -25,8 +25,8 @@ public class PrescriptionController {
      * @param: Long groupMemberIndex, 조회할 그룹원 인덱스
      * @return: ResponseEntity<ResponseFormat>, 처방전 리스트 결과가 담긴 응답 객체
      **/
-    @GetMapping("/search/{group-member-index}")
-    public ResponseEntity<ResponseFormat> getPrescriptionsByGroupMemberIndex(@PathVariable(name="group-member-index") Long groupMemberIndex) throws NonRegistrationGroupException {
+    @GetMapping
+    public ResponseEntity<ResponseFormat> getPrescriptionsByGroupMemberIndex(@RequestParam("groupMemberIndex") Long groupMemberIndex) throws NonRegistrationGroupException {
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex));
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
@@ -36,8 +36,8 @@ public class PrescriptionController {
      * @param: Long prescriptionIndex, 삭제할 처방전 인덱스
      * @return: ResponseEntity<ResponseFormat>, 삭제된 처방전 결과가 담긴 응답 객체
      **/
-    @DeleteMapping("/delete/{prescription-index}")
-    public ResponseEntity<ResponseFormat> deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescription-index") Long prescriptionIndex) throws NonExistsPrescriptionIndexException {
+    @DeleteMapping("/{prescriptionIndex}")
+    public ResponseEntity<ResponseFormat> deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescriptionIndex") Long prescriptionIndex) throws NonExistsPrescriptionIndexException {
         prescriptionService.deletePrescription(prescriptionIndex);
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
