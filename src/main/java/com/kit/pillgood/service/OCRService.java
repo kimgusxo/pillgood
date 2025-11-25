@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -42,7 +43,7 @@ public class OCRService {
     }
 
     @Transactional
-    public EditOcrDTO sendImage(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, byte[] image) {
+    public EditOcrDTO sendImage(Long groupMemberIndex, String groupMemberName, LocalDate dateStart, MultipartFile image) {
         OriginalOcrDTO originalOcrDTO = modelController.sendImage(image);
         System.out.println(originalOcrDTO);
         EditOcrDTO editOcrDTO = EntityConverter.toEditOcrDTO(groupMemberIndex, groupMemberName, dateStart, originalOcrDTO);

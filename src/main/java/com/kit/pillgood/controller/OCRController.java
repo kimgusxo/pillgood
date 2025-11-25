@@ -69,11 +69,7 @@ public class OCRController {
         if (image != null) {
             CompletableFuture.supplyAsync(() -> {
                 EditOcrDTO editOcrDTO = null;
-                try {
-                    editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image.getBytes());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image);
                 try {
                     ocrService.sendOcrData(userFCMToken, editOcrDTO);
 
