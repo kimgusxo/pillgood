@@ -25,7 +25,7 @@ import java.util.List;
 
 @Service
 public class OCRService {
-    private final Logger LOGGER = LoggerFactory.getLogger(OCRService.class);
+    private final Logger log = LoggerFactory.getLogger(OCRService.class);
     private final ModelController modelController;
     private final PrescriptionService prescriptionService;
     private final TakePillService takePillService;
@@ -75,9 +75,9 @@ public class OCRService {
         // FCM 메시지 전송
         try {
             String response = FirebaseMessaging.getInstance().send(message);
-            LOGGER.info(".sendOcrData Successfully sent message: {}", response);
+            log.info(".sendOcrData Successfully sent message: {}", response);
         } catch (FirebaseMessagingException e) {
-            LOGGER.info(".sendOcrData [err] Failed to send message: {}", e.getMessage());
+            log.info(".sendOcrData [err] Failed to send message: {}", e.getMessage());
         }
     }
 
@@ -85,16 +85,16 @@ public class OCRService {
     public void createPrescriptionAndTakePillAndTakePillCheck(EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
         Long prescriptionIndex = prescriptionService.createPrescriptionByOCRData(editOcrDTO);
         if(prescriptionIndex == null){
-            LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 Prescription이 없습니다.");
+            log.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 Prescription이 없습니다.");
             throw new NonExistsPrescriptionIndexException();
         }
         List<Long> takePillIndexList = takePillService.createTakePillByOCRData(prescriptionIndex, editOcrDTO);
         if(takePillIndexList.size() == 0){
-            LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 TakePill이 없습니다.");
+            log.info(".createPrescriptionAndTakePillAndTakePillCheck [ERR] 생성된 TakePill이 없습니다.");
             throw new NonExistsTakePillException();
         }
         takePillCheckService.createTakePillCheckByOCRData(takePillIndexList, editOcrDTO);
-        LOGGER.info(".createPrescriptionAndTakePillAndTakePillCheck 수행 완료");
+        log.info(".createPrescriptionAndTakePillAndTakePillCheck 수행 완료");
     }
 
 }

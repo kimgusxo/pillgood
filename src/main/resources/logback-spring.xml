@@ -5,18 +5,28 @@
     <property name="logback" value="logback"/>          <!-- log를 저장할 최종 디렉토리명 -->
     <property name="logdir" value="pillgood\logback"/>
 
+    <!-- 콘솔 로그 (컬러) -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>info</level>
+            <level>DEBUG</level> <!-- 개발 중엔 DEBUG로 보는 게 좋아서 살짝 내렸음 -->
         </filter>
 
-        <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger{30} %msg%n\n</pattern>
-        </encoder>
+        <!-- Windows에서 색상 적용 -->
+        <withJansi>true</withJansi>
 
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!-- level 색상, logger 색상 등 -->
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS}
+                %highlight(%-5level)
+                [%thread]
+                %cyan(%logger{30}) - %msg%n
+            </pattern>
+        </encoder>
     </appender>
 
 
+    <!-- 파일 로그 (색상 X, 그대로 텍스트) -->
     <appender name="DEBUG_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
@@ -27,8 +37,8 @@
             <fileNamePattern>${logdir}/${moduleId}/${logback}/debug_${type}.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
-        <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger %msg%n\n</pattern>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -42,13 +52,16 @@
             <fileNamePattern>${logdir}/${moduleId}/${logback}/info_${type}.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
-        <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger %msg%n\n</pattern>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger %msg%n</pattern>
         </encoder>
     </appender>
 
+    <!-- root logger -->
     <root level="info">
-        <appender-ref ref="console" />
+        <appender-ref ref="console"/>
+        <appender-ref ref="INFO_LOG"/>
+        <appender-ref ref="DEBUG_LOG"/>
     </root>
 
 </configuration>

@@ -11,6 +11,8 @@ import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.repository.NotificationRepository;
 import com.kit.pillgood.service.NotificationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +23,12 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/notifications")
 public class NotificationController {
+
+    private static final Logger log = LoggerFactory.getLogger(NotificationController.class);
+
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
+
     @Autowired
     public NotificationController(NotificationService notificationService, NotificationRepository notificationRepository) {
         this.notificationService = notificationService;
@@ -36,7 +42,16 @@ public class NotificationController {
      **/
     @GetMapping
     public ResponseEntity<ResponseFormat> getNotificationsByUserIndex(@RequestParam("userIndex") Long userIndex) throws NonRegistrationUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), notificationService.searchNotificationByUserIndex(userIndex));
+        log.info("getNotificationsByUserIndex - 요청 수신, userIndex={}", userIndex);
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                notificationService.searchNotificationByUserIndex(userIndex)
+        );
+
+        log.debug("getNotificationsByUserIndex - 조회 성공, userIndex={}", userIndex);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
@@ -47,7 +62,16 @@ public class NotificationController {
      **/
     @PutMapping("/{notificationIndex}/check")
     public ResponseEntity<ResponseFormat> updateNotificationCheckToTrue(@PathVariable(name="notificationIndex") Long notificationIndex) throws NonRegistrationNotificationException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), notificationService.updateNotificationCheck(notificationIndex));
+        log.info("updateNotificationCheckToTrue - 요청 수신, notificationIndex={}", notificationIndex);
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                notificationService.updateNotificationCheck(notificationIndex)
+        );
+
+        log.debug("updateNotificationCheckToTrue - 수정 성공, notificationIndex={}", notificationIndex);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 

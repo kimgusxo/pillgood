@@ -6,6 +6,8 @@ import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.UserDTO;
 import com.kit.pillgood.persistence.dto.ValidationGroups;
 import com.kit.pillgood.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
     private final UserService userService;
 
     @Autowired
@@ -29,8 +34,12 @@ public class UserController {
      **/
     @DeleteMapping("/{userIndex}")
     public ResponseEntity<ResponseFormat> deleteUser(@PathVariable(name="userIndex") Long userIndex) throws EtcFirebaseException {
+        log.info("deleteUser - 요청 수신, userIndex={}", userIndex);
+
         boolean result = userService.deleteFirebaseUser(userIndex);
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), result);
+
+        log.debug("deleteUser - 삭제 완료, userIndex={}, result={}", userIndex, result);
 
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
@@ -44,7 +53,19 @@ public class UserController {
     @PutMapping("/{userIndex}")
     public ResponseEntity<ResponseFormat> updateUserToken(@PathVariable("userIndex") Long userIndex,
             @RequestBody @Validated(ValidationGroups.groupUpdate.class) UserDTO userDTO) throws NonRegistrationUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), userService.updateUserToken(userIndex, userDTO));
+
+        log.info("updateUserToken - 요청 수신, userIndex={}, tokenLength={}",
+                userIndex,
+                userDTO.getUserFcmToken() != null ? userDTO.getUserFcmToken().length() : 0);
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                userService.updateUserToken(userIndex, userDTO)
+        );
+
+        log.debug("updateUserToken - 토큰 갱신 완료, userIndex={}", userIndex);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 

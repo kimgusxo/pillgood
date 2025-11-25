@@ -4,6 +4,8 @@ import com.kit.pillgood.common.ResponseFormat;
 import com.kit.pillgood.exeptions.exeption.NonExistsMedicationInfoException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.service.TakePillService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/takePills")
 public class TakePillController {
+
+    private static final Logger log = LoggerFactory.getLogger(TakePillController.class);
+
     private final TakePillService takePillService;
 
     @Autowired
@@ -34,7 +39,17 @@ public class TakePillController {
     public ResponseEntity<ResponseFormat> getCalendarDataByUserIndexBetweenDate(@RequestParam Long userIndex,
                                                                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
                                                                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd) throws NonRegistrationUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd));
+        log.info("getCalendarDataByUserIndexBetweenDate - 요청 수신, userIndex={}, dateStart={}, dateEnd={}",
+                userIndex, dateStart, dateEnd);
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                takePillService.searchTakePillCheckListByUserIndexBetweenTakeDate(userIndex, dateStart, dateEnd)
+        );
+
+        log.debug("getCalendarDataByUserIndexBetweenDate - 조회 성공, userIndex={}", userIndex);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
@@ -48,7 +63,18 @@ public class TakePillController {
     public ResponseEntity<ResponseFormat> getTakePillsByGroupMemberIndexListAndTargetDate(@RequestBody List<Long> groupMemberIndexList,
                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDate) throws NonExistsMedicationInfoException {
 
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), takePillService.searchMedicationInfoListByGroupMemberIndexListAndTargetDate(groupMemberIndexList, targetDate));
+        log.info("getTakePillsByGroupMemberIndexListAndTargetDate - 요청 수신, size={}, targetDate={}",
+                groupMemberIndexList != null ? groupMemberIndexList.size() : 0,
+                targetDate);
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                takePillService.searchMedicationInfoListByGroupMemberIndexListAndTargetDate(groupMemberIndexList, targetDate)
+        );
+
+        log.debug("getTakePillsByGroupMemberIndexListAndTargetDate - 조회 성공, groupMemberIndexList={}", groupMemberIndexList);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 

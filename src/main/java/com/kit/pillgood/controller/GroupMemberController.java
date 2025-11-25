@@ -12,10 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/groupMembers")
 public class GroupMemberController {
+    private static final Logger log = LoggerFactory.getLogger(GroupMemberController.class);
+
     private final GroupMemberService groupMemberService;
 
     @Autowired
@@ -30,7 +34,16 @@ public class GroupMemberController {
     **/
     @PostMapping
     public ResponseEntity<ResponseFormat> createGroupMember(@RequestBody @Validated(ValidationGroups.groupCreate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.createGroupMember(groupMemberAndUserIndexDTO));
+        log.info("createGroupMember - 요청 수신, request={}", groupMemberAndUserIndexDTO);
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                groupMemberService.createGroupMember(groupMemberAndUserIndexDTO)
+        );
+
+        log.debug("createGroupMember - 응답 생성 완료, response={}", responseFormat);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
@@ -41,9 +54,19 @@ public class GroupMemberController {
      **/
     @GetMapping("/{groupMemberIndex}")
     public ResponseEntity<ResponseFormat> getGroupMemberByGroupMemberIndex(@PathVariable(name="groupMemberIndex") Long groupMemberIndex) throws NonRegistrationGroupException {
-        GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO = groupMemberService.searchOneGroupMember(groupMemberIndex);
+        log.info("getGroupMemberByGroupMemberIndex - 요청 수신, groupMemberIndex={}", groupMemberIndex);
 
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberAndUserIndexDTO);
+        GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO =
+                groupMemberService.searchOneGroupMember(groupMemberIndex);
+
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                groupMemberAndUserIndexDTO
+        );
+
+        log.debug("getGroupMemberByGroupMemberIndex - 조회 성공, response={}", responseFormat);
 
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
@@ -55,7 +78,16 @@ public class GroupMemberController {
      **/
     @GetMapping
     public ResponseEntity<ResponseFormat> getGroupMembersByUserIndex(@RequestParam Long userIndex) throws NonRegistrationUserException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), groupMemberService.searchGroupMembersByUserIndex(userIndex));
+        log.info("getGroupMembersByUserIndex - 요청 수신, userIndex={}", userIndex);
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                groupMemberService.searchGroupMembersByUserIndex(userIndex)
+        );
+
+        log.debug("getGroupMembersByUserIndex - 리스트 조회 성공, response={}", responseFormat);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
@@ -68,7 +100,15 @@ public class GroupMemberController {
     @PutMapping("/{groupMemberIndex}")
     public ResponseEntity<ResponseFormat> updateGroupMember(@PathVariable (name="groupMemberIndex") Long groupMemberIndex,
                                                            @RequestBody @Validated(ValidationGroups.groupUpdate.class) GroupMemberAndUserIndexDTO groupMemberAndUserIndexDTO) throws NonRegistrationUserException, NonRegistrationGroupException, AlreadyExistGroupException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(),  groupMemberService.updateGroupMember(groupMemberIndex, groupMemberAndUserIndexDTO));
+        log.info("updateGroupMember - 요청 수신, groupMemberIndex={}, request={}", groupMemberIndex, groupMemberAndUserIndexDTO);
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                groupMemberService.updateGroupMember(groupMemberIndex, groupMemberAndUserIndexDTO)
+        );
+
+        log.debug("updateGroupMember - 수정 성공, response={}", responseFormat);
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
@@ -79,8 +119,13 @@ public class GroupMemberController {
      **/
     @DeleteMapping("/{groupMemberIndex}")
     public ResponseEntity<ResponseFormat> deleteGroupMember(@PathVariable(name="groupMemberIndex") Long groupMemberIndex) throws NonRegistrationGroupException {
+        log.info("deleteGroupMember - 요청 수신, groupMemberIndex={}", groupMemberIndex);
+
         groupMemberService.deleteGroupMember(groupMemberIndex);
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
+
+        log.debug("deleteGroupMember - 삭제 성공, groupMemberIndex={}", groupMemberIndex);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 }

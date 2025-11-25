@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-    private final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private final Logger log = LoggerFactory.getLogger(LoginController.class);
     private final LoginService loginService;
 
     @Autowired
@@ -32,7 +32,13 @@ public class LoginController {
      **/
     @PostMapping
     public ResponseEntity<ResponseFormat> login(@RequestBody  @Validated(ValidationGroups.groupSearch.class) LoginDTO loginDTO) throws NonRegistrationFirebaseException, EtcFirebaseException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), loginService.login(loginDTO));
+        log.info("login - 요청 수신, uid={}", loginDTO.getUserEmail());
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                loginService.login(loginDTO)
+        );
+        log.debug("login - 로그인 성공, uid={}", loginDTO.getUserEmail());
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 

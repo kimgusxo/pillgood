@@ -2,6 +2,8 @@ package com.kit.pillgood.controller;
 
 import com.google.gson.JsonObject;
 import com.kit.pillgood.persistence.dto.OriginalOcrDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.util.Base64Utils;
@@ -12,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/model")
 public class ModelController {
+
+    private static final Logger log = LoggerFactory.getLogger(ModelController.class);
+
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -26,38 +31,34 @@ public class ModelController {
      **/
     @PostMapping("/image")
     public OriginalOcrDTO sendImage(@RequestParam("image") MultipartFile image) {
+        log.info("sendImage - 요청 수신, filename={}, size={}",
+                image.getOriginalFilename(), image.getSize());
 
         try {
             byte[] imageBytes = image.getBytes();
-
-            // 이미지 데이터를 Base64 인코딩하여 문자열로 변환
             String encodedImage = Base64Utils.encodeToString(imageBytes);
-            // JSON 객체 생성 및 이미지 데이터 추가
+
             JsonObject json = new JsonObject();
-            json.addProperty("image",  encodedImage);
-            // HTTP 요청 헤더 설정
+            json.addProperty("image", encodedImage);
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-    
-            // HTTP 요청 본문 설정
+
             HttpEntity<String> requestEntity = new HttpEntity<>(json.toString(), headers);
-            // 파이썬 모델 서버 URL
             String url = "http://127.0.0.1:5000/ocr";
-            // POST 요청 보내기
 
-            ResponseEntity<OriginalOcrDTO> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, OriginalOcrDTO.class);
+            log.debug("sendImage - Python OCR 서버 요청, url={}", url);
+            ResponseEntity<OriginalOcrDTO> response =
+                    restTemplate.exchange(url, HttpMethod.POST, requestEntity, OriginalOcrDTO.class);
 
-            // 응답 처리
             if (response.getStatusCode() == HttpStatus.OK) {
-                OriginalOcrDTO OCRResult = response.getBody();
-
-                return OCRResult;
+                log.info("sendImage - OCR 서버 응답 성공, status={}", response.getStatusCode());
+                return response.getBody();
             } else {
-                // 응답 실패 시 처리 로직 작성
-                System.out.println("요청 실패1: " + response.getStatusCode());
+                log.warn("sendImage - OCR 서버 응답 실패, status={}", response.getStatusCode());
             }
         } catch (Exception e) {
-            System.out.println("요청 실패2: " + e.getMessage());
+            log.error("sendImage - OCR 서버 호출 중 예외 발생", e);
         }
         return null;
     }

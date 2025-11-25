@@ -27,7 +27,9 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/ocr")
 public class OCRController {
-    private final Logger LOGGER = LoggerFactory.getLogger(OCRController.class);
+
+    private static final Logger log = LoggerFactory.getLogger(OCRController.class);
+
     private final OCRService ocrService;
     private final PillService pillService;
     private final GroupMemberRepository groupMemberRepository;
@@ -56,40 +58,50 @@ public class OCRController {
                                                     @RequestParam String userFCMToken,
                                                     @RequestPart("image") MultipartFile image) throws NonRegistrationGroupException {
 
-        if(!groupMemberRepository.existsByGroupMemberIndex(groupMemberIndex)){
-            LOGGER.info("createOCR. [err] 존재하지 않은 GroupMemberIndex GroupMemberIndex={}", groupMemberIndex);
+        log.info("createOCR - 요청 수신, groupMemberIndex={}, groupMemberName={}, dateStart={}",
+                groupMemberIndex, groupMemberName, dateStart);
+
+        if (!groupMemberRepository.existsByGroupMemberIndex(groupMemberIndex)) {
+            log.info("createOCR - [err] 존재하지 않은 GroupMemberIndex, groupMemberIndex={}", groupMemberIndex);
             throw new NonRegistrationGroupException();
         }
 
-        if(!groupMemberRepository.existsByGroupMemberName(groupMemberName)){
-            LOGGER.info("createOCR. [err] 존재하지 않은 GroupMemberName GroupMemberName={}", groupMemberName);
+        if (!groupMemberRepository.existsByGroupMemberName(groupMemberName)) {
+            log.info("createOCR - [err] 존재하지 않은 GroupMemberName, groupMemberName={}", groupMemberName);
             throw new NonRegistrationGroupException();
         }
 
-        if (image != null) {
-            CompletableFuture.supplyAsync(() -> {
-                EditOcrDTO editOcrDTO = null;
-                editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image);
-                try {
-                    ocrService.sendOcrData(userFCMToken, editOcrDTO);
-
-                    ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
-                    return new ResponseEntity<>(responseFormat, HttpStatus.OK);
-
-                } catch (JsonProcessingException e) {
-                    LOGGER.info("createOCR. [err] OCR 전송 오류");
-                    throw new RuntimeException(e);
-                }
-            });
-
-            ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
-            return new ResponseEntity<>(responseFormat, HttpStatus.OK);
-
-        } else {
+        if (image == null) {
+            log.info("createOCR - [err] image가 null입니다.");
             ResponseFormat responseFormat = ResponseFormat.of("Image is null", HttpStatus.NOT_FOUND.value());
-            LOGGER.info("createOCR. [err] image를 찾을 수 없음");
             return new ResponseEntity<>(responseFormat, HttpStatus.NOT_FOUND);
         }
+
+        log.info("createOCR - 비동기 OCR 처리 시작, imageName={}, size={}",
+                image.getOriginalFilename(), image.getSize());
+
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                EditOcrDTO editOcrDTO = ocrService.sendImage(groupMemberIndex, groupMemberName, dateStart, image);
+                log.debug("createOCR(async) - OCR 결과 수신, editOcrDTO={}", editOcrDTO);
+
+                ocrService.sendOcrData(userFCMToken, editOcrDTO);
+                log.info("createOCR(async) - FCM 전송 완료, userFCMToken(일부)={}",
+                        userFCMToken.substring(0, Math.min(10, userFCMToken.length())));
+
+                return ResponseFormat.of("success", HttpStatus.OK.value());
+            } catch (JsonProcessingException e) {
+                log.error("createOCR(async) - OCR 전송 중 JsonProcessingException 발생", e);
+                throw new RuntimeException(e);
+            } catch (Exception e) {
+                log.error("createOCR(async) - 비동기 처리 중 예외 발생", e);
+                throw new RuntimeException(e);
+            }
+        });
+
+        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
+        log.debug("createOCR - 클라이언트에 즉시 성공 응답 반환");
+        return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
     /**
@@ -99,10 +111,18 @@ public class OCRController {
      **/
     @PostMapping("/prescriptions")
     public ResponseEntity<ResponseFormat> createPrescriptionAndTakePillAndTakePillCheckByOCRData(@RequestBody EditOcrDTO editOcrDTO) throws NonExistsPrescriptionIndexException, NonExistsTakePillException, SQLException {
+        log.info("createPrescriptionAndTakePillAndTakePillCheckByOCRData - 요청 수신, editOcrDTO={}", editOcrDTO);
+
         editOcrDTO = pillService.searchPillNameByPartiallyPillName(editOcrDTO);
+
+        log.debug("createPrescriptionAndTakePillAndTakePillCheckByOCRData - 약 이름 자동 보정 완료, editOcrDTO={}", editOcrDTO);
+
         ocrService.createPrescriptionAndTakePillAndTakePillCheck(editOcrDTO);
 
+        log.info("createPrescriptionAndTakePillAndTakePillCheckByOCRData - 처방전/복용데이터 생성 완료");
+
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 }

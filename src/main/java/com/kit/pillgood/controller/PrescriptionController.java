@@ -4,17 +4,21 @@ import com.kit.pillgood.common.ResponseFormat;
 import com.kit.pillgood.exeptions.exeption.NonExistsPrescriptionIndexException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.service.PrescriptionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/prescriptions")
 public class PrescriptionController {
+
+    private static final Logger log = LoggerFactory.getLogger(PrescriptionController.class);
+
     private final PrescriptionService prescriptionService;
+
     @Autowired
     public PrescriptionController(PrescriptionService prescriptionService) {
         this.prescriptionService = prescriptionService;
@@ -27,7 +31,16 @@ public class PrescriptionController {
      **/
     @GetMapping
     public ResponseEntity<ResponseFormat> getPrescriptionsByGroupMemberIndex(@RequestParam("groupMemberIndex") Long groupMemberIndex) throws NonRegistrationGroupException {
-        ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value(), prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex));
+        log.info("getPrescriptionsByGroupMemberIndex - 요청 수신, groupMemberIndex={}", groupMemberIndex);
+
+        ResponseFormat responseFormat = ResponseFormat.of(
+                "success",
+                HttpStatus.OK.value(),
+                prescriptionService.searchGroupMemberPrescriptionsByGroupMemberIndex(groupMemberIndex)
+        );
+
+        log.debug("getPrescriptionsByGroupMemberIndex - 조회 성공, groupMemberIndex={}", groupMemberIndex);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 
@@ -38,8 +51,13 @@ public class PrescriptionController {
      **/
     @DeleteMapping("/{prescriptionIndex}")
     public ResponseEntity<ResponseFormat> deletePrescriptionByPrescriptionIndex(@PathVariable(name="prescriptionIndex") Long prescriptionIndex) throws NonExistsPrescriptionIndexException {
+        log.info("deletePrescriptionByPrescriptionIndex - 요청 수신, prescriptionIndex={}", prescriptionIndex);
+
         prescriptionService.deletePrescription(prescriptionIndex);
         ResponseFormat responseFormat = ResponseFormat.of("success", HttpStatus.OK.value());
+
+        log.debug("deletePrescriptionByPrescriptionIndex - 삭제 성공, prescriptionIndex={}", prescriptionIndex);
+
         return new ResponseEntity<>(responseFormat, HttpStatus.OK);
     }
 }
