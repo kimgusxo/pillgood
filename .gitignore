@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Spring 설정 파일 & Firebase 키
+src/main/resources/application.properties
+src/main/resources/firebaseAccountKey.json

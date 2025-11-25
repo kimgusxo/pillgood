@@ -2,8 +2,6 @@ package com.kit.pillgood.persistence.dto;
 
 import lombok.*;
 
-import javax.validation.constraints.NotEmpty;
-
 @Data
 @Builder
 @NoArgsConstructor

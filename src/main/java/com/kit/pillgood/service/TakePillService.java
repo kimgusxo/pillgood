@@ -15,7 +15,6 @@ import com.kit.pillgood.util.EntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,7 +118,7 @@ public class TakePillService {
             }
         }
 
-        if(medicationInfoDTOs.size() == 0){
+        if(medicationInfoDTOs.isEmpty()){
             LOGGER.info(".searchMedicationInfoListByGroupMemberIndexListAndTargetDate [err] medicationInfoSummary is null");
             throw new NonExistsMedicationInfoException();
         }

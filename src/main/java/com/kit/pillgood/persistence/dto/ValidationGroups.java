@@ -5,5 +5,4 @@ public class ValidationGroups {
     public interface groupUpdate {};
     public interface groupSearch{};
     public interface groupDelete{};
-
 }

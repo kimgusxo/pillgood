@@ -1,7 +1,5 @@
 package com.kit.pillgood.persistence.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

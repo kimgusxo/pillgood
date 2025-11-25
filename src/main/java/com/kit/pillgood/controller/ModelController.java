@@ -7,11 +7,6 @@ import org.springframework.http.*;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.util.Base64;
-
 
 @RestController
 @RequestMapping("/model")
@@ -32,7 +27,6 @@ public class ModelController {
     public OriginalOcrDTO sendImage(@RequestParam byte[] image) {
 
         try {
-
             // 이미지 데이터를 Base64 인코딩하여 문자열로 변환
             String encodedImage = Base64Utils.encodeToString(image);
             // JSON 객체 생성 및 이미지 데이터 추가

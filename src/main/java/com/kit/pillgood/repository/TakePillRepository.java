@@ -1,7 +1,6 @@
 package com.kit.pillgood.repository;
 
 import com.kit.pillgood.domain.TakePill;
-import com.kit.pillgood.persistence.dto.TakePillAndTakePillCheckDTO;
 import com.kit.pillgood.persistence.projection.MedicationInfoSummary;
 import com.kit.pillgood.persistence.projection.PartiallyTakePillSummary;
 import com.kit.pillgood.persistence.projection.TakePillAndTakePillCheckSummary;

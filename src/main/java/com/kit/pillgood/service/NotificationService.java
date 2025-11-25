@@ -1,7 +1,5 @@
 package com.kit.pillgood.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -12,10 +10,8 @@ import com.kit.pillgood.exeptions.exeption.NonRegistrationNotificationException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.exeptions.exeption.TransactionFailedException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
-import com.kit.pillgood.persistence.dto.EditOcrDTO;
 import com.kit.pillgood.persistence.dto.NotificationContentDTO;
 import com.kit.pillgood.persistence.dto.NotificationDTO;
-import com.kit.pillgood.persistence.dto.PillScheduleDTO;
 import com.kit.pillgood.persistence.projection.NotificationContentSummary;
 import com.kit.pillgood.repository.NotificationRepository;
 import com.kit.pillgood.repository.UserRepository;

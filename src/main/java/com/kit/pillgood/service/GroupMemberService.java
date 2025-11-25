@@ -5,7 +5,6 @@ import com.kit.pillgood.domain.User;
 import com.kit.pillgood.exeptions.exeption.AlreadyExistGroupException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationGroupException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
-import com.kit.pillgood.exeptions.exeption.TransactionFailedException;
 import com.kit.pillgood.persistence.dto.GroupMemberAndUserIndexDTO;
 import com.kit.pillgood.repository.GroupMemberRepository;
 import com.kit.pillgood.repository.UserRepository;

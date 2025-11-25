@@ -1,9 +1,7 @@
 package com.kit.pillgood.controller;
 
 import com.kit.pillgood.common.ResponseFormat;
-import com.kit.pillgood.exeptions.exeption.AlreadyExistUserException;
 import com.kit.pillgood.exeptions.exeption.NonRegistrationFirebaseException;
-import com.kit.pillgood.exeptions.exeption.NonRegistrationUserException;
 import com.kit.pillgood.exeptions.exeption.superExeption.EtcFirebaseException;
 import com.kit.pillgood.persistence.dto.LoginDTO;
 import com.kit.pillgood.persistence.dto.ValidationGroups;

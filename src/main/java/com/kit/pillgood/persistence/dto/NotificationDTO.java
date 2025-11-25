@@ -2,8 +2,6 @@ package com.kit.pillgood.persistence.dto;
 
 import lombok.*;
 
-import com.kit.pillgood.domain.User;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;

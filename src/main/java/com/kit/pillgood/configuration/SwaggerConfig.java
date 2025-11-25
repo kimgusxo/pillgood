@@ -1,6 +1,5 @@
 package com.kit.pillgood.configuration;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +29,7 @@ public class SwaggerConfig {
     public Docket api() {
         Parameter parameterBuilder = new ParameterBuilder()
                 .name(HttpHeaders.AUTHORIZATION)
-                .description("Access Tocken")
+                .description("Access Token")
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
                 .required(false)

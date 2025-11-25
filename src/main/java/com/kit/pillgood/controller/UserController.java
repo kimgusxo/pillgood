@@ -30,7 +30,7 @@ public class UserController {
     @DeleteMapping("/delete/{user-index}")
     public boolean deleteUser(@PathVariable(name="user-index") Long userIndex) throws EtcFirebaseException, NonRegistrationUserException {
         return userService.deleteFirebaseUser(userIndex);
-   }
+    }
 
     /**
      * 사용자의 토큰 갱신
